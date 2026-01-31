@@ -45,11 +45,11 @@ const modulesArray = Array.from(navigationTree.entries());
         "
       >
         <div class="p-6 border-b border-gray-700">
-          <a href="/" class="text-xl font-bold text-gray-100 hover:text-blue-400 transition-colors">
+          <a href={import.meta.env.BASE_URL} class="text-xl font-bold text-gray-100 hover:text-blue-400 transition-colors">
             Debezium Course
           </a>
         </div>
-        <Navigation modules={modulesArray} currentPath={currentPath} client:load />
+        <Navigation modules={modulesArray} currentPath={currentPath} basePath={import.meta.env.BASE_URL} client:load />
       </aside>
 
       <!-- Main content area -->

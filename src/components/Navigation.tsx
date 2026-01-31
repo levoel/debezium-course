@@ -26,6 +26,8 @@ interface NavigationProps {
   modules: ModuleEntry[];
   /** Current page path for highlighting */
   currentPath: string;
+  /** Base path for URLs (e.g., "/debezium-course") */
+  basePath?: string;
 }
 
 /**
@@ -47,7 +49,7 @@ function formatModuleHeader(moduleId: string): string {
  * Links close the sidebar on click (mobile UX).
  * Uses nanostores for cross-island state sharing.
  */
-export function Navigation({ modules, currentPath }: NavigationProps) {
+export function Navigation({ modules, currentPath, basePath = '' }: NavigationProps) {
   const $isOpen = useStore(isSidebarOpen);
 
   // On mobile, don't render content when closed (optional optimization)
@@ -71,7 +73,7 @@ export function Navigation({ modules, currentPath }: NavigationProps) {
             {/* Lessons list */}
             <ul className="space-y-1">
               {lessons.map((lesson) => {
-                const href = `/course/${lesson.slug}`;
+                const href = `${basePath}/course/${lesson.slug}`;
                 const isCurrentPage = currentPath.includes(lesson.slug);
 
                 return (

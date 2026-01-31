@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { CourseRoadmap } from '../components/CourseRoadmap';
 
+// Helper to clean entry.id to URL-friendly slug
+function cleanSlug(id: string): string {
+  return id.replace(/\/index\.mdx?$/, '').replace(/\.mdx?$/, '');
+}
+
 // Fetch all course entries and sort by order
 const courseEntries = await getCollection('course');
 const sortedLessons = courseEntries
@@ -12,7 +17,7 @@ const sortedLessons = courseEntries
 // Prepare lessons array for roadmap (serializable)
 const roadmapLessons = sortedLessons.map(entry => ({
   title: entry.data.title,
-  slug: entry.id, // e.g., "01-intro" from "01-intro/index.mdx"
+  slug: cleanSlug(entry.id),
 }));
 
 // Get difficulty badge color
@@ -76,7 +81,7 @@ function translateDifficulty(difficulty: string) {
     <div class="grid gap-6 not-prose">
       {sortedLessons.map((lesson) => (
         <a
-          href={`${import.meta.env.BASE_URL}/course/${lesson.id}`}
+          href={`${import.meta.env.BASE_URL}/course/${cleanSlug(lesson.id)}`}
           class="block bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors"
         >
           <div class="flex items-start justify-between mb-3">

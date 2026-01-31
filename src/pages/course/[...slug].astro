@@ -6,9 +6,15 @@ export async function getStaticPaths() {
   const courseEntries = await getCollection('course');
 
   return courseEntries.map((entry) => ({
-    params: { slug: entry.id },
+    // Clean entry.id: remove /index.mdx or .mdx extension for clean URLs
+    params: { slug: entry.id.replace(/\/index\.mdx?$/, '').replace(/\.mdx?$/, '') },
     props: { entry },
   }));
+}
+
+// Helper to clean entry.id to URL-friendly slug
+function cleanSlug(id: string): string {
+  return id.replace(/\/index\.mdx?$/, '').replace(/\.mdx?$/, '');
 }
 
 interface Props {
@@ -131,7 +137,7 @@ function translateDifficulty(difficulty: string) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {prevLesson ? (
         <a
-          href={`${import.meta.env.BASE_URL}/course/${prevLesson.id}`}
+          href={`${import.meta.env.BASE_URL}/course/${cleanSlug(prevLesson.id)}`}
           class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors"
         >
           <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +156,7 @@ function translateDifficulty(difficulty: string) {
 
       {nextLesson ? (
         <a
-          href={`${import.meta.env.BASE_URL}/course/${nextLesson.id}`}
+          href={`${import.meta.env.BASE_URL}/course/${cleanSlug(nextLesson.id)}`}
           class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors md:justify-end"
         >
           <div class="text-right">

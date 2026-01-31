@@ -71,10 +71,13 @@ Plans:
   3. Progress percentage appears on the course homepage
   4. Students can mark lessons as complete manually
   5. Progress data survives browser cache clearing (export/import option available)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [ ] 03-01-PLAN.md — Create persistent progress store with @nanostores/persistent
+- [ ] 03-02-PLAN.md — Create LessonCompleteButton, ProgressIndicator, and ProgressExport components
+- [ ] 03-03-PLAN.md — Add progress indicators to CourseRoadmap and Navigation components
+- [ ] 03-04-PLAN.md — Integrate progress components into pages and verify functionality
 
 ### Phase 4: Lab Infrastructure
 **Goal**: Students can run hands-on Debezium labs in a local Docker environment on ARM64 macOS
@@ -218,7 +221,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation | 0/4 | Planned | - |
 | 2. Navigation & Roadmap | 0/4 | Planned | - |
-| 3. Progress Tracking | 0/TBD | Not started | - |
+| 3. Progress Tracking | 0/4 | Planned | - |
 | 4. Lab Infrastructure | 0/TBD | Not started | - |
 | 5. Module 1 - Foundations | 0/TBD | Not started | - |
 | 6. Module 2 - PostgreSQL & Aurora | 0/TBD | Not started | - |

@@ -37,13 +37,13 @@
 
 ### Module 3: Production Operations
 
-- [ ] **MOD3-01**: JMX метрики Debezium и их интерпретация
-- [ ] **MOD3-02**: Настройка Prometheus для сбора метрик
-- [ ] **MOD3-03**: Grafana дашборд для мониторинга CDC pipeline
-- [ ] **MOD3-04**: Детекция и алертинг на lag (MilliSecondsBehindSource)
-- [ ] **MOD3-05**: Управление WAL bloat и heartbeat конфигурация
-- [ ] **MOD3-06**: Масштабирование коннекторов и task model
-- [ ] **MOD3-07**: Disaster recovery процедуры и backup offset
+- [x] **MOD3-01**: JMX метрики Debezium и их интерпретация
+- [x] **MOD3-02**: Настройка Prometheus для сбора метрик
+- [x] **MOD3-03**: Grafana дашборд для мониторинга CDC pipeline
+- [x] **MOD3-04**: Детекция и алертинг на lag (MilliSecondsBehindSource)
+- [x] **MOD3-05**: Управление WAL bloat и heartbeat конфигурация
+- [x] **MOD3-06**: Масштабирование коннекторов и task model
+- [x] **MOD3-07**: Disaster recovery процедуры и backup offset
 
 ### Module 4: Advanced Patterns
 
@@ -153,13 +153,13 @@
 | MOD2-05 | Phase 6 | ✓ Done |
 | MOD2-06 | Phase 6 | ✓ Done |
 | MOD2-07 | Phase 6 | ✓ Done |
-| MOD3-01 | Phase 7 | Pending |
-| MOD3-02 | Phase 7 | Pending |
-| MOD3-03 | Phase 7 | Pending |
-| MOD3-04 | Phase 7 | Pending |
-| MOD3-05 | Phase 7 | Pending |
-| MOD3-06 | Phase 7 | Pending |
-| MOD3-07 | Phase 7 | Pending |
+| MOD3-01 | Phase 7 | ✓ Done |
+| MOD3-02 | Phase 7 | ✓ Done |
+| MOD3-03 | Phase 7 | ✓ Done |
+| MOD3-04 | Phase 7 | ✓ Done |
+| MOD3-05 | Phase 7 | ✓ Done |
+| MOD3-06 | Phase 7 | ✓ Done |
+| MOD3-07 | Phase 7 | ✓ Done |
 | MOD4-01 | Phase 8 | Pending |
 | MOD4-02 | Phase 8 | Pending |
 | MOD4-03 | Phase 8 | Pending |

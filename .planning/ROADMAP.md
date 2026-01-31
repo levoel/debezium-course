@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Lab Infrastructure** - Docker Compose environment with Kafka, Debezium, PostgreSQL, monitoring ✓
 - [x] **Phase 5: Module 1 - Foundations** - CDC fundamentals, Debezium architecture, first connector ✓
 - [x] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics ✓
-- [ ] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery
+- [x] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery ✓
 - [ ] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration
 - [ ] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing
 - [ ] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration
@@ -150,10 +150,12 @@ Plans:
   5. Students can prevent WAL bloat through heartbeat configuration and monitoring
   6. Students can scale Debezium connectors horizontally using task model
   7. Students can execute disaster recovery procedures (backup offsets, restore state)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 07-01-PLAN.md — Create metrics foundation lessons (JMX interpretation, Prometheus collection)
+- [x] 07-02-PLAN.md — Create visualization and alerting lessons (Grafana dashboards, lag alerts)
+- [x] 07-03-PLAN.md — Create operational procedures lessons (WAL/heartbeat, scaling, DR)
 
 ### Phase 8: Module 4 - Advanced Patterns
 **Goal**: Students can apply advanced transformations, implement Outbox pattern, and manage schema evolution
@@ -232,7 +234,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 4. Lab Infrastructure | 4/4 | ✓ Complete | 2026-01-31 |
 | 5. Module 1 - Foundations | 3/3 | ✓ Complete | 2026-02-01 |
 | 6. Module 2 - PostgreSQL & Aurora | 3/3 | ✓ Complete | 2026-02-01 |
-| 7. Module 3 - Production Operations | 0/TBD | Not started | - |
+| 7. Module 3 - Production Operations | 3/3 | ✓ Complete | 2026-02-01 |
 | 8. Module 4 - Advanced Patterns | 0/TBD | Not started | - |
 | 9. Module 5 - Data Engineering | 0/TBD | Not started | - |
 | 10. Module 6 - Cloud-Native GCP | 0/TBD | Not started | - |

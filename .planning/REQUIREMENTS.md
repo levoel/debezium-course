@@ -83,14 +83,14 @@
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Docker Compose с PostgreSQL 15+ (logical replication enabled)
-- [ ] **INFRA-02**: Kafka 3.x в KRaft mode (без ZooKeeper)
-- [ ] **INFRA-03**: Debezium 3.x коннекторы
-- [ ] **INFRA-04**: Schema Registry
-- [ ] **INFRA-05**: Prometheus + Grafana для мониторинга
-- [ ] **INFRA-06**: Python 3.11+ окружение с JupyterLab
-- [ ] **INFRA-07**: Все образы поддерживают ARM64 (macOS M-series)
-- [ ] **INFRA-08**: README с инструкциями по запуску
+- [x] **INFRA-01**: Docker Compose с PostgreSQL 15+ (logical replication enabled)
+- [x] **INFRA-02**: Kafka 3.x в KRaft mode (без ZooKeeper)
+- [x] **INFRA-03**: Debezium 2.5.x коннекторы (downgraded from 3.x due to Java 21 ARM64 crash)
+- [x] **INFRA-04**: Schema Registry
+- [x] **INFRA-05**: Prometheus + Grafana для мониторинга
+- [x] **INFRA-06**: Python 3.11+ окружение с JupyterLab
+- [x] **INFRA-07**: Все образы поддерживают ARM64 (macOS M-series)
+- [x] **INFRA-08**: README с инструкциями по запуску
 
 ## v2 Requirements
 

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { CourseRoadmap } from '../components/CourseRoadmap';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { ProgressExport } from '../components/ProgressExport';
 
@@ -15,12 +14,6 @@ const courseEntries = await getCollection('course');
 const sortedLessons = courseEntries
   .filter(c => !c.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
-
-// Prepare lessons array for roadmap (serializable)
-const roadmapLessons = sortedLessons.map(entry => ({
-  title: entry.data.title,
-  slug: cleanSlug(entry.id),
-}));
 
 // Total lessons for progress indicator
 const totalLessons = sortedLessons.length;
@@ -89,9 +82,6 @@ function translateDifficulty(difficulty: string) {
         </div>
       </div>
     </div>
-
-    <!-- Interactive Course Roadmap -->
-    <CourseRoadmap lessons={roadmapLessons} basePath={import.meta.env.BASE_URL} client:visible />
 
     <h2 class="text-2xl font-bold text-gray-100 mb-6">Уроки курса</h2>
 

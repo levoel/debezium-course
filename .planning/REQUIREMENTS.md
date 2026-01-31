@@ -27,13 +27,13 @@
 
 ### Module 2: PostgreSQL & Aurora
 
-- [ ] **MOD2-01**: Глубокий разбор logical decoding и pgoutput плагина
-- [ ] **MOD2-02**: Конфигурация replication slots и их мониторинг
-- [ ] **MOD2-03**: Настройка WAL (wal_level=logical) и влияние на производительность
-- [ ] **MOD2-04**: Aurora-специфичная конфигурация (parameter groups, flags)
-- [ ] **MOD2-05**: Обработка Aurora failover и поведение replication slots
-- [ ] **MOD2-06**: Snapshot стратегии (initial, incremental) для больших таблиц
-- [ ] **MOD2-07**: Практика: настройка инкрементального снапшота
+- [x] **MOD2-01**: Глубокий разбор logical decoding и pgoutput плагина
+- [x] **MOD2-02**: Конфигурация replication slots и их мониторинг
+- [x] **MOD2-03**: Настройка WAL (wal_level=logical) и влияние на производительность
+- [x] **MOD2-04**: Aurora-специфичная конфигурация (parameter groups, flags)
+- [x] **MOD2-05**: Обработка Aurora failover и поведение replication slots
+- [x] **MOD2-06**: Snapshot стратегии (initial, incremental) для больших таблиц
+- [x] **MOD2-07**: Практика: настройка инкрементального снапшота
 
 ### Module 3: Production Operations
 
@@ -146,13 +146,13 @@
 | MOD1-04 | Phase 5 | ✓ Done |
 | MOD1-05 | Phase 5 | ✓ Done |
 | MOD1-06 | Phase 5 | ✓ Done |
-| MOD2-01 | Phase 6 | Pending |
-| MOD2-02 | Phase 6 | Pending |
-| MOD2-03 | Phase 6 | Pending |
-| MOD2-04 | Phase 6 | Pending |
-| MOD2-05 | Phase 6 | Pending |
-| MOD2-06 | Phase 6 | Pending |
-| MOD2-07 | Phase 6 | Pending |
+| MOD2-01 | Phase 6 | ✓ Done |
+| MOD2-02 | Phase 6 | ✓ Done |
+| MOD2-03 | Phase 6 | ✓ Done |
+| MOD2-04 | Phase 6 | ✓ Done |
+| MOD2-05 | Phase 6 | ✓ Done |
+| MOD2-06 | Phase 6 | ✓ Done |
+| MOD2-07 | Phase 6 | ✓ Done |
 | MOD3-01 | Phase 7 | Pending |
 | MOD3-02 | Phase 7 | Pending |
 | MOD3-03 | Phase 7 | Pending |

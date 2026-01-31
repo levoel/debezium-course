@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Progress Tracking** - LocalStorage-based progress persistence and visualization ✓
 - [x] **Phase 4: Lab Infrastructure** - Docker Compose environment with Kafka, Debezium, PostgreSQL, monitoring ✓
 - [x] **Phase 5: Module 1 - Foundations** - CDC fundamentals, Debezium architecture, first connector ✓
-- [ ] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics
+- [x] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics ✓
 - [ ] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery
 - [ ] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration
 - [ ] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing
@@ -131,10 +131,12 @@ Plans:
   5. Students can predict and handle Aurora failover behavior with replication slots
   6. Students can choose appropriate snapshot strategies (initial vs incremental) for large tables
   7. Students can configure and execute an incremental snapshot on a multi-GB table
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 06-01-PLAN.md — Create PostgreSQL CDC foundation lessons (logical decoding, replication slots, WAL)
+- [x] 06-02-PLAN.md — Create Aurora-specific configuration lessons (parameter groups, failover)
+- [x] 06-03-PLAN.md — Create snapshot strategies theory and incremental snapshot lab
 
 ### Phase 7: Module 3 - Production Operations
 **Goal**: Students can operate Debezium in production with monitoring, alerting, scaling, and disaster recovery
@@ -229,7 +231,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 3. Progress Tracking | 4/4 | ✓ Complete | 2026-01-31 |
 | 4. Lab Infrastructure | 4/4 | ✓ Complete | 2026-01-31 |
 | 5. Module 1 - Foundations | 3/3 | ✓ Complete | 2026-02-01 |
-| 6. Module 2 - PostgreSQL & Aurora | 0/TBD | Not started | - |
+| 6. Module 2 - PostgreSQL & Aurora | 3/3 | ✓ Complete | 2026-02-01 |
 | 7. Module 3 - Production Operations | 0/TBD | Not started | - |
 | 8. Module 4 - Advanced Patterns | 0/TBD | Not started | - |
 | 9. Module 5 - Data Engineering | 0/TBD | Not started | - |

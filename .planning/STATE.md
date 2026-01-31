@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 11 (Module 1 Foundations)
-Plan: 1 of 6 complete
+Plan: 2 of 6 complete
 Status: In progress
-Last activity: 2026-01-31 — Completed 05-01-PLAN.md (Foundation Lessons)
+Last activity: 2026-01-31 — Completed 05-02-PLAN.md (Lab Setup and First Connector)
 
-Progress: [██████████░░░░░░░░░░] 50%
+Progress: [██████████░░░░░░░░░░] 52%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: 2.5 minutes
-- Total execution time: 0.50 hours
+- Total execution time: 0.55 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████████░░░░░░░░░░] 50%
 | 02 - Navigation and Roadmap | 4/4 | 8.5m | 2.1m |
 | 03 - Progress Tracking | 4/4 | 7.5m | 1.9m |
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
-| 05 - Module 1 Foundations | 1/6 | 2.5m | 2.5m |
+| 05 - Module 1 Foundations | 2/6 | 5.5m | 2.75m |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (2.6m), 04-03 (2m), 04-04 (5m), 05-01 (2.5m)
-- Trend: Content creation averaging 2.5m/plan (faster than infrastructure)
+- Last 5 plans: 04-03 (2m), 04-04 (5m), 05-01 (2.5m), 05-02 (3m)
+- Trend: Content creation averaging 2.75m/plan
 
 *Updated after each plan completion*
 
@@ -90,6 +90,9 @@ Recent decisions affecting current work:
 - Russian documentation language for course consistency (04-04)
 - Human verification checkpoint for production-quality lab environment (04-04)
 - Lesson language pattern: Russian explanatory text, English code/config (05-01)
+- Internal vs external port distinction: database.port 5432 internal, 5433 external (05-02)
+- Two-terminal demo pattern for live CDC capture (05-02)
+- Replication slot monitoring for operational awareness (05-02)
 
 ### Pending Todos
 
@@ -101,8 +104,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 22:09:55 UTC
-Stopped at: Completed 05-01-PLAN.md (Foundation Lessons)
+Last session: 2026-01-31 22:14:02 UTC
+Stopped at: Completed 05-02-PLAN.md (Lab Setup and First Connector)
 Resume file: None
 
 ---

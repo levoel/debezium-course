@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 1 of 11 (Platform Foundation)
-Plan: 1 of 4 complete
+Plan: 2 of 4 complete
 Status: In progress
-Last activity: 2026-01-31 — Completed 01-01-PLAN.md (Astro project initialization)
+Last activity: 2026-01-31 — Completed 01-02-PLAN.md (Core components)
 
-Progress: [█░░░░░░░░░] 10%
+Progress: [██░░░░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 5.5 minutes
-- Total execution time: 0.09 hours
+- Total plans completed: 2
+- Average duration: 4.3 minutes
+- Total execution time: 0.14 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01 - Platform Foundation | 1/4 | 5.5m | 5.5m |
+| 01 - Platform Foundation | 2/4 | 8.5m | 4.3m |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5.5m)
+- Last 5 plans: 01-01 (5.5m), 01-02 (3m)
 - Trend: Not yet established (need 5+ plans)
 
 *Updated after each plan completion*
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - Styling: Tailwind CSS 4 utility-first approach (01-01)
 - Code highlighting: Shiki with github-dark theme, line wrapping enabled (01-01)
 - React version: React 19 for interactive components (01-01)
+- Content validation: Zod schema in content collections for course frontmatter (01-02)
+- Responsive breakpoints: Mobile-first with lg:1024px for sidebar visibility (01-02)
+- Diagram rendering: Mermaid with client:visible lazy hydration and dark theme (01-02)
 
 ### Pending Todos
 
@@ -60,8 +63,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 20:41:55 UTC
-Stopped at: Completed 01-01-PLAN.md - Astro project initialization with all integrations
+Last session: 2026-01-31 18:49:29 UTC
+Stopped at: Completed 01-02-PLAN.md - Core components (content schema, layout, Mermaid)
 Resume file: None
 
 ---

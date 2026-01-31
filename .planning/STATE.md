@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 11 (Lab Infrastructure)
-Plan: 3 of 4 complete
-Status: In progress
-Last activity: 2026-01-31 — Completed 04-03-PLAN.md (JupyterLab Environment)
+Plan: 4 of 4 complete
+Status: Phase complete
+Last activity: 2026-01-31 — Completed 04-01-PLAN.md (Core Docker Compose Stack)
 
-Progress: [████████░░] 87%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
@@ -30,7 +30,7 @@ Progress: [████████░░] 87%
 | 01 - Platform Foundation | 3/4 | 12.5m | 4.2m |
 | 02 - Navigation and Roadmap | 4/4 ✓ | 8.5m | 2.1m |
 | 03 - Progress Tracking | 4/4 ✓ | 7.5m | 1.9m |
-| 04 - Lab Infrastructure | 3/4 | 6m | 2m |
+| 04 - Lab Infrastructure | 4/4 | 14m | 3.5m |
 
 **Recent Trend:**
 - Last 5 plans: 03-02 (2m), 03-03 (1.9m), 03-04 (2.2m), 04-01 (2m), 04-02 (2m), 04-03 (2m)
@@ -82,6 +82,9 @@ Recent decisions affecting current work:
 - jupyter/scipy-notebook as base image for JupyterLab (04-03)
 - confluent-kafka 2.13.0+ for ARM64 native wheel support (04-03)
 - Docker network names for internal services (postgres, kafka, connect) (04-03)
+- Confluent Kafka 7.8.1 instead of quay.io/debezium/kafka due to Java 21 ARM64 crash (04-01)
+- Debezium Connect 2.5.4 instead of 3.0.8 for same Java 21 compatibility (04-01)
+- PostgreSQL external port 5433 (5432 in use on host) (04-01)
 
 ### Pending Todos
 
@@ -93,8 +96,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 21:18:XX UTC
-Stopped at: Completed 04-03-PLAN.md (JupyterLab Environment)
+Last session: 2026-01-31 21:23:XX UTC
+Stopped at: Completed Phase 4 - Lab Infrastructure
 Resume file: None
 
 ---

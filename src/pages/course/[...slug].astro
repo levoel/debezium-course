@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { LessonCompleteButton } from '../../components/LessonCompleteButton';
 
 export async function getStaticPaths() {
   const courseEntries = await getCollection('course');
@@ -23,6 +24,9 @@ interface Props {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+// Clean slug for progress tracking (same as used in routing)
+const lessonSlug = entry.id.replace(/\/index\.mdx?$/, '').replace(/\.mdx?$/, '');
 
 // Get all lessons for navigation
 const allLessons = await getCollection('course');
@@ -127,10 +131,26 @@ function translateDifficulty(difficulty: string) {
     )}
   </div>
 
+  <!-- Lesson completion -->
+  <div class="mb-8">
+    <LessonCompleteButton slug={lessonSlug} client:load />
+  </div>
+
   <!-- Lesson content -->
   <article class="prose prose-invert prose-lg max-w-none">
     <Content />
   </article>
+
+  <!-- End of lesson completion prompt -->
+  <div class="mt-8 p-6 bg-gray-800 border border-gray-700 rounded-lg">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-200 mb-1">Закончили урок?</h3>
+        <p class="text-sm text-gray-400">Отметьте его как пройденный, чтобы отслеживать свой прогресс</p>
+      </div>
+      <LessonCompleteButton slug={lessonSlug} client:load />
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav class="mt-12 pt-8 border-t border-gray-700">

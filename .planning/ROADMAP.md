@@ -93,10 +93,13 @@ Plans:
   7. JupyterLab environment runs with Python 3.11+ and required libraries (confluent-kafka, pandas)
   8. All services run on ARM64 architecture (macOS M-series compatible)
   9. README provides clear setup instructions that work first try
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [ ] 04-01-PLAN.md — Create core Docker Compose stack with PostgreSQL, Kafka, Connect, Schema Registry
+- [ ] 04-02-PLAN.md — Create Prometheus and Grafana monitoring configuration
+- [ ] 04-03-PLAN.md — Create JupyterLab environment with Python CDC dependencies
+- [ ] 04-04-PLAN.md — Integrate all services and create README with setup instructions
 
 ### Phase 5: Module 1 - Foundations
 **Goal**: Students understand CDC fundamentals and can set up their first Debezium connector with Python consumer
@@ -222,7 +225,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 1. Platform Foundation | 3/4 | In Progress | - |
 | 2. Navigation & Roadmap | 4/4 | ✓ Complete | 2026-01-31 |
 | 3. Progress Tracking | 4/4 | ✓ Complete | 2026-01-31 |
-| 4. Lab Infrastructure | 0/TBD | Not started | - |
+| 4. Lab Infrastructure | 0/4 | Not started | - |
 | 5. Module 1 - Foundations | 0/TBD | Not started | - |
 | 6. Module 2 - PostgreSQL & Aurora | 0/TBD | Not started | - |
 | 7. Module 3 - Production Operations | 0/TBD | Not started | - |

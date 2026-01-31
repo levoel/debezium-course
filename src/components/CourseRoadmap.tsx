@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
+import { useStore } from '@nanostores/react';
+import { $progress } from '../stores/progress';
 
 /**
  * Lesson data for roadmap rendering.
@@ -31,8 +33,13 @@ const NODE_COLORS = [
 /**
  * Generates Mermaid flowchart syntax from lessons array.
  * Creates clickable nodes with color styling and sequential connections.
+ * Completed lessons show checkmark prefix and green color.
  */
-function generateFlowchartSyntax(lessons: RoadmapLesson[], basePath: string = ''): string {
+function generateFlowchartSyntax(
+  lessons: RoadmapLesson[],
+  basePath: string = '',
+  completedSlugs: string[] = []
+): string {
   if (lessons.length === 0) {
     return `flowchart TB
     empty["Уроки пока не добавлены"]
@@ -43,8 +50,11 @@ function generateFlowchartSyntax(lessons: RoadmapLesson[], basePath: string = ''
 
   // Node definitions
   lessons.forEach((lesson, index) => {
+    // Prepend checkmark for completed lessons
+    const isComplete = completedSlugs.includes(lesson.slug);
+    const prefix = isComplete ? '✓ ' : '';
     // Escape quotes in title for Mermaid syntax
-    const escapedTitle = lesson.title.replace(/"/g, '#quot;');
+    const escapedTitle = (prefix + lesson.title).replace(/"/g, '#quot;');
     lines.push(`    N${index}["${escapedTitle}"]`);
   });
 
@@ -64,9 +74,11 @@ function generateFlowchartSyntax(lessons: RoadmapLesson[], basePath: string = ''
 
   lines.push('');
 
-  // Node styling with color rotation
-  lessons.forEach((_, index) => {
-    const color = NODE_COLORS[index % NODE_COLORS.length];
+  // Node styling - green for completed, color rotation for incomplete
+  lessons.forEach((lesson, index) => {
+    const isComplete = completedSlugs.includes(lesson.slug);
+    // Green (#10b981 emerald-500) for completed, original color rotation for incomplete
+    const color = isComplete ? '#10b981' : NODE_COLORS[index % NODE_COLORS.length];
     lines.push(`    style N${index} fill:${color},stroke:${color},color:#fff`);
   });
 
@@ -85,6 +97,7 @@ export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const progress = useStore($progress);
 
   useEffect(() => {
     const renderRoadmap = async () => {
@@ -112,8 +125,8 @@ export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
           },
         });
 
-        // Generate flowchart syntax from lessons (with base path for URLs)
-        const chartSyntax = generateFlowchartSyntax(lessons, basePath);
+        // Generate flowchart syntax from lessons (with base path and completed slugs)
+        const chartSyntax = generateFlowchartSyntax(lessons, basePath, progress.completed);
 
         // Generate unique ID for this diagram
         const id = `roadmap-${Math.random().toString(36).substring(7)}`;
@@ -129,7 +142,7 @@ export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
     };
 
     renderRoadmap();
-  }, [lessons, basePath]);
+  }, [lessons, basePath, progress.completed]);
 
   if (error) {
     return (

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Layout Test" description="Testing responsive layout">
+  <div class="prose">
+    <h1>Layout Test Page</h1>
+    <p>This page tests the responsive BaseLayout component.</p>
+
+    <h2>Mobile View (< 1024px)</h2>
+    <ul>
+      <li>Sidebar should be hidden</li>
+      <li>Content should be full-width</li>
+      <li>Header should be sticky</li>
+    </ul>
+
+    <h2>Desktop View (>= 1024px)</h2>
+    <ul>
+      <li>Sidebar should be visible on the left</li>
+      <li>Content should have progressive padding</li>
+      <li>Header should be sticky</li>
+    </ul>
+
+    <h2>Viewport Meta Tag</h2>
+    <p>Check page source for: <code>width=device-width, initial-scale=1.0</code></p>
+
+    <h3>Code Example</h3>
+    <pre><code>const example = "dark theme code block";
+console.log(example);</code></pre>
+
+    <blockquote>
+      This is a blockquote to test prose styling.
+    </blockquote>
+  </div>
+</BaseLayout>

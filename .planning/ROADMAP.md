@@ -12,9 +12,9 @@ This roadmap delivers an interactive Debezium course for middle+ data engineers 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Platform Foundation** - Static site core with layout, syntax highlighting, diagrams, deployment
-- [ ] **Phase 2: Navigation & Roadmap** - Interactive roadmap and module navigation system
-- [ ] **Phase 3: Progress Tracking** - LocalStorage-based progress persistence and visualization
+- [x] **Phase 1: Platform Foundation** - Static site core with layout, syntax highlighting, diagrams, deployment ✓
+- [x] **Phase 2: Navigation & Roadmap** - Interactive roadmap and module navigation system ✓
+- [x] **Phase 3: Progress Tracking** - LocalStorage-based progress persistence and visualization ✓
 - [ ] **Phase 4: Lab Infrastructure** - Docker Compose environment with Kafka, Debezium, PostgreSQL, monitoring
 - [ ] **Phase 5: Module 1 - Foundations** - CDC fundamentals, Debezium architecture, first connector
 - [ ] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics
@@ -39,9 +39,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 4 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Initialize Astro project with React, Tailwind, MDX, and Shiki syntax highlighting
-- [ ] 01-02-PLAN.md — Create content schema, responsive layout, and Mermaid diagram component
-- [ ] 01-03-PLAN.md — Build sample course content and dynamic routing for lessons
+- [x] 01-01-PLAN.md — Initialize Astro project with React, Tailwind, MDX, and Shiki syntax highlighting
+- [x] 01-02-PLAN.md — Create content schema, responsive layout, and Mermaid diagram component
+- [x] 01-03-PLAN.md — Build sample course content and dynamic routing for lessons
 - [ ] 01-04-PLAN.md — Configure GitHub Actions deployment and verify live site
 
 ### Phase 2: Navigation & Roadmap
@@ -56,10 +56,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Set up nanostores state management and navigation tree utility
-- [ ] 02-02-PLAN.md — Create MobileMenuToggle and Navigation sidebar components
-- [ ] 02-03-PLAN.md — Create interactive CourseRoadmap with Mermaid flowchart
-- [ ] 02-04-PLAN.md — Integrate navigation into BaseLayout and add roadmap to landing page
+- [x] 02-01-PLAN.md — Set up nanostores state management and navigation tree utility
+- [x] 02-02-PLAN.md — Create MobileMenuToggle and Navigation sidebar components
+- [x] 02-03-PLAN.md — Create interactive CourseRoadmap with Mermaid flowchart
+- [x] 02-04-PLAN.md — Integrate navigation into BaseLayout and add roadmap to landing page
 
 ### Phase 3: Progress Tracking
 **Goal**: Students can track their course progress across sessions with automatic persistence
@@ -74,10 +74,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Create persistent progress store with @nanostores/persistent
-- [ ] 03-02-PLAN.md — Create LessonCompleteButton, ProgressIndicator, and ProgressExport components
-- [ ] 03-03-PLAN.md — Add progress indicators to CourseRoadmap and Navigation components
-- [ ] 03-04-PLAN.md — Integrate progress components into pages and verify functionality
+- [x] 03-01-PLAN.md — Create persistent progress store with @nanostores/persistent
+- [x] 03-02-PLAN.md — Create LessonCompleteButton, ProgressIndicator, and ProgressExport components
+- [x] 03-03-PLAN.md — Add progress indicators to CourseRoadmap and Navigation components
+- [x] 03-04-PLAN.md — Integrate progress components into pages and verify functionality
 
 ### Phase 4: Lab Infrastructure
 **Goal**: Students can run hands-on Debezium labs in a local Docker environment on ARM64 macOS
@@ -219,9 +219,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation | 0/4 | Planned | - |
-| 2. Navigation & Roadmap | 0/4 | Planned | - |
-| 3. Progress Tracking | 0/4 | Planned | - |
+| 1. Platform Foundation | 3/4 | In Progress | - |
+| 2. Navigation & Roadmap | 4/4 | ✓ Complete | 2026-01-31 |
+| 3. Progress Tracking | 4/4 | ✓ Complete | 2026-01-31 |
 | 4. Lab Infrastructure | 0/TBD | Not started | - |
 | 5. Module 1 - Foundations | 0/TBD | Not started | - |
 | 6. Module 2 - PostgreSQL & Aurora | 0/TBD | Not started | - |

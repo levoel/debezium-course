@@ -111,11 +111,12 @@ None yet.
 |---|-------------|------|--------|-----------|
 | 001 | Fix hamburger navigation dual module display | 2026-02-01 | 19f5ea8 | [001-fix-hamburger-navigation](./quick/001-fix-hamburger-navigation/) |
 | 002 | Remove duplicate course roadmap | 2026-02-01 | 642fe5f | [002-remove-course-roadmap](./quick/002-remove-course-roadmap/) |
+| 003 | Collapsible sidebar modules | 2026-02-01 | 50b366a | [003-collapsible-sidebar-modules](./quick/003-collapsible-sidebar-modules/) |
 
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Quick task 002 - Removed duplicate course roadmap
+Stopped at: Quick task 003 - Collapsible sidebar modules
 Resume file: None
 
 ---

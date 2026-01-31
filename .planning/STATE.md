@@ -97,6 +97,10 @@ Recent decisions affecting current work:
 - confluent-kafka over kafka-python for performance and Confluent support (05-03)
 - Prominent kafka:9092 vs localhost:9092 hostname warning for Docker networking clarity (05-03)
 - parse_cdc_event function handles all operation types (r, c, u, d) explicitly (05-03)
+- pgoutput as standard plugin - built-in since PG 10+, no dependencies, Aurora/RDS compatible (06-01)
+- REPLICA IDENTITY DEFAULT recommended - FULL only for full row history (30-50% additional WAL overhead) (06-01)
+- max_slot_wal_keep_size mandatory for production CDC - prevents disk exhaustion (06-01)
+- pg_replication_slots monitoring query with lag_bytes and wal_status for slot health (06-01)
 - DB Cluster vs DB Instance parameter group distinction critical for Aurora CDC (06-02)
 - Heartbeat interval 10 seconds recommended for Aurora failover detection (06-02)
 - Four mitigation strategies for Aurora failover data loss: accept risk, incremental snapshot, global db, outbox (06-02)
@@ -124,7 +128,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 06-03-PLAN.md (Snapshot Strategies)
+Stopped at: Completed 06-01-PLAN.md (PostgreSQL CDC Foundation - 3 lessons)
 Resume file: None
 
 ---

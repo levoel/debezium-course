@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courseEntries = await getCollection('course');
+
+  return courseEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'course'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Get all lessons for navigation
+const allLessons = await getCollection('course');
+const sortedLessons = allLessons.sort((a, b) => a.data.order - b.data.order);
+
+// Find current lesson index
+const currentIndex = sortedLessons.findIndex((lesson) => lesson.id === entry.id);
+const prevLesson = currentIndex > 0 ? sortedLessons[currentIndex - 1] : null;
+const nextLesson = currentIndex < sortedLessons.length - 1 ? sortedLessons[currentIndex + 1] : null;
+
+// Get difficulty badge color
+function getDifficultyColor(difficulty: string) {
+  switch (difficulty) {
+    case 'beginner':
+      return 'bg-green-500/20 text-green-300 border-green-500';
+    case 'intermediate':
+      return 'bg-yellow-500/20 text-yellow-300 border-yellow-500';
+    case 'advanced':
+      return 'bg-red-500/20 text-red-300 border-red-500';
+    default:
+      return 'bg-gray-500/20 text-gray-300 border-gray-500';
+  }
+}
+
+// Translate difficulty to Russian
+function translateDifficulty(difficulty: string) {
+  switch (difficulty) {
+    case 'beginner':
+      return 'Начальный';
+    case 'intermediate':
+      return 'Средний';
+    case 'advanced':
+      return 'Продвинутый';
+    default:
+      return difficulty;
+  }
+}
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <!-- Breadcrumb -->
+  <nav class="mb-6 text-sm">
+    <ol class="flex items-center gap-2 text-gray-400">
+      <li>
+        <a href="/" class="hover:text-blue-400 transition-colors">
+          Все уроки
+        </a>
+      </li>
+      <li>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </li>
+      <li class="text-gray-300">
+        {entry.data.title}
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Lesson metadata -->
+  <div class="mb-8 pb-6 border-b border-gray-700">
+    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">
+      <span class={`px-3 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(entry.data.difficulty)}`}>
+        {translateDifficulty(entry.data.difficulty)}
+      </span>
+
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{entry.data.estimatedTime} минут</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg>
+        <div class="flex flex-wrap gap-2">
+          {entry.data.topics.map((topic) => (
+            <span class="px-2 py-1 bg-gray-700 rounded text-xs">
+              {topic}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {entry.data.prerequisites && entry.data.prerequisites.length > 0 && (
+      <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+        <h3 class="text-sm font-semibold text-blue-300 mb-2">Требуемые знания:</h3>
+        <ul class="text-sm text-gray-300 space-y-1">
+          {entry.data.prerequisites.map((prereq) => (
+            <li class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              <span>{prereq}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+
+  <!-- Lesson content -->
+  <article class="prose prose-invert prose-lg max-w-none">
+    <Content />
+  </article>
+
+  <!-- Navigation -->
+  <nav class="mt-12 pt-8 border-t border-gray-700">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {prevLesson ? (
+        <a
+          href={`/course/${prevLesson.id}`}
+          class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors"
+        >
+          <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <div class="text-left">
+            <div class="text-xs text-gray-400 mb-1">Предыдущий урок</div>
+            <div class="text-sm font-medium text-gray-200 group-hover:text-blue-300 transition-colors">
+              {prevLesson.data.title}
+            </div>
+          </div>
+        </a>
+      ) : (
+        <div></div>
+      )}
+
+      {nextLesson ? (
+        <a
+          href={`/course/${nextLesson.id}`}
+          class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors md:justify-end"
+        >
+          <div class="text-right">
+            <div class="text-xs text-gray-400 mb-1">Следующий урок</div>
+            <div class="text-sm font-medium text-gray-200 group-hover:text-blue-300 transition-colors">
+              {nextLesson.data.title}
+            </div>
+          </div>
+          <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      ) : (
+        <div></div>
+      )}
+    </div>
+
+    <div class="mt-6 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-blue-400 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span>Все уроки</span>
+      </a>
+    </div>
+  </nav>
+</BaseLayout>

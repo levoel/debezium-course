@@ -1,17 +1,116 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
+// Fetch all course entries and sort by order
+const courseEntries = await getCollection('course');
+const sortedLessons = courseEntries.sort((a, b) => a.data.order - b.data.order);
+
+// Get difficulty badge color
+function getDifficultyColor(difficulty: string) {
+  switch (difficulty) {
+    case 'beginner':
+      return 'bg-green-500/20 text-green-300 border-green-500';
+    case 'intermediate':
+      return 'bg-yellow-500/20 text-yellow-300 border-yellow-500';
+    case 'advanced':
+      return 'bg-red-500/20 text-red-300 border-red-500';
+    default:
+      return 'bg-gray-500/20 text-gray-300 border-gray-500';
+  }
+}
+
+// Translate difficulty to Russian
+function translateDifficulty(difficulty: string) {
+  switch (difficulty) {
+    case 'beginner':
+      return 'Начальный';
+    case 'intermediate':
+      return 'Средний';
+    case 'advanced':
+      return 'Продвинутый';
+    default:
+      return difficulty;
+  }
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Курс Debezium: CDC паттерны для production"
+  description="Научитесь проектировать и реализовывать production-ready CDC-пайплайны с использованием Debezium"
+>
+  <div class="prose prose-invert max-w-none">
+    <h1 class="text-4xl font-bold text-gray-100 mb-4">
+      Debezium: Change Data Capture для production
+    </h1>
+
+    <p class="text-lg text-gray-300 mb-8">
+      Комплексный курс по проектированию и реализации CDC-пайплайнов на основе Debezium.
+      От базовых концепций до production-ready архитектур с пониманием всех критических нюансов интеграций.
+    </p>
+
+    <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6 mb-8">
+      <h2 class="text-xl font-semibold text-blue-300 mt-0 mb-2">Что вы получите</h2>
+      <ul class="text-gray-300 mb-0">
+        <li>Глубокое понимание CDC паттернов и архитектурных решений</li>
+        <li>Практические навыки настройки Debezium для различных СУБД</li>
+        <li>Знание производительностных нюансов и стратегий оптимизации</li>
+        <li>Опыт обработки реальных production-сценариев</li>
+      </ul>
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-100 mb-6">Уроки курса</h2>
+
+    <div class="grid gap-6 not-prose">
+      {sortedLessons.map((lesson) => (
+        <a
+          href={`/course/${lesson.id}`}
+          class="block bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors"
+        >
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-semibold text-gray-100">
+              {lesson.data.order}. {lesson.data.title}
+            </h3>
+            <span class={`px-3 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(lesson.data.difficulty)}`}>
+              {translateDifficulty(lesson.data.difficulty)}
+            </span>
+          </div>
+
+          <p class="text-gray-300 mb-4">
+            {lesson.data.description}
+          </p>
+
+          <div class="flex flex-wrap gap-4 text-sm text-gray-400">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{lesson.data.estimatedTime} мин</span>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+              {lesson.data.topics.slice(0, 3).map((topic) => (
+                <span class="px-2 py-1 bg-gray-700 rounded text-xs">
+                  {topic}
+                </span>
+              ))}
+              {lesson.data.topics.length > 3 && (
+                <span class="text-xs text-gray-500">
+                  +{lesson.data.topics.length - 3}
+                </span>
+              )}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    {sortedLessons.length === 0 && (
+      <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-6 text-center">
+        <p class="text-yellow-300 mb-0">
+          Уроки курса находятся в разработке. Скоро здесь появится контент!
+        </p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

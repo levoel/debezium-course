@@ -53,9 +53,8 @@ function formatModuleHeader(moduleId: string): string {
 export function Navigation({ modules, currentPath, basePath = '' }: NavigationProps) {
   const $isOpen = useStore(isSidebarOpen);
   const progress = useStore($progress);
-
-  // On mobile, don't render content when closed (optional optimization)
-  // The parent container controls visibility via CSS
+  // Safely access completed array
+  const completed = Array.isArray(progress?.completed) ? progress.completed : [];
 
   const handleLinkClick = () => {
     // Close sidebar when navigating on mobile
@@ -77,7 +76,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
               {lessons.map((lesson) => {
                 const href = `${basePath}/course/${lesson.slug}`;
                 const isCurrentPage = currentPath.includes(lesson.slug);
-                const isComplete = progress.completed.includes(lesson.slug);
+                const isComplete = completed.includes(lesson.slug);
 
                 return (
                   <li key={lesson.slug}>

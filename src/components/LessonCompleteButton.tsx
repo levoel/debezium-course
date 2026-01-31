@@ -12,7 +12,9 @@ interface LessonCompleteButtonProps {
  */
 export function LessonCompleteButton({ slug }: LessonCompleteButtonProps) {
   const progress = useStore($progress);
-  const isComplete = progress.completed.includes(slug);
+  // Safely check completed array (may be undefined during hydration)
+  const completed = Array.isArray(progress?.completed) ? progress.completed : [];
+  const isComplete = completed.includes(slug);
 
   return (
     <button

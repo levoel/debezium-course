@@ -1,20 +1,49 @@
-import { persistentMap } from '@nanostores/persistent';
+import { persistentAtom } from '@nanostores/persistent';
+
+/**
+ * Progress data structure stored in localStorage.
+ */
+interface ProgressData {
+  completed: string[];
+  lastUpdated: number;
+}
+
+const DEFAULT_PROGRESS: ProgressData = {
+  completed: [],
+  lastUpdated: Date.now(),
+};
 
 /**
  * Progress tracking store with automatic localStorage persistence.
- * Uses 'progress:' prefix for all keys in localStorage.
- *
- * Data structure:
- * - completed: string[] - Array of lesson slugs that are complete
- * - lastUpdated: number - Timestamp of last modification
+ * Uses persistentAtom with JSON encoding for reliable array storage.
  */
-export const $progress = persistentMap<{
-  completed: string[];
-  lastUpdated: number;
-}>('progress:', {
-  completed: [],
-  lastUpdated: Date.now(),
-});
+export const $progress = persistentAtom<ProgressData>(
+  'course-progress',
+  DEFAULT_PROGRESS,
+  {
+    encode: JSON.stringify,
+    decode: (str) => {
+      try {
+        const data = JSON.parse(str);
+        // Validate structure
+        if (data && Array.isArray(data.completed)) {
+          return data as ProgressData;
+        }
+      } catch {
+        // Invalid JSON, return default
+      }
+      return DEFAULT_PROGRESS;
+    },
+  }
+);
+
+/**
+ * Get completed array safely (always returns array).
+ */
+function getCompleted(): string[] {
+  const data = $progress.get();
+  return Array.isArray(data?.completed) ? data.completed : [];
+}
 
 /**
  * Toggle lesson completion status.
@@ -22,13 +51,13 @@ export const $progress = persistentMap<{
  * @param slug - Lesson slug (e.g., "01-intro")
  */
 export function toggleLessonComplete(slug: string): void {
-  const current = $progress.get();
-  const completed = current.completed.includes(slug)
-    ? current.completed.filter(s => s !== slug)
-    : [...current.completed, slug];
+  const completed = getCompleted();
+  const newCompleted = completed.includes(slug)
+    ? completed.filter(s => s !== slug)
+    : [...completed, slug];
 
   $progress.set({
-    completed,
+    completed: newCompleted,
     lastUpdated: Date.now(),
   });
 }
@@ -39,7 +68,7 @@ export function toggleLessonComplete(slug: string): void {
  * @returns true if lesson is in completed array
  */
 export function isLessonComplete(slug: string): boolean {
-  return $progress.get().completed.includes(slug);
+  return getCompleted().includes(slug);
 }
 
 /**
@@ -48,7 +77,7 @@ export function isLessonComplete(slug: string): boolean {
  * @returns Percentage (0-100) rounded to nearest integer
  */
 export function getCompletionPercentage(totalLessons: number): number {
-  const completed = $progress.get().completed.length;
+  const completed = getCompleted().length;
   if (totalLessons === 0) return 0;
   return Math.round((completed / totalLessons) * 100);
 }
@@ -58,11 +87,11 @@ export function getCompletionPercentage(totalLessons: number): number {
  * @returns Number of completed lessons
  */
 export function getCompletedCount(): number {
-  return $progress.get().completed.length;
+  return getCompleted().length;
 }
 
 /**
- * Reset all progress (for testing/debugging).
+ * Reset all progress.
  */
 export function resetProgress(): void {
   $progress.set({

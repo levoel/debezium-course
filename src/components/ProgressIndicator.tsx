@@ -35,9 +35,11 @@ export function ProgressIndicator({ totalLessons }: ProgressIndicatorProps) {
     );
   }
 
-  const completedCount = progress.completed.length;
+  // Safely access completed array
+  const completed = Array.isArray(progress?.completed) ? progress.completed : [];
+  const completedCount = completed.length;
   const percentage = totalLessons > 0
-    ? Math.round((completedCount / totalLessons) * 100)
+    ? Math.min(100, Math.round((completedCount / totalLessons) * 100))
     : 0;
 
   return (

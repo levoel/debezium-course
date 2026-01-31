@@ -125,8 +125,10 @@ export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
           },
         });
 
+        // Safely get completed slugs array
+        const completedSlugs = Array.isArray(progress?.completed) ? progress.completed : [];
         // Generate flowchart syntax from lessons (with base path and completed slugs)
-        const chartSyntax = generateFlowchartSyntax(lessons, basePath, progress.completed);
+        const chartSyntax = generateFlowchartSyntax(lessons, basePath, completedSlugs);
 
         // Generate unique ID for this diagram
         const id = `roadmap-${Math.random().toString(36).substring(7)}`;
@@ -142,7 +144,7 @@ export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
     };
 
     renderRoadmap();
-  }, [lessons, basePath, progress.completed]);
+  }, [lessons, basePath, progress]);
 
   if (error) {
     return (

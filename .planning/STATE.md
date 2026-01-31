@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 5 - Module 1 Foundations
+**Current focus:** Phase 6 - Module 2 PostgreSQL/Aurora
 
 ## Current Position
 
-Phase: 5 of 11 (Module 1 Foundations)
-Plan: 3 of 3 complete
-Status: Phase complete
-Last activity: 2026-02-01 — Completed Phase 5 (all 3 plans, 6 lessons created)
+Phase: 6 of 11 (Module 2 PostgreSQL/Aurora)
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 06-02-PLAN.md (Aurora parameter groups & failover handling)
 
-Progress: [█████████░░░░░░░░░░░] 45% (5/11 phases)
+Progress: [██████████░░░░░░░░░░] 50% (6/11 phases in progress)
 
 ## Performance Metrics
 
@@ -96,6 +96,10 @@ Recent decisions affecting current work:
 - confluent-kafka over kafka-python for performance and Confluent support (05-03)
 - Prominent kafka:9092 vs localhost:9092 hostname warning for Docker networking clarity (05-03)
 - parse_cdc_event function handles all operation types (r, c, u, d) explicitly (05-03)
+- DB Cluster vs DB Instance parameter group distinction critical for Aurora CDC (06-02)
+- Heartbeat interval 10 seconds recommended for Aurora failover detection (06-02)
+- Four mitigation strategies for Aurora failover data loss: accept risk, incremental snapshot, global db, outbox (06-02)
+- PostgreSQL 17 failover slots as future solution, Aurora adoption timeline unclear (06-02)
 
 ### Pending Todos
 
@@ -116,7 +120,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Quick task 003 - Collapsible sidebar modules
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None
 
 ---

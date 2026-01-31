@@ -18,12 +18,12 @@
 
 ### Module 1: Foundations
 
-- [ ] **MOD1-01**: Контент объясняет что такое CDC и log-based подход
-- [ ] **MOD1-02**: Контент описывает архитектуру Debezium (Kafka Connect, Server, Embedded)
-- [ ] **MOD1-03**: Инструкции по настройке Docker Compose окружения
-- [ ] **MOD1-04**: Пошаговая настройка первого PostgreSQL коннектора
-- [ ] **MOD1-05**: Python код для чтения CDC-событий из Kafka (confluent-kafka)
-- [ ] **MOD1-06**: Разбор структуры CDC-события (envelope, before/after, metadata)
+- [x] **MOD1-01**: Контент объясняет что такое CDC и log-based подход
+- [x] **MOD1-02**: Контент описывает архитектуру Debezium (Kafka Connect, Server, Embedded)
+- [x] **MOD1-03**: Инструкции по настройке Docker Compose окружения
+- [x] **MOD1-04**: Пошаговая настройка первого PostgreSQL коннектора
+- [x] **MOD1-05**: Python код для чтения CDC-событий из Kafka (confluent-kafka)
+- [x] **MOD1-06**: Разбор структуры CDC-события (envelope, before/after, metadata)
 
 ### Module 2: PostgreSQL & Aurora
 
@@ -140,12 +140,12 @@
 | INFRA-06 | Phase 4 | Pending |
 | INFRA-07 | Phase 4 | Pending |
 | INFRA-08 | Phase 4 | Pending |
-| MOD1-01 | Phase 5 | Pending |
-| MOD1-02 | Phase 5 | Pending |
-| MOD1-03 | Phase 5 | Pending |
-| MOD1-04 | Phase 5 | Pending |
-| MOD1-05 | Phase 5 | Pending |
-| MOD1-06 | Phase 5 | Pending |
+| MOD1-01 | Phase 5 | ✓ Done |
+| MOD1-02 | Phase 5 | ✓ Done |
+| MOD1-03 | Phase 5 | ✓ Done |
+| MOD1-04 | Phase 5 | ✓ Done |
+| MOD1-05 | Phase 5 | ✓ Done |
+| MOD1-06 | Phase 5 | ✓ Done |
 | MOD2-01 | Phase 6 | Pending |
 | MOD2-02 | Phase 6 | Pending |
 | MOD2-03 | Phase 6 | Pending |

@@ -12,6 +12,8 @@ export interface RoadmapLesson {
 
 export interface CourseRoadmapProps {
   lessons: RoadmapLesson[];
+  /** Base path for URLs (e.g., "/debezium-course") */
+  basePath?: string;
 }
 
 // Color palette for node styling (rotates through for visual variety)
@@ -30,7 +32,7 @@ const NODE_COLORS = [
  * Generates Mermaid flowchart syntax from lessons array.
  * Creates clickable nodes with color styling and sequential connections.
  */
-function generateFlowchartSyntax(lessons: RoadmapLesson[]): string {
+function generateFlowchartSyntax(lessons: RoadmapLesson[], basePath: string = ''): string {
   if (lessons.length === 0) {
     return `flowchart TB
     empty["Уроки пока не добавлены"]
@@ -55,9 +57,9 @@ function generateFlowchartSyntax(lessons: RoadmapLesson[]): string {
     lines.push('');
   }
 
-  // Click handlers - navigate to course lesson URLs
+  // Click handlers - navigate to course lesson URLs (with base path)
   lessons.forEach((lesson, index) => {
-    lines.push(`    click N${index} "/course/${lesson.slug}"`);
+    lines.push(`    click N${index} "${basePath}/course/${lesson.slug}"`);
   });
 
   lines.push('');
@@ -79,7 +81,7 @@ function generateFlowchartSyntax(lessons: RoadmapLesson[]): string {
  *
  * @param lessons - Array of lesson data (title, slug) for roadmap nodes
  */
-export function CourseRoadmap({ lessons }: CourseRoadmapProps) {
+export function CourseRoadmap({ lessons, basePath = '' }: CourseRoadmapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -110,8 +112,8 @@ export function CourseRoadmap({ lessons }: CourseRoadmapProps) {
           },
         });
 
-        // Generate flowchart syntax from lessons
-        const chartSyntax = generateFlowchartSyntax(lessons);
+        // Generate flowchart syntax from lessons (with base path for URLs)
+        const chartSyntax = generateFlowchartSyntax(lessons, basePath);
 
         // Generate unique ID for this diagram
         const id = `roadmap-${Math.random().toString(36).substring(7)}`;
@@ -127,7 +129,7 @@ export function CourseRoadmap({ lessons }: CourseRoadmapProps) {
     };
 
     renderRoadmap();
-  }, [lessons]);
+  }, [lessons, basePath]);
 
   if (error) {
     return (

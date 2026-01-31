@@ -36,10 +36,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Mermaid diagrams render correctly from markdown code blocks
   4. Site displays properly on mobile devices (responsive layout)
   5. Students can navigate between pages using basic routing
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [ ] 01-01-PLAN.md — Initialize Astro project with React, Tailwind, MDX, and Shiki syntax highlighting
+- [ ] 01-02-PLAN.md — Create content schema, responsive layout, and Mermaid diagram component
+- [ ] 01-03-PLAN.md — Build sample course content and dynamic routing for lessons
+- [ ] 01-04-PLAN.md — Configure GitHub Actions deployment and verify live site
 
 ### Phase 2: Navigation & Roadmap
 **Goal**: Students can navigate the course structure through an interactive roadmap and structured menu system
@@ -50,10 +53,13 @@ Plans:
   2. Students can click roadmap elements to navigate to specific topics
   3. Students see a sidebar menu with clear module and topic organization
   4. Navigation adapts to screen size (hamburger menu on mobile, sidebar on desktop)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [ ] 02-01-PLAN.md — Set up nanostores state management and navigation tree utility
+- [ ] 02-02-PLAN.md — Create MobileMenuToggle and Navigation sidebar components
+- [ ] 02-03-PLAN.md — Create interactive CourseRoadmap with Mermaid flowchart
+- [ ] 02-04-PLAN.md — Integrate navigation into BaseLayout and add roadmap to landing page
 
 ### Phase 3: Progress Tracking
 **Goal**: Students can track their course progress across sessions with automatic persistence
@@ -195,7 +201,7 @@ Plans:
 **Depends on**: Phase 10
 **Requirements**: CAP-01, CAP-02, CAP-03
 **Success Criteria** (what must be TRUE):
-  1. Students understand the capstone project requirements (Aurora → Outbox → PyFlink → BigQuery)
+  1. Students understand the capstone project requirements (Aurora -> Outbox -> PyFlink -> BigQuery)
   2. Students can self-assess their architecture against production readiness checklist
   3. Students can complete the capstone with monitoring, documentation, and working code
 **Plans**: TBD
@@ -206,12 +212,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation | 0/TBD | Not started | - |
-| 2. Navigation & Roadmap | 0/TBD | Not started | - |
+| 1. Platform Foundation | 0/4 | Planned | - |
+| 2. Navigation & Roadmap | 0/4 | Planned | - |
 | 3. Progress Tracking | 0/TBD | Not started | - |
 | 4. Lab Infrastructure | 0/TBD | Not started | - |
 | 5. Module 1 - Foundations | 0/TBD | Not started | - |

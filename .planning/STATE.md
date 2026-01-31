@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 7 of 11 (Module 3 Production Operations)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-02-01 — Completed 07-01 (2 lessons, 897 lines, 6 Mermaid diagrams)
+Last activity: 2026-02-01 — Completed 07-02 (2 lessons + 1 dashboard JSON, 1959 lines)
 
-Progress: [████████████░░░░░░░░] 58% (6/11 phases + 1 plan complete)
+Progress: [████████████░░░░░░░░] 60% (6/11 phases + 2 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
-- Average duration: 3.4 minutes
-- Total execution time: 1.0 hours
+- Total plans completed: 19
+- Average duration: 3.6 minutes
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [████████████░░░░░░░░] 58% (6/
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
 | 05 - Module 1 Foundations | 3/3 ✓ | 8.5m | 2.8m |
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
-| 07 - Module 3 Production Operations | 1/3 | 6m | 6m |
+| 07 - Module 3 Production Operations | 2/3 | 17m | 8.5m |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (6.3m), 06-02 (4m), 06-03 (4m), 07-01 (6m)
-- Trend: Content creation averaging 5m/plan for deep technical content
+- Last 5 plans: 06-02 (4m), 06-03 (4m), 07-01 (6m), 07-02 (11m)
+- Trend: Content creation averaging 6.3m/plan for deep technical content
 
 *Updated after each plan completion*
 
@@ -112,6 +112,10 @@ Recent decisions affecting current work:
 - Debezium 2.5.4 lacks per-table metrics - mention as 3.0+ future enhancement (07-01)
 - Alert thresholds: 5s warning, 30s critical for MilliSecondsBehindSource (07-01)
 - Queue utilization thresholds: 80% warning, 95% critical (07-01)
+- Dashboard threshold alignment: gauge/graph thresholds match alert thresholds (07-02)
+- Alert "for" duration: 2m warning, 5m critical to prevent alert storms (07-02)
+- Queue utilization formula: 100 * (1 - Remaining/Total) for percentage display (07-02)
+- 15s auto-refresh for Grafana dashboards matching Prometheus scrape interval (07-02)
 
 ### Pending Todos
 
@@ -132,9 +136,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 07-01-PLAN.md (JMX metrics + Prometheus collection lessons)
-Resume file: .planning/phases/07-module-3-production-operations/07-02-PLAN.md
+Stopped at: Completed 07-02-PLAN.md (Grafana dashboard lab + alerting lesson)
+Resume file: .planning/phases/07-module-3-production-operations/07-03-PLAN.md
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01*
+*Last updated: 2026-02-01 01:51 UTC*

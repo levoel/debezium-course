@@ -64,7 +64,7 @@ function translateDifficulty(difficulty: string) {
     <div class="grid gap-6 not-prose">
       {sortedLessons.map((lesson) => (
         <a
-          href={`/course/${lesson.id}`}
+          href={`${import.meta.env.BASE_URL}/course/${lesson.id}`}
           class="block bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors"
         >
           <div class="flex items-start justify-between mb-3">

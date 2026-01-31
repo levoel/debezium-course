@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 6 of 11 (Module 2 PostgreSQL/Aurora)
-Plan: 2 of 3 in current phase
+Plan: 3 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 06-02-PLAN.md (Aurora parameter groups & failover handling)
+Last activity: 2026-02-01 — Completed 06-03-PLAN.md (Snapshot Strategies)
 
 Progress: [██████████░░░░░░░░░░] 50% (6/11 phases in progress)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
-- Average duration: 2.5 minutes
-- Total execution time: 0.6 hours
+- Total plans completed: 17
+- Average duration: 2.6 minutes
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [██████████░░░░░░░░░░] 50% (6/
 | 03 - Progress Tracking | 4/4 | 7.5m | 1.9m |
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
 | 05 - Module 1 Foundations | 3/3 ✓ | 8.5m | 2.8m |
+| 06 - Module 2 PostgreSQL/Aurora | 3/? | 4m | 4m |
 
 **Recent Trend:**
-- Last 5 plans: 04-04 (5m), 05-01 (2.5m), 05-02 (3m), 05-03 (3m)
-- Trend: Content creation averaging 2.8m/plan
+- Last 5 plans: 05-02 (3m), 05-03 (3m), 06-01 (?), 06-02 (?), 06-03 (4m)
+- Trend: Content creation averaging 3m/plan
 
 *Updated after each plan completion*
 
@@ -100,6 +101,9 @@ Recent decisions affecting current work:
 - Heartbeat interval 10 seconds recommended for Aurora failover detection (06-02)
 - Four mitigation strategies for Aurora failover data loss: accept risk, incremental snapshot, global db, outbox (06-02)
 - PostgreSQL 17 failover slots as future solution, Aurora adoption timeline unclear (06-02)
+- Chunk size 512 for lab demo visibility, production uses 2048-4096 (06-03)
+- Signaling table pattern: id/type/data schema for Debezium commands (06-03)
+- snapshot.mode=never with manual incremental trigger for teaching clarity (06-03)
 
 ### Pending Todos
 
@@ -120,7 +124,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 06-02-PLAN.md
+Stopped at: Completed 06-03-PLAN.md (Snapshot Strategies)
 Resume file: None
 
 ---

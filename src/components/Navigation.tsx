@@ -1,5 +1,6 @@
 import { useStore } from '@nanostores/react';
 import { isSidebarOpen } from '../stores/navigation';
+import { $progress } from '../stores/progress';
 
 /**
  * Lesson item for navigation
@@ -51,6 +52,7 @@ function formatModuleHeader(moduleId: string): string {
  */
 export function Navigation({ modules, currentPath, basePath = '' }: NavigationProps) {
   const $isOpen = useStore(isSidebarOpen);
+  const progress = useStore($progress);
 
   // On mobile, don't render content when closed (optional optimization)
   // The parent container controls visibility via CSS
@@ -75,6 +77,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
               {lessons.map((lesson) => {
                 const href = `${basePath}/course/${lesson.slug}`;
                 const isCurrentPage = currentPath.includes(lesson.slug);
+                const isComplete = progress.completed.includes(lesson.slug);
 
                 return (
                   <li key={lesson.slug}>
@@ -90,8 +93,15 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                         }
                       `}
                     >
-                      <span className="block truncate">{lesson.title}</span>
-                      <span className="text-xs text-gray-400 mt-0.5 block">
+                      <span className="flex items-center gap-2">
+                        {isComplete && (
+                          <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                        <span className="truncate">{lesson.title}</span>
+                      </span>
+                      <span className={`text-xs text-gray-400 mt-0.5 block ${isComplete ? 'ml-6' : ''}`}>
                         {lesson.estimatedTime} мин
                       </span>
                     </a>

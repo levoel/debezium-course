@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Mermaid } from '../components/Mermaid';
+
+const flowchart = `
+graph LR
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+`;
+
+const sequenceDiagram = `
+sequenceDiagram
+    participant Client
+    participant API
+    participant Database
+
+    Client->>API: Request data
+    API->>Database: Query
+    Database-->>API: Results
+    API-->>Client: Response
+`;
+---
+
+<BaseLayout title="Mermaid Test" description="Testing Mermaid diagram rendering">
+  <div class="prose">
+    <h1>Mermaid Diagram Test</h1>
+    <p>This page tests the Mermaid component with different diagram types.</p>
+
+    <h2>Flowchart Example</h2>
+    <Mermaid client:visible chart={flowchart} />
+
+    <h2>Sequence Diagram Example</h2>
+    <Mermaid client:visible chart={sequenceDiagram} />
+
+    <h2>Expected Results</h2>
+    <ul>
+      <li>Both diagrams should render as SVG</li>
+      <li>Dark theme with blue primary colors</li>
+      <li>No hydration errors in console</li>
+      <li>Lazy loading with client:visible</li>
+    </ul>
+  </div>
+</BaseLayout>

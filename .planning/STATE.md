@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 11 (Module 1 Foundations)
-Plan: 2 of 6 complete
+Plan: 3 of 6 complete
 Status: In progress
-Last activity: 2026-01-31 — Completed 05-02-PLAN.md (Lab Setup and First Connector)
+Last activity: 2026-01-31 — Completed 05-03-PLAN.md (Python Consumer and Event Structure)
 
-Progress: [██████████░░░░░░░░░░] 52%
+Progress: [███████████░░░░░░░░░] 56%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: 2.5 minutes
-- Total execution time: 0.55 hours
+- Total execution time: 0.6 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████████░░░░░░░░░░] 52%
 | 02 - Navigation and Roadmap | 4/4 | 8.5m | 2.1m |
 | 03 - Progress Tracking | 4/4 | 7.5m | 1.9m |
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
-| 05 - Module 1 Foundations | 2/6 | 5.5m | 2.75m |
+| 05 - Module 1 Foundations | 3/6 | 8.5m | 2.8m |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (2m), 04-04 (5m), 05-01 (2.5m), 05-02 (3m)
-- Trend: Content creation averaging 2.75m/plan
+- Last 5 plans: 04-04 (5m), 05-01 (2.5m), 05-02 (3m), 05-03 (3m)
+- Trend: Content creation averaging 2.8m/plan
 
 *Updated after each plan completion*
 
@@ -93,6 +93,9 @@ Recent decisions affecting current work:
 - Internal vs external port distinction: database.port 5432 internal, 5433 external (05-02)
 - Two-terminal demo pattern for live CDC capture (05-02)
 - Replication slot monitoring for operational awareness (05-02)
+- confluent-kafka over kafka-python for performance and Confluent support (05-03)
+- Prominent kafka:9092 vs localhost:9092 hostname warning for Docker networking clarity (05-03)
+- parse_cdc_event function handles all operation types (r, c, u, d) explicitly (05-03)
 
 ### Pending Todos
 
@@ -104,8 +107,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 22:14:02 UTC
-Stopped at: Completed 05-02-PLAN.md (Lab Setup and First Connector)
+Last session: 2026-01-31 22:19:10 UTC
+Stopped at: Completed 05-03-PLAN.md (Python Consumer and Event Structure)
 Resume file: None
 
 ---

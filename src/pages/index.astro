@@ -1,10 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { CourseRoadmap } from '../components/CourseRoadmap';
 
 // Fetch all course entries and sort by order
 const courseEntries = await getCollection('course');
-const sortedLessons = courseEntries.sort((a, b) => a.data.order - b.data.order);
+const sortedLessons = courseEntries
+  .filter(c => !c.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Prepare lessons array for roadmap (serializable)
+const roadmapLessons = sortedLessons.map(entry => ({
+  title: entry.data.title,
+  slug: entry.id, // e.g., "01-intro" from "01-intro/index.mdx"
+}));
 
 // Get difficulty badge color
 function getDifficultyColor(difficulty: string) {
@@ -58,6 +67,9 @@ function translateDifficulty(difficulty: string) {
         <li>Опыт обработки реальных production-сценариев</li>
       </ul>
     </div>
+
+    <!-- Interactive Course Roadmap -->
+    <CourseRoadmap lessons={roadmapLessons} client:visible />
 
     <h2 class="text-2xl font-bold text-gray-100 mb-6">Уроки курса</h2>
 

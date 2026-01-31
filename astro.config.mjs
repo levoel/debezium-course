@@ -9,8 +9,8 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://yourusername.github.io', // Will update with actual repo
-  base: '/debezium-course', // GitHub Pages base path
+  site: 'https://levoel.github.io',
+  base: '/debezium-course',
   integrations: [react(), mdx()],
 
   markdown: {

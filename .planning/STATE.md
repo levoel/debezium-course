@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 6 - Module 2 PostgreSQL/Aurora (complete)
+**Current focus:** Phase 7 - Module 3 Production Operations (in progress)
 
 ## Current Position
 
-Phase: 6 of 11 (Module 2 PostgreSQL/Aurora)
-Plan: 3 of 3 complete
-Status: Phase complete
-Last activity: 2026-02-01 — Completed Phase 6 (7 lessons, 2780 lines, 19 Mermaid diagrams)
+Phase: 7 of 11 (Module 3 Production Operations)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-02-01 — Completed 07-01 (2 lessons, 897 lines, 6 Mermaid diagrams)
 
-Progress: [███████████░░░░░░░░░] 55% (6/11 phases complete)
+Progress: [████████████░░░░░░░░] 58% (6/11 phases + 1 plan complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
-- Average duration: 3.2 minutes
-- Total execution time: 0.9 hours
+- Total plans completed: 18
+- Average duration: 3.4 minutes
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [███████████░░░░░░░░░] 55% (6/
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
 | 05 - Module 1 Foundations | 3/3 ✓ | 8.5m | 2.8m |
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
+| 07 - Module 3 Production Operations | 1/3 | 6m | 6m |
 
 **Recent Trend:**
-- Last 5 plans: 05-03 (3m), 06-01 (6.3m), 06-02 (4m), 06-03 (4m)
-- Trend: Content creation averaging 4.6m/plan for deep technical content
+- Last 5 plans: 06-01 (6.3m), 06-02 (4m), 06-03 (4m), 07-01 (6m)
+- Trend: Content creation averaging 5m/plan for deep technical content
 
 *Updated after each plan completion*
 
@@ -108,6 +109,9 @@ Recent decisions affecting current work:
 - Chunk size 512 for lab demo visibility, production uses 2048-4096 (06-03)
 - Signaling table pattern: id/type/data schema for Debezium commands (06-03)
 - snapshot.mode=never with manual incremental trigger for teaching clarity (06-03)
+- Debezium 2.5.4 lacks per-table metrics - mention as 3.0+ future enhancement (07-01)
+- Alert thresholds: 5s warning, 30s critical for MilliSecondsBehindSource (07-01)
+- Queue utilization thresholds: 80% warning, 95% critical (07-01)
 
 ### Pending Todos
 
@@ -128,8 +132,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed Phase 6 - Module 2 PostgreSQL/Aurora (all 3 plans, 7 lessons)
-Resume file: None
+Stopped at: Completed 07-01-PLAN.md (JMX metrics + Prometheus collection lessons)
+Resume file: .planning/phases/07-module-3-production-operations/07-02-PLAN.md
 
 ---
 *State initialized: 2026-01-31*

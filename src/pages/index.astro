@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { CourseRoadmap } from '../components/CourseRoadmap';
+import { ProgressIndicator } from '../components/ProgressIndicator';
+import { ProgressExport } from '../components/ProgressExport';
 
 // Helper to clean entry.id to URL-friendly slug
 function cleanSlug(id: string): string {
@@ -19,6 +21,9 @@ const roadmapLessons = sortedLessons.map(entry => ({
   title: entry.data.title,
   slug: cleanSlug(entry.id),
 }));
+
+// Total lessons for progress indicator
+const totalLessons = sortedLessons.length;
 
 // Get difficulty badge color
 function getDifficultyColor(difficulty: string) {
@@ -71,6 +76,18 @@ function translateDifficulty(difficulty: string) {
         <li>Знание производительностных нюансов и стратегий оптимизации</li>
         <li>Опыт обработки реальных production-сценариев</li>
       </ul>
+    </div>
+
+    <!-- Progress Tracking Section -->
+    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-8">
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div>
+          <ProgressIndicator totalLessons={totalLessons} client:load />
+        </div>
+        <div>
+          <ProgressExport client:load />
+        </div>
+      </div>
     </div>
 
     <!-- Interactive Course Roadmap -->

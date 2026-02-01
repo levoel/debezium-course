@@ -82,10 +82,12 @@ Plans:
   5. Accessibility audit (axe DevTools, WAVE, Lighthouse) shows zero violations for WCAG 4.5:1 contrast
   6. Manual contrast testing confirms all text readable against glass backgrounds in all contexts
   7. Cross-browser testing (Chrome, Firefox, Safari) confirms glass effects render correctly
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1: 01 | Wave 2: 02, 03 parallel)
 
 Plans:
-- [ ] 25-01-PLAN.md — TBD
+- [ ] 25-01-PLAN.md — Fix Safari CSS variable bug with hardcoded webkit values
+- [ ] 25-02-PLAN.md — Add @axe-core/playwright accessibility tests
+- [ ] 25-03-PLAN.md — Manual verification workflows (performance, contrast, cross-browser)
 
 <details>
 <summary>[x] v1.2 Course Reorganization (Phases 19-21) - SHIPPED 2026-02-01</summary>
@@ -299,7 +301,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 | 22. Foundation | v1.3 | 2/2 | Complete | 2026-02-01 |
 | 23. Homepage Redesign | v1.3 | 2/2 | Complete | 2026-02-01 |
 | 24. Content Components | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 25. Polish | v1.3 | 0/TBD | Not started | - |
+| 25. Polish | v1.3 | 0/3 | Not started | - |
 
 ## Coverage
 

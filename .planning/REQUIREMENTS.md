@@ -58,13 +58,13 @@
 
 ### Module 5: Data Engineering
 
-- [ ] **MOD5-01**: Продвинутые паттерны Python consumer (error handling, exactly-once)
-- [ ] **MOD5-02**: Интеграция CDC событий с Pandas DataFrame
-- [ ] **MOD5-03**: PyFlink CDC connector — настройка и использование
-- [ ] **MOD5-04**: Stateful stream processing в PyFlink (агрегации, joins)
-- [ ] **MOD5-05**: PySpark Structured Streaming с Kafka source
-- [ ] **MOD5-06**: ETL/ELT паттерны с CDC данными
-- [ ] **MOD5-07**: Real-time feature engineering для ML
+- [x] **MOD5-01**: Продвинутые паттерны Python consumer (error handling, exactly-once)
+- [x] **MOD5-02**: Интеграция CDC событий с Pandas DataFrame
+- [x] **MOD5-03**: PyFlink CDC connector — настройка и использование
+- [x] **MOD5-04**: Stateful stream processing в PyFlink (агрегации, joins)
+- [x] **MOD5-05**: PySpark Structured Streaming с Kafka source
+- [x] **MOD5-06**: ETL/ELT паттерны с CDC данными
+- [x] **MOD5-07**: Real-time feature engineering для ML
 
 ### Module 6: Cloud-Native GCP
 
@@ -168,13 +168,13 @@
 | MOD4-06 | Phase 8 | ✓ Done |
 | MOD4-07 | Phase 8 | ✓ Done |
 | MOD4-08 | Phase 8 | ✓ Done |
-| MOD5-01 | Phase 9 | Pending |
-| MOD5-02 | Phase 9 | Pending |
-| MOD5-03 | Phase 9 | Pending |
-| MOD5-04 | Phase 9 | Pending |
-| MOD5-05 | Phase 9 | Pending |
-| MOD5-06 | Phase 9 | Pending |
-| MOD5-07 | Phase 9 | Pending |
+| MOD5-01 | Phase 9 | ✓ Done |
+| MOD5-02 | Phase 9 | ✓ Done |
+| MOD5-03 | Phase 9 | ✓ Done |
+| MOD5-04 | Phase 9 | ✓ Done |
+| MOD5-05 | Phase 9 | ✓ Done |
+| MOD5-06 | Phase 9 | ✓ Done |
+| MOD5-07 | Phase 9 | ✓ Done |
 | MOD6-01 | Phase 10 | Pending |
 | MOD6-02 | Phase 10 | Pending |
 | MOD6-03 | Phase 10 | Pending |

@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics ✓
 - [x] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery ✓
 - [x] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration ✓
-- [ ] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing
+- [x] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing ✓
 - [ ] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration
 - [ ] **Phase 11: Capstone Project** - End-to-end production CDC pipeline integrating all learnings
 
@@ -190,10 +190,13 @@ Plans:
   5. Students can consume CDC events with PySpark Structured Streaming
   6. Students can design ETL/ELT patterns using CDC data
   7. Students can build real-time feature engineering pipelines for ML models
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 09-01-PLAN.md — Create advanced Python consumer and Pandas integration lessons
+- [x] 09-02-PLAN.md — Create PyFlink CDC connector and stateful processing lessons
+- [x] 09-03-PLAN.md — Create PySpark Structured Streaming and ETL/ELT patterns lessons
+- [x] 09-04-PLAN.md — Create real-time feature engineering for ML lesson
 
 ### Phase 10: Module 6 - Cloud-Native GCP
 **Goal**: Students can deploy Debezium on GCP with Cloud SQL, Pub/Sub, Dataflow, and Cloud Run
@@ -239,7 +242,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 6. Module 2 - PostgreSQL & Aurora | 3/3 | ✓ Complete | 2026-02-01 |
 | 7. Module 3 - Production Operations | 3/3 | ✓ Complete | 2026-02-01 |
 | 8. Module 4 - Advanced Patterns | 4/4 | ✓ Complete | 2026-02-01 |
-| 9. Module 5 - Data Engineering | 0/TBD | Not started | - |
+| 9. Module 5 - Data Engineering | 4/4 | ✓ Complete | 2026-02-01 |
 | 10. Module 6 - Cloud-Native GCP | 0/TBD | Not started | - |
 | 11. Capstone Project | 0/TBD | Not started | - |
 

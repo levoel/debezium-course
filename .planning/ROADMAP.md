@@ -42,7 +42,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 **Milestone Goal:** Add comprehensive MySQL/Aurora MySQL CDC module (Module 8) and deploy the course to GitHub Pages.
 
 - [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
-- [ ] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison
+- [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
 - [ ] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations
 - [ ] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots
 - [ ] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools
@@ -80,9 +80,9 @@ Plans:
 **Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 13-01-PLAN.md — MySQL connector configuration lesson (REST API deployment, properties)
-- [ ] 13-02-PLAN.md — Binlog vs WAL architectural comparison lesson
-- [ ] 13-03-PLAN.md — Schema history topic and recovery procedures lesson
+- [x] 13-01-PLAN.md — MySQL connector configuration lesson (REST API deployment, properties)
+- [x] 13-02-PLAN.md — Binlog vs WAL architectural comparison lesson
+- [x] 13-03-PLAN.md — Schema history topic and recovery procedures lesson
 
 ### Phase 14: Aurora MySQL Specifics
 **Goal**: Course learner can configure Debezium for Aurora MySQL and understands Aurora-specific behaviors
@@ -165,7 +165,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 13. Connector Setup | v1.1 | 0/3 | Planned | - |
+| 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 14. Aurora MySQL | v1.1 | 0/TBD | Not started | - |
 | 15. Production Ops | v1.1 | 0/TBD | Not started | - |
 | 16. Advanced + Recovery | v1.1 | 0/TBD | Not started | - |

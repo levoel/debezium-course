@@ -13,9 +13,9 @@
 - [x] **MYSQL-03**: Контент объясняет binlog retention и heartbeat events для предотвращения потери позиции ✓
 
 **Connector Setup:**
-- [ ] **MYSQL-04**: Пошаговая настройка MySQL коннектора в Docker Compose окружении
-- [ ] **MYSQL-05**: Контент сравнивает MySQL binlog vs PostgreSQL WAL (архитектурные различия, мониторинг)
-- [ ] **MYSQL-06**: Конфигурация schema history topic и её критическая роль для recovery
+- [x] **MYSQL-04**: Пошаговая настройка MySQL коннектора в Docker Compose окружении ✓
+- [x] **MYSQL-05**: Контент сравнивает MySQL binlog vs PostgreSQL WAL (архитектурные различия, мониторинг) ✓
+- [x] **MYSQL-06**: Конфигурация schema history topic и её критическая роль для recovery ✓
 
 **Aurora MySQL:**
 - [ ] **MYSQL-07**: Aurora MySQL-специфичная конфигурация (parameter groups, binlog retention procedures)
@@ -79,9 +79,9 @@
 | MYSQL-01 | Phase 12 | Complete |
 | MYSQL-02 | Phase 12 | Complete |
 | MYSQL-03 | Phase 12 | Complete |
-| MYSQL-04 | Phase 13 | Pending |
-| MYSQL-05 | Phase 13 | Pending |
-| MYSQL-06 | Phase 13 | Pending |
+| MYSQL-04 | Phase 13 | Complete |
+| MYSQL-05 | Phase 13 | Complete |
+| MYSQL-06 | Phase 13 | Complete |
 | MYSQL-07 | Phase 14 | Pending |
 | MYSQL-08 | Phase 14 | Pending |
 | MYSQL-09 | Phase 14 | Pending |

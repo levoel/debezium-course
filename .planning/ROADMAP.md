@@ -77,11 +77,12 @@ Plans:
   2. Learner can articulate key differences between MySQL binlog and PostgreSQL WAL (replication approach, monitoring metrics, position tracking)
   3. Schema history topic is properly configured and learner understands its critical role for connector recovery
   4. CDC events flow from MySQL to Kafka topics with correct schema
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 13-01: TBD
-- [ ] 13-02: TBD
+- [ ] 13-01-PLAN.md — MySQL connector configuration lesson (REST API deployment, properties)
+- [ ] 13-02-PLAN.md — Binlog vs WAL architectural comparison lesson
+- [ ] 13-03-PLAN.md — Schema history topic and recovery procedures lesson
 
 ### Phase 14: Aurora MySQL Specifics
 **Goal**: Course learner can configure Debezium for Aurora MySQL and understands Aurora-specific behaviors
@@ -164,7 +165,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 13. Connector Setup | v1.1 | 0/TBD | Not started | - |
+| 13. Connector Setup | v1.1 | 0/3 | Planned | - |
 | 14. Aurora MySQL | v1.1 | 0/TBD | Not started | - |
 | 15. Production Ops | v1.1 | 0/TBD | Not started | - |
 | 16. Advanced + Recovery | v1.1 | 0/TBD | Not started | - |

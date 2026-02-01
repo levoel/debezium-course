@@ -9,17 +9,17 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 7 of 11 (Module 3 Production Operations)
-Plan: 3 of 3 complete
-Status: Phase complete
-Last activity: 2026-02-01 — Completed Phase 7 (7 lessons, 1 dashboard, 3 plans)
+Phase: 8 of 11 (Module 4 Advanced Patterns)
+Plan: 3 of 4 in progress
+Status: In progress
+Last activity: 2026-02-01 — Completed 08-03-PLAN.md (Outbox Pattern)
 
 Progress: [██████████████░░░░░░] 64% (7/11 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 3.7 minutes
 - Total execution time: 1.2 hours
 
@@ -33,10 +33,11 @@ Progress: [██████████████░░░░░░] 64% (7/
 | 04 - Lab Infrastructure | 4/4 | 19m | 4.8m |
 | 05 - Module 1 Foundations | 3/3 ✓ | 8.5m | 2.8m |
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
-| 07 - Module 3 Production Operations | 3/3 | 27m | 9m |
+| 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
+| 08 - Module 4 Advanced Patterns | 3/4 | 12m | 4m |
 
 **Recent Trend:**
-- Last 5 plans: 06-03 (4m), 07-01 (6m), 07-02 (11m), 07-03 (10m)
+- Last 5 plans: 07-01 (6m), 07-02 (11m), 07-03 (10m), 08-03 (4m)
 - Trend: Content creation averaging 7.8m/plan for deep technical content
 
 *Updated after each plan completion*
@@ -120,6 +121,11 @@ Recent decisions affecting current work:
 - tasks.max=1 for PostgreSQL connector is architectural constraint, not configurable (07-03)
 - REST API offset management (Kafka 3.6+) as primary method for production DR (07-03)
 - Quarterly DR drill schedule recommended (07-03)
+- Outbox Pattern taught as eventual consistency solution, NOT distributed transactions (08-03)
+- At-least-once delivery requires consumer idempotency (database-backed for production) (08-03)
+- DELETE-in-transaction cleanup recommended for course simplicity, external job for scale (08-03)
+- table.expand.json.payload=true for structured JSON (not string) (08-03)
+- Single outbox table supports multiple aggregate types via aggregatetype routing (08-03)
 
 ### Pending Todos
 
@@ -140,9 +146,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed Phase 7 - Module 3 Production Operations (all 3 plans, 7 lessons)
+Stopped at: Completed 08-03-PLAN.md (Outbox Pattern theory and implementation, 2 lessons)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 01:53 UTC*
+*Last updated: 2026-02-01 00:20 UTC*

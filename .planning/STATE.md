@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 17 of 18 (Multi-Database Capstone)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 17-01-PLAN.md (Multi-Database Architecture)
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 17-03-PLAN.md (Multi-Database Self-Assessment)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████░░░░] 76%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████████░░░] 81%
 
 ## Performance Metrics
 
@@ -31,14 +31,14 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 17
+- Plans completed: 18
 - Average duration: 6 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
 - Phase 15: 3/3 plans complete (phase complete)
 - Phase 16: 3/3 plans complete (phase complete)
-- Phase 17: 2/3 plans complete (in progress)
+- Phase 17: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -122,6 +122,11 @@ Recent decisions affecting current work:
 - [17-02]: Composite key strategy (PG-/MY- prefix) prevents order_id conflicts across databases
 - [17-02]: Database-specific monitoring: PostgreSQL WAL lag (bytes) vs MySQL time lag (milliseconds)
 - [17-02]: Isolation testing emphasized - verify each connector independently before unified processing
+- [17-03]: MySQL outbox payload type JSON (not JSONB like PostgreSQL)
+- [17-03]: Multi-database unique identifiers mandatory: database.server.id (184000-184999), database.server.name ({database_type}_{environment}), schema.history.internal.kafka.topic (unique per MySQL connector)
+- [17-03]: Shared schema history topic = critical error for MySQL multi-connector (DDL pollution)
+- [17-03]: Recovery procedures differ by connector type: PostgreSQL (replication slots) vs MySQL (schema history topic + GTID/binlog position)
+- [17-03]: Self-assessment Section 8 provides multi-database verification checklist for capstone extension
 
 ### Pending Todos
 
@@ -141,10 +146,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T16:08:30Z
-Stopped at: Completed 17-01-PLAN.md (Multi-Database Architecture - 491 lines)
+Last session: 2026-02-01T14:12:58Z
+Stopped at: Completed 17-03-PLAN.md (Multi-Database Self-Assessment)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 17-01 (Multi-Database Architecture)*
+*Last updated: 2026-02-01 — Completed 17-03 (Multi-Database Self-Assessment) - Phase 17 complete*

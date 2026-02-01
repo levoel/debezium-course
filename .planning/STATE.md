@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 22 of 25 (Foundation - Glass Design System + Module Naming)
-Plan: 1 of TBD (22-01 complete)
+Plan: 2 of TBD (22-01, 22-02 complete)
 Status: In progress
-Last activity: 2026-02-01 — Completed 22-01-PLAN.md (Glass Design System Foundation)
+Last activity: 2026-02-01 — Completed 22-02-PLAN.md (Glass Sidebar & Module Names)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [█░░░░░░░░░░░░░░░░░░░] 5%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [██░░░░░░░░░░░░░░░░░░] 10%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 56 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 1)
-- Average duration: ~8 min
-- Total execution time: ~7.3 hours
+- Total plans completed: 57 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 2)
+- Average duration: ~7 min
+- Total execution time: ~7.4 hours
 
 **By Milestone:**
 
@@ -30,7 +30,7 @@ Progress: v1.0 [████████████████████] 10
 | v1.0 MVP | 1-11 | 32 | Complete (2026-02-01) |
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
-| v1.3 UX Refresh | 22-25 | 1/TBD | In progress (Phase 22-01 complete) |
+| v1.3 UX Refresh | 22-25 | 2/TBD | In progress (Phase 22-01, 22-02 complete) |
 
 ## Accumulated Context
 
@@ -49,6 +49,11 @@ Recent decisions affecting v1.3 work:
 - [22-01]: Three glass variants (standard panel, elevated panel, darker sidebar) for different UI contexts
 - [22-01]: Mobile blur reduction (10px → 8px) for performance on mobile devices
 - [22-01]: Accessibility-first approach - glass effects are enhancement, not requirement
+- [22-02]: Module names stored in single source of truth (moduleNames.ts) imported by all components
+- [22-02]: Module display format: 'NN. Descriptive Name' (e.g., '01. Введение в CDC')
+- [22-02]: Homepage organized by modules with left border visual grouping
+- [22-02]: Glass sidebar uses 10px blur desktop, 8px mobile (from 22-01 foundation)
+- [22-02]: Lesson cards made more compact (p-4 vs p-6) for better density
 
 ### Pending Todos
 
@@ -68,10 +73,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01 19:05:32 UTC
-Stopped at: Completed 22-01-PLAN.md (Glass Design System Foundation)
+Last session: 2026-02-01 21:12:18 UTC
+Stopped at: Completed 22-02-PLAN.md (Glass Sidebar & Module Names)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed Phase 22-01 (Glass Design System Foundation)*
+*Last updated: 2026-02-01 — Completed Phase 22-02 (Glass Sidebar & Module Names)*

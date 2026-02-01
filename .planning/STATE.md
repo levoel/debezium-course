@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.1 Complete — course live at https://levoel.github.io/debezium-course/
+**Current focus:** v1.2 Course Reorganization — MySQL module moving to position 3
 
 ## Current Position
 
-Phase: 18 of 18 (GitHub Pages Deployment)
-Plan: 2 of 2 in current phase
-Status: v1.1 COMPLETE
-Last activity: 2026-02-01 — Completed 18-02-PLAN.md (Push and Deploy to GitHub Pages)
+Phase: 19 of 21 (Module Directory Renaming)
+Plan: 0 of ? in current phase
+Status: Planning
+Last activity: 2026-02-01 — v1.2 milestone initialized
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [░░░░░░░░░░░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
@@ -150,10 +150,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T15:01:03Z
-Stopped at: Completed 18-02-PLAN.md (Push and Deploy to GitHub Pages) - v1.1 COMPLETE
+Last session: 2026-02-01
+Stopped at: v1.2 milestone initialized, Phase 19 ready for planning
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 18-02-PLAN.md (v1.1 milestone complete)*
+*Last updated: 2026-02-01 — v1.2 milestone initialized*

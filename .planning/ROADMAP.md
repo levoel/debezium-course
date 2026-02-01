@@ -4,16 +4,54 @@
 
 - [x] **v1.0 MVP** - Phases 1-11 (shipped 2026-02-01)
 - [x] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (shipped 2026-02-01)
+- [ ] **v1.2 Course Reorganization** - Phases 19-21
 
 ## Overview
 
-v1.1 extends the course with comprehensive MySQL/Aurora MySQL CDC coverage (Module 8) and deploys the course to GitHub Pages. This milestone adds 8+ lessons covering binlog internals, Aurora-specific configurations, production operations, and a multi-database capstone extension that integrates PostgreSQL and MySQL CDC pipelines.
+v1.2 reorganizes the course structure by moving Module 8 (MySQL/Aurora MySQL) to position 3, right after Module 2 (PostgreSQL/Aurora PostgreSQL). This creates a "Database Track" that groups database-specific content together for better comparison and learning flow.
 
 ## Phases
 
 **Phase Numbering:**
-- Continues from v1.0 (Phases 1-11 complete)
-- v1.1 phases: 12-18
+- v1.0: Phases 1-11 (complete)
+- v1.1: Phases 12-18 (complete)
+- v1.2: Phases 19-21
+
+### Phase 19: Module Directory Renaming
+**Goal**: Module directories are renumbered with MySQL (08) becoming Module 3
+**Depends on**: Phase 18 (v1.1 complete)
+**Requirements**: STRUCT-01a, STRUCT-01b
+**Success Criteria** (what must be TRUE):
+  1. Module 08 directory renamed to 03 (MySQL becomes third module)
+  2. Modules 03-07 renumbered to 04-08
+  3. Navigation auto-discovers new structure (no code changes needed)
+  4. Site builds successfully with new structure
+**Plans**: 1 plan (Wave 1)
+
+Plans:
+- [ ] 19-01-PLAN.md — Directory renaming via two-stage git mv with build verification
+
+### Phase 20: Cross-Reference Updates
+**Goal**: All internal links and UI components reflect new module order
+**Depends on**: Phase 19
+**Requirements**: STRUCT-01c, STRUCT-01d, STRUCT-01e
+**Success Criteria** (what must be TRUE):
+  1. All inter-lesson links updated to new paths
+  2. Roadmap component displays correct module order
+  3. Progress tracking uses updated localStorage keys
+  4. No broken internal links
+**Plans**: TBD
+
+### Phase 21: Verification and QA
+**Goal**: All navigation works correctly and progress persists
+**Depends on**: Phase 20
+**Requirements**: STRUCT-01f, STRUCT-01g
+**Success Criteria** (what must be TRUE):
+  1. All navigation links verified working
+  2. Progress tracking verified after reorganization
+  3. Site deployed and verified on GitHub Pages
+  4. No console errors, all pages accessible
+**Plans**: TBD
 
 <details>
 <summary>[x] v1.0 MVP (Phases 1-11) - SHIPPED 2026-02-01</summary>
@@ -172,21 +210,31 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
+Phases execute in numeric order: 19 -> 20 -> 21
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 16. Advanced + Recovery | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 17. Multi-DB Capstone | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 18. GitHub Deployment | v1.1 | 2/2 | Complete | 2026-02-01 |
+| 19. Module Renaming | v1.2 | 0/1 | Planned | — |
+| 20. Cross-Reference Updates | v1.2 | 0/? | Not started | — |
+| 21. Verification & QA | v1.2 | 0/? | Not started | — |
 
 ## Coverage
 
-### v1.1 Requirement Mapping
+### v1.2 Requirement Mapping
+
+| Requirement | Phase | Description |
+|-------------|-------|-------------|
+| STRUCT-01a | 19 | Rename module directories (08→03, shift 03-07→04-08) |
+| STRUCT-01b | 19 | Navigation auto-discovers new structure (no config changes needed) |
+| STRUCT-01c | 20 | Update all internal cross-references |
+| STRUCT-01d | 20 | Update roadmap component (module order) |
+| STRUCT-01e | 20 | Update progress tracking (localStorage keys) |
+| STRUCT-01f | 21 | Verify all navigation links work |
+| STRUCT-01g | 21 | Verify progress persistence after reorg |
+
+**Coverage:** 7/7 requirements mapped
+
+### v1.1 Requirement Mapping (Complete)
 
 | Requirement | Phase | Description |
 |-------------|-------|-------------|

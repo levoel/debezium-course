@@ -33,12 +33,24 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Next Milestone: v1.2
+## Current Milestone: v1.2 Course Reorganization
+
+**Goal:** Move Module 8 (MySQL) to position 3, creating "Database Track" for better PostgreSQL/MySQL comparison
+
+**Scope:**
+- Module directory renaming (08→03, 03-07→04-08)
+- Navigation and sidebar updates
+- Cross-reference link updates
+- Progress tracking key updates
+
+**Phases:** 19-21
+
+## Future Milestone: v1.3
 
 **Potential features:**
-- Course structure reorganization (STRUCT-01: MySQL closer to PostgreSQL)
 - Search functionality across lessons
 - Dark/light theme toggle
+- Export/import progress
 
 ## Requirements
 

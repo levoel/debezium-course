@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 Phase: 11 of 11 (Module 7 - Capstone Project)
 Plan: 1 of 3 complete
 Status: In progress
-Last activity: 2026-02-01 — Completed 11-02-PLAN.md (Self-Assessment Checklist)
+Last activity: 2026-02-01 — Completed 11-01-PLAN.md (Capstone Overview & Architecture)
 
 Progress: [███████████████████░] 94% (30/32 plans complete)
 
@@ -37,10 +37,10 @@ Progress: [███████████████████░] 94% (30
 | 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
 | 09 - Module 5 Data Engineering | 4/4 ✓ | 18.7m | 4.7m |
 | 10 - Module 6 Cloud-Native GCP | 3/3 ✓ | 14m | 4.7m |
-| 11 - Module 7 Capstone Project | 1/3 | 3.7m | 3.7m |
+| 11 - Module 7 Capstone Project | 1/3 | 4.6m | 4.6m |
 
 **Recent Trend:**
-- Last 5 plans: 11-02 (3.7m), 10-03 (5.7m), 10-02 (4.8m), 10-01 (3.5m), 09-04 (3.2m)
+- Last 5 plans: 11-01 (4.6m), 10-03 (5.7m), 10-02 (4.8m), 10-01 (3.5m), 09-04 (3.2m)
 - Trend: Content creation consistently efficient at ~4-5m/plan
 
 *Updated after each plan completion*
@@ -177,12 +177,11 @@ Recent decisions affecting current work:
 - Custom replication slot monitoring via Cloud Function for WAL lag tracking (10-03)
 - PodMonitoring CRD for Debezium JMX metrics export to Cloud Monitoring (10-03)
 - Alert hierarchy: CRITICAL (PagerDuty) vs WARNING (email/Slack) (10-03)
-- Four Golden Signals framework for CDC monitoring (latency, traffic, errors, saturation) (11-02)
-- Production readiness checklist as learning tool, not exam (11-02)
-- Seven-section checklist structure: functionality, fault tolerance, monitoring, schema evolution, operational readiness, testing, documentation (11-02)
-- Four-level scoring rubric: Exemplary (90-100%), Above Average (75-89%), Meets Expectations (60-74%), Below Expectations (<60%) (11-02)
-- Verification commands for each checklist item for actionability (11-02)
-- Common production mistakes: replication slot exhaustion, missing REPLICA IDENTITY FULL, BigQuery primary key issues, snapshot mode misunderstanding, missing idempotency, insufficient monitoring (11-02)
+- Capstone scope: Aurora → Outbox → PyFlink → BigQuery pipeline synthesizing all 6 prior modules (11-01)
+- Production readiness as primary capstone success criterion (functionality + fault tolerance + monitoring + documentation) (11-01)
+- C4 architecture diagrams (System Context + Container) mandatory for capstone documentation (11-01)
+- Deliverables include: code + monitoring + documentation + testing evidence (operational infrastructure, not just application code) (11-01)
+- Capstone time estimate: 15-20 hours over 2-3 weeks for quality deliverables without project creep (11-01)
 
 ### Pending Todos
 
@@ -203,7 +202,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 11-02-PLAN.md (Self-Assessment Checklist)
+Stopped at: Completed 11-01-PLAN.md (Capstone Overview & Architecture)
 Resume file: None
 
 ---

@@ -9,9 +9,9 @@
 
 **Goal:** Заменить "Модуль N" на описательные названия для лучшей навигации.
 
-- [ ] **UX-01a**: Описательные названия модулей в сайдбаре
-- [ ] **UX-01b**: Описательные названия в хлебных крошках
-- [ ] **UX-01c**: Описательные названия на homepage
+- [x] **UX-01a**: Описательные названия модулей в сайдбаре ✓
+- [ ] **UX-01b**: Описательные названия в хлебных крошках (deferred - no breadcrumb component)
+- [x] **UX-01c**: Описательные названия на homepage ✓
 
 ### Homepage Accordion (UX-02)
 
@@ -33,8 +33,8 @@
 
 **Goal:** Применить glassmorphism дизайн к UI элементам.
 
-- [ ] **UX-04a**: Gradient background (основа для glass эффекта)
-- [ ] **UX-04b**: Glass sidebar navigation
+- [x] **UX-04a**: Gradient background (основа для glass эффекта) ✓
+- [x] **UX-04b**: Glass sidebar navigation ✓
 - [ ] **UX-04c**: Glass callouts (info, warning, tip)
 - [ ] **UX-04d**: Glass карточки модулей на homepage
 - [ ] **UX-04e**: Responsive blur (меньше на mobile)
@@ -135,17 +135,17 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UX-01a | Phase 22 | Pending |
-| UX-01b | Phase 22 | Pending |
-| UX-01c | Phase 22 | Pending |
+| UX-01a | Phase 22 | Complete |
+| UX-01b | Phase 22 | Deferred (no breadcrumb component) |
+| UX-01c | Phase 22 | Complete |
 | UX-02a | Phase 23 | Pending |
 | UX-02b | Phase 23 | Pending |
 | UX-02c | Phase 23 | Pending |
 | UX-03a | Phase 24 | Pending |
 | UX-03b | Phase 24 | Pending |
 | UX-03c | Phase 24 | Pending |
-| UX-04a | Phase 22 | Pending |
-| UX-04b | Phase 22 | Pending |
+| UX-04a | Phase 22 | Complete |
+| UX-04b | Phase 22 | Complete |
 | UX-04c | Phase 24 | Pending |
 | UX-04d | Phase 23 | Pending |
 | UX-04e | Phase 25 | Pending |

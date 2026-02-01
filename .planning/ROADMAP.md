@@ -34,8 +34,8 @@ v1.3 applies liquid glass (glassmorphism) design to the course website and impro
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 22-01-PLAN.md — CSS foundation: variables, glass utilities, gradient background, accessibility fallbacks
-- [ ] 22-02-PLAN.md — Glass sidebar + descriptive module names (sidebar, homepage)
+- [x] 22-01-PLAN.md — CSS foundation: variables, glass utilities, gradient background, accessibility fallbacks
+- [x] 22-02-PLAN.md — Glass sidebar + descriptive module names (sidebar, homepage)
 
 ### Phase 23: Homepage Redesign (Accordion + Module Cards)
 **Goal**: Homepage displays modules in accordion menu with glass-styled cards and progress indicators
@@ -294,7 +294,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 22. Foundation | v1.3 | 0/2 | Planned | - |
+| 22. Foundation | v1.3 | 2/2 | Complete | 2026-02-01 |
 | 23. Homepage Redesign | v1.3 | 0/TBD | Not started | - |
 | 24. Content Components | v1.3 | 0/TBD | Not started | - |
 | 25. Polish | v1.3 | 0/TBD | Not started | - |

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { ProgressExport } from '../components/ProgressExport';
-import { getModuleName, getModuleNumber } from '../utils/moduleNames';
+import { ModuleAccordion } from '../components/ModuleAccordion';
 
 // Helper to clean entry.id to URL-friendly slug
 function cleanSlug(id: string): string {
@@ -37,35 +37,19 @@ function groupByModule(lessons: typeof sortedLessons) {
 }
 
 const moduleGroups = groupByModule(sortedLessons);
-const moduleIds = Array.from(moduleGroups.keys()).sort();
 
-// Get difficulty badge color
-function getDifficultyColor(difficulty: string) {
-  switch (difficulty) {
-    case 'beginner':
-      return 'bg-green-500/20 text-green-300 border-green-500';
-    case 'intermediate':
-      return 'bg-yellow-500/20 text-yellow-300 border-yellow-500';
-    case 'advanced':
-      return 'bg-red-500/20 text-red-300 border-red-500';
-    default:
-      return 'bg-gray-500/20 text-gray-300 border-gray-500';
-  }
-}
-
-// Translate difficulty to Russian
-function translateDifficulty(difficulty: string) {
-  switch (difficulty) {
-    case 'beginner':
-      return 'Начальный';
-    case 'intermediate':
-      return 'Средний';
-    case 'advanced':
-      return 'Продвинутый';
-    default:
-      return difficulty;
-  }
-}
+// Convert to array format for React component (Maps not serializable)
+const modulesArray = Array.from(moduleGroups.entries())
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([moduleId, lessons]) => [
+    moduleId,
+    lessons.map(lesson => ({
+      title: lesson.data.title,
+      slug: cleanSlug(lesson.id),
+      difficulty: lesson.data.difficulty,
+      estimatedTime: lesson.data.estimatedTime,
+    }))
+  ]);
 ---
 
 <BaseLayout
@@ -93,7 +77,7 @@ function translateDifficulty(difficulty: string) {
     </div>
 
     <!-- Progress Tracking Section -->
-    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-8">
+    <div class="glass-panel p-6 mb-8">
       <div class="grid gap-6 lg:grid-cols-2">
         <div>
           <ProgressIndicator totalLessons={totalLessons} client:load />
@@ -106,66 +90,12 @@ function translateDifficulty(difficulty: string) {
 
     <h2 class="text-2xl font-bold text-gray-100 mb-6">Модули курса</h2>
 
-    <div class="space-y-8 not-prose">
-      {moduleIds.map((moduleId) => {
-        const lessons = moduleGroups.get(moduleId)!;
-        const moduleNumber = getModuleNumber(moduleId);
-        const moduleName = getModuleName(moduleId);
-
-        return (
-          <section key={moduleId} class="space-y-4">
-            <h3 class="text-xl font-semibold text-gray-200 flex items-center gap-3">
-              <span class="text-blue-400 font-mono">{moduleNumber}</span>
-              <span>{moduleName}</span>
-              <span class="text-sm text-gray-500 font-normal">({lessons.length} уроков)</span>
-            </h3>
-
-            <div class="grid gap-4 pl-4 border-l-2 border-blue-500/30">
-              {lessons.map((lesson) => (
-                <a
-                  href={`${import.meta.env.BASE_URL}/course/${cleanSlug(lesson.id)}`}
-                  class="block bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-blue-500/50 hover:bg-gray-800/70 transition-colors"
-                >
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="text-lg font-medium text-gray-100">
-                      {lesson.data.title}
-                    </h4>
-                    <span class={`px-2 py-0.5 rounded-full text-xs font-medium border ${getDifficultyColor(lesson.data.difficulty)}`}>
-                      {translateDifficulty(lesson.data.difficulty)}
-                    </span>
-                  </div>
-
-                  <p class="text-gray-400 text-sm mb-3 line-clamp-2">
-                    {lesson.data.description}
-                  </p>
-
-                  <div class="flex flex-wrap gap-3 text-xs text-gray-500">
-                    <div class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>{lesson.data.estimatedTime} мин</span>
-                    </div>
-
-                    <div class="flex items-center gap-1 flex-wrap">
-                      {lesson.data.topics.slice(0, 2).map((topic) => (
-                        <span class="px-1.5 py-0.5 bg-gray-700/50 rounded text-xs">
-                          {topic}
-                        </span>
-                      ))}
-                      {lesson.data.topics.length > 2 && (
-                        <span class="text-gray-600">
-                          +{lesson.data.topics.length - 2}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+    <div class="space-y-4 not-prose">
+      <ModuleAccordion
+        modules={modulesArray}
+        basePath={import.meta.env.BASE_URL}
+        client:load
+      />
     </div>
 
     {sortedLessons.length === 0 && (

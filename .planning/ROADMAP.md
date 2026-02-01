@@ -31,10 +31,11 @@ v1.3 applies liquid glass (glassmorphism) design to the course website and impro
   5. Module names are descriptive throughout interface (sidebar, breadcrumbs, homepage) instead of "Module N"
   6. Responsive media queries reduce blur on mobile (8px) from desktop (12-16px) automatically
   7. Accessibility media queries (`prefers-reduced-transparency`, `prefers-reduced-motion`) disable glass effects when requested
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 22-01-PLAN.md — TBD
+- [ ] 22-01-PLAN.md — CSS foundation: variables, glass utilities, gradient background, accessibility fallbacks
+- [ ] 22-02-PLAN.md — Glass sidebar + descriptive module names (sidebar, homepage)
 
 ### Phase 23: Homepage Redesign (Accordion + Module Cards)
 **Goal**: Homepage displays modules in accordion menu with glass-styled cards and progress indicators
@@ -293,7 +294,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 22. Foundation | v1.3 | 0/TBD | Not started | - |
+| 22. Foundation | v1.3 | 0/2 | Planned | - |
 | 23. Homepage Redesign | v1.3 | 0/TBD | Not started | - |
 | 24. Content Components | v1.3 | 0/TBD | Not started | - |
 | 25. Polish | v1.3 | 0/TBD | Not started | - |
@@ -326,7 +327,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 
 | Requirement | Phase | Description |
 |-------------|-------|-------------|
-| STRUCT-01a | 19 | Rename module directories (08→03, shift 03-07→04-08) |
+| STRUCT-01a | 19 | Rename module directories (08->03, shift 03-07->04-08) |
 | STRUCT-01b | 19 | Navigation auto-discovers new structure (no config changes needed) |
 | STRUCT-01c | 20 | Update all internal cross-references |
 | STRUCT-01d | 20 | Update roadmap component (module order) |

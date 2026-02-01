@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 12 of 18 (MySQL Infrastructure + Binlog Fundamentals)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 12-01-PLAN.md
+Last activity: 2026-02-01 — Completed 12-02-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█░░░░░░░░░░░░░░░░░░░] 5%
+Progress: v1.0 [████████████████████] 100% | v1.1 [██░░░░░░░░░░░░░░░░░░] 10%
 
 ## Performance Metrics
 
@@ -31,9 +31,9 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 1
-- Average duration: 1 min
-- Phase 12: 1/3 plans complete
+- Plans completed: 2
+- Average duration: 2 min
+- Phase 12: 2/3 plans complete
 
 ## Accumulated Context
 
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - [12-01]: Inline command configuration for MySQL binlog (avoids MySQL Bug #78957)
 - [12-01]: binlog-row-image=FULL for educational clarity
 - [12-01]: 7-day binlog retention for lab exercises
+- [12-02]: ROW format positioned as mandatory for CDC (STATEMENT/MIXED discouraged)
+- [12-02]: 5 Mermaid diagrams for visual learning in binlog architecture lesson
+- [12-02]: PostgreSQL WAL comparison table to bridge Module 2 knowledge
 
 ### Pending Todos
 
@@ -69,10 +72,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T10:21:44Z
-Stopped at: Completed 12-01-PLAN.md (MySQL Infrastructure Setup)
+Last session: 2026-02-01T10:22:58Z
+Stopped at: Completed 12-02-PLAN.md (MySQL Binlog Architecture Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 12-01-PLAN.md*
+*Last updated: 2026-02-01 — Completed 12-02-PLAN.md*

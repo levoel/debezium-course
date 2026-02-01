@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 16 of 18 (Advanced Topics + Recovery)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 16-01-PLAN.md
+Last activity: 2026-02-01 — Completed 16-02-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 62%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 64%
 
 ## Performance Metrics
 
@@ -31,13 +31,13 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 13
-- Average duration: 5 min
+- Plans completed: 14
+- Average duration: 8 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
 - Phase 15: 3/3 plans complete (phase complete)
-- Phase 16: 1/3 plans complete (in progress)
+- Phase 16: 2/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -102,6 +102,11 @@ Recent decisions affecting current work:
 - [16-01]: Defense-in-depth approach: prevention cheaper than recovery (infinite retention costs MB, resnapshot costs hours)
 - [16-01]: Backup frequency: daily for active databases, before schema changes, before connector upgrades
 - [16-01]: Recovery mode dangerous if DDL happened since last offset - silent data corruption risk documented
+- [16-02]: Server ID range 184000-184999 enforced for multi-connector deployments (registry pattern)
+- [16-02]: 30-day reuse embargo on decommissioned server_id values (prevents stale connection conflicts)
+- [16-02]: Three mandatory unique properties per connector: database.server.id, database.server.name, schema.history.internal.kafka.topic
+- [16-02]: Registry template uses markdown table format for version control tracking
+- [16-02]: Shared schema history topic = data corruption (DDL pollution across connectors)
 
 ### Pending Todos
 
@@ -121,10 +126,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T13:26:50Z
-Stopped at: Completed 16-01-PLAN.md (Recovery Procedures - 1,578 lines)
+Last session: 2026-02-01T13:31:11Z
+Stopped at: Completed 16-02-PLAN.md (Multi-Connector Deployments - 1,397 lines)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 16-01 (Recovery Procedures)*
+*Last updated: 2026-02-01 — Completed 16-02 (Multi-Connector Deployments)*

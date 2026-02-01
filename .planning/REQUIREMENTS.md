@@ -37,8 +37,8 @@
 - [x] **UX-04b**: Glass sidebar navigation ✓
 - [x] **UX-04c**: Glass callouts (info, warning, tip) ✓
 - [x] **UX-04d**: Glass карточки модулей на homepage ✓
-- [ ] **UX-04e**: Responsive blur (меньше на mobile)
-- [ ] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency)
+- [x] **UX-04e**: Responsive blur (меньше на mobile) ✓
+- [x] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency) ✓
 
 ---
 
@@ -148,8 +148,8 @@
 | UX-04b | Phase 22 | Complete |
 | UX-04c | Phase 24 | Complete |
 | UX-04d | Phase 23 | Complete |
-| UX-04e | Phase 25 | Pending |
-| UX-04f | Phase 25 | Pending |
+| UX-04e | Phase 25 | Complete |
+| UX-04f | Phase 25 | Complete |
 
 **Coverage:**
 - v1.3 requirements: 15 total

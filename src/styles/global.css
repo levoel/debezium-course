@@ -131,6 +131,27 @@
     --glass-blur-lg: 10px;
     --sidebar-glass-blur: 8px;
   }
+
+  /* Safari mobile: hardcoded reduced values (CSS variables don't work in webkit prefix) */
+  .glass-panel {
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .glass-panel-elevated {
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .glass-sidebar {
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .glass-card {
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .prose table {
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
 /* Dark theme base */

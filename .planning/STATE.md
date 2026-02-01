@@ -82,6 +82,11 @@ Recent decisions affecting current work:
 - [14-03]: snapshot.locking.mode=none only with schema change freeze guarantee
 - [14-03]: Backup-based approach recommended for 500GB+ tables with zero lock tolerance
 - [14-03]: extended mode never compatible with Aurora (FLUSH TABLES prohibition)
+- [15-01]: MilliSecondsBehindSource positioned as preferred lag metric over SecondsBehindMaster (millisecond precision, more reliable)
+- [15-01]: Three-tier monitoring required for production (JMX for connector, CloudWatch for infrastructure, operational for application)
+- [15-01]: Alert grace periods aligned with Aurora failover timing (2-minute threshold for connection alerts)
+- [15-01]: SecondsBehindMaster=-1 during failover documented as normal behavior (not error condition)
+- [15-01]: Heartbeat interval <60s with 60s alert threshold (6x tolerance for false positive prevention)
 - [15-02]: GTID enables automatic failover - connector resumes from saved GTID without manual position finding
 - [15-02]: gtid.source.includes=".*" recommended for Aurora Global Database (multi-region UUID support)
 - [15-02]: snapshot.mode=when_needed prevents unnecessary resnapshot after failover
@@ -110,10 +115,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:51:40Z
-Stopped at: Completed 15-03-PLAN.md (Incremental Snapshots Lesson)
+Last session: 2026-02-01T12:51:56Z
+Stopped at: Completed 15-01-PLAN.md (Binlog Lag Monitoring)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 15-03-PLAN.md*
+*Last updated: 2026-02-01 — Completed 15-01-PLAN.md*

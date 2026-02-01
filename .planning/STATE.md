@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 13 of 18 (Connector Setup + Comparison)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 13-03-PLAN.md
+Phase: 14 of 18 (Aurora MySQL Specifics)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 14-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█████░░░░░░░░░░░░░░░] 24%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████░░░░░░░░░░░░░░░] 28%
 
 ## Performance Metrics
 
@@ -31,10 +31,11 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 6
+- Plans completed: 7
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
+- Phase 14: 1/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -69,6 +70,10 @@ Recent decisions affecting current work:
 - [13-03]: Recovery scenarios prioritized by frequency (normal restart → purged → corrupted → shared topic)
 - [13-03]: Backup procedures emphasized for fast recovery vs resnapshot (minutes vs hours)
 - [13-03]: Callout component created to support pedagogical callout pattern in course content
+- [14-01]: DB Cluster Parameter Group (not DB Parameter Group) for all binlog-related parameters
+- [14-01]: Explicit binlog_format=ROW setting recommended even though MySQL 8.0.34+ defaults to ROW
+- [14-01]: 168 hours (7 days) binlog retention for course labs (Aurora 3.x supports up to 2160 hours)
+- [14-01]: Manual reader instance reboot required for Aurora 2.10+ after cluster parameter group changes
 
 ### Pending Todos
 
@@ -88,10 +93,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:57:25Z
-Stopped at: Completed 13-03-PLAN.md (Schema History Recovery Lesson)
+Last session: 2026-02-01T12:10:53Z
+Stopped at: Completed 14-01-PLAN.md (Aurora Parameter Groups Configuration Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 13-03-PLAN.md (Phase 13 complete)*
+*Last updated: 2026-02-01 — Completed 14-01-PLAN.md*

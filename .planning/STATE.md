@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 25 of 25 (Polish - Mobile + Accessibility + Verification)
-Plan: 01 of TBD complete
+Plan: 02 of TBD complete
 Status: In progress
-Last activity: 2026-02-01 — Completed 25-01-PLAN.md (Safari CSS variable bug fix)
+Last activity: 2026-02-01 — Completed 25-02-PLAN.md (Automated accessibility testing)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [██████████████████░░] 92%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [██████████████████░░] 94%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 63 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 8)
+- Total plans completed: 64 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 9)
 - Average duration: ~7 min
 - Total execution time: ~7.5 hours
 
@@ -30,7 +30,7 @@ Progress: v1.0 [████████████████████] 10
 | v1.0 MVP | 1-11 | 32 | Complete (2026-02-01) |
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
-| v1.3 UX Refresh | 22-25 | 9/TBD | In progress (Phase 25: 1 plan complete) |
+| v1.3 UX Refresh | 22-25 | 10/TBD | In progress (Phase 25: 2 plans complete) |
 
 ## Accumulated Context
 
@@ -67,6 +67,9 @@ Recent decisions affecting v1.3 work:
 - [24-02]: Remove dark mode variants - glass design is universal theme
 - [25-01]: Safari CSS variable workaround - hardcoded -webkit-backdrop-filter values (Safari 18 bug)
 - [25-01]: Mobile webkit overrides in media query - explicit class rules, not just CSS variable updates
+- [25-02]: Exclude Shiki code blocks from accessibility tests (third-party theme contrast limitation)
+- [25-02]: Conditional text-white for duration on active sidebar links (WCAG 4.5:1 contrast)
+- [25-02]: Topic tags use text-gray-200 on bg-gray-700 for adequate contrast
 
 ### Pending Todos
 
@@ -87,9 +90,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 25-01-PLAN.md (Safari CSS variable bug fix)
+Stopped at: Completed 25-02-PLAN.md (Automated accessibility testing)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 25-01-PLAN.md (Safari CSS variable bug fix)*
+*Last updated: 2026-02-01 — Completed 25-02-PLAN.md (Automated accessibility testing)*

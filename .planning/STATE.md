@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 14 of 18 (Aurora MySQL Specifics)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 14-01-PLAN.md
+Last activity: 2026-02-01 — Completed 14-02-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█████░░░░░░░░░░░░░░░] 28%
+Progress: v1.0 [████████████████████] 100% | v1.1 [██████░░░░░░░░░░░░░░] 30%
 
 ## Performance Metrics
 
@@ -31,11 +31,11 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 7
+- Plans completed: 8
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
-- Phase 14: 1/3 plans complete (in progress)
+- Phase 14: 2/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -74,6 +74,9 @@ Recent decisions affecting current work:
 - [14-01]: Explicit binlog_format=ROW setting recommended even though MySQL 8.0.34+ defaults to ROW
 - [14-01]: 168 hours (7 days) binlog retention for course labs (Aurora 3.x supports up to 2160 hours)
 - [14-01]: Manual reader instance reboot required for Aurora 2.10+ after cluster parameter group changes
+- [14-02]: Enhanced Binlog suitable for single-region Aurora with high write throughput and no backtrack requirement
+- [14-02]: Resnapshot mandatory after Aurora restore/clone when using Enhanced Binlog (binlog files not in backups)
+- [14-02]: CloudWatch metrics (ChangeLogBytesUsed, ChangeLogReadIOPs, ChangeLogWriteIOPs) required for Enhanced Binlog monitoring
 
 ### Pending Todos
 
@@ -93,10 +96,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:10:53Z
-Stopped at: Completed 14-01-PLAN.md (Aurora Parameter Groups Configuration Lesson)
+Last session: 2026-02-01T12:11:52Z
+Stopped at: Completed 14-02-PLAN.md (Aurora Enhanced Binlog Architecture Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 14-01-PLAN.md*
+*Last updated: 2026-02-01 — Completed 14-02-PLAN.md*

@@ -46,7 +46,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 - [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations ✓
 - [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots ✓
 - [x] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools ✓
-- [ ] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline
+- [x] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline ✓
 - [ ] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD
 
 ## Phase Details
@@ -144,9 +144,9 @@ Plans:
 **Plans**: 3 plans (Wave 1: 01, 02 parallel | Wave 2: 03)
 
 Plans:
-- [ ] 17-01-PLAN.md — Multi-database CDC architecture lesson (patterns, operational differences)
-- [ ] 17-02-PLAN.md — Connector configuration + PyFlink unified consumer lesson
-- [ ] 17-03-PLAN.md — Self-assessment checklist extension for multi-database
+- [x] 17-01-PLAN.md — Multi-database CDC architecture lesson (patterns, operational differences)
+- [x] 17-02-PLAN.md — Connector configuration + PyFlink unified consumer lesson
+- [x] 17-03-PLAN.md — Self-assessment checklist extension for multi-database
 
 ### Phase 18: GitHub Pages Deployment
 **Goal**: Debezium course is publicly accessible via GitHub Pages
@@ -174,7 +174,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 16. Advanced + Recovery | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 17. Multi-DB Capstone | v1.1 | 0/3 | Not started | - |
+| 17. Multi-DB Capstone | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 18. GitHub Deployment | v1.1 | 0/TBD | Not started | - |
 
 ## Coverage

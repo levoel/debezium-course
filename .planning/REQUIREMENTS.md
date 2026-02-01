@@ -33,7 +33,7 @@
 - [x] **MYSQL-15**: DDL tool integration (gh-ost, pt-online-schema-change patterns) ✓
 
 **Capstone Extension:**
-- [ ] **MYSQL-16**: Multi-database CDC pipeline (PostgreSQL + MySQL → unified processing)
+- [x] **MYSQL-16**: Multi-database CDC pipeline (PostgreSQL + MySQL → unified processing) ✓
 
 ### Infrastructure
 
@@ -91,7 +91,7 @@
 | MYSQL-13 | Phase 16 | Complete |
 | MYSQL-14 | Phase 16 | Complete |
 | MYSQL-15 | Phase 16 | Complete |
-| MYSQL-16 | Phase 17 | Pending |
+| MYSQL-16 | Phase 17 | Complete |
 | PLAT-07 | Phase 18 | Pending |
 
 **Coverage:**

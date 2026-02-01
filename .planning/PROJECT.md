@@ -10,13 +10,21 @@
 
 ## Current State
 
-**Version:** v1.1 (shipped 2026-02-01)
+**Version:** v1.2 (shipped 2026-02-01)
 **Live:** https://levoel.github.io/debezium-course/
 **Codebase:** 74 source files, 35,000+ LOC (TypeScript, MDX, Astro)
 **Content:** 8 modules, 57+ lessons, 400+ code examples
 **Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 
 ## Completed Milestones
+
+### v1.2 Course Reorganization (shipped 2026-02-01)
+
+**Delivered:**
+- MySQL module moved to position 3 (Database Track with PostgreSQL)
+- Cross-reference updates across all lessons
+- Progress migration for existing users
+- Playwright E2E test suite
 
 ### v1.1 MySQL/Aurora MySQL + Deployment (shipped 2026-02-01)
 
@@ -33,19 +41,19 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.2 Course Reorganization
+## Current Milestone: v1.3 UX/Design Refresh
 
-**Goal:** Move Module 8 (MySQL) to position 3, creating "Database Track" for better PostgreSQL/MySQL comparison
+**Goal:** Улучшить навигацию и визуальный дизайн курса с liquid glass эффектами
 
 **Scope:**
-- Module directory renaming (08→03, 03-07→04-08)
-- Navigation and sidebar updates
-- Cross-reference link updates
-- Progress tracking key updates
+- Описательные названия модулей вместо "Модуль N"
+- Homepage с accordion-меню модулей и уроков
+- Редизайн таблиц (границы, контраст, читаемость)
+- Liquid glass дизайн (таблицы, карточки, сайдбар, callouts)
 
-**Phases:** 19-21
+**Phases:** 22+
 
-## Future Milestone: v1.3
+## Future Milestone: v1.4
 
 **Potential features:**
 - Search functionality across lessons
@@ -68,15 +76,21 @@
 - ✓ MySQL/Aurora MySQL comprehensive module (15 lessons) — v1.1
 - ✓ Multi-database capstone extension — v1.1
 - ✓ GitHub Pages deployment with CI/CD — v1.1
+- ✓ Course reorganization (MySQL = Module 3) — v1.2
+- ✓ Progress migration for structure changes — v1.2
+- ✓ E2E test suite (Playwright) — v1.2
 
 ### Active
 
-**v1.2 Scope (tentative):**
-- [ ] STRUCT-01: Course structure reorganization (MySQL closer to PostgreSQL)
-- [ ] PLAT-09: Search functionality across lessons
-- [ ] PLAT-10: Dark/light theme toggle
+**v1.3 Scope:**
+- [ ] UX-01: Описательные названия модулей
+- [ ] UX-02: Homepage с accordion-меню
+- [ ] UX-03: Редизайн таблиц
+- [ ] UX-04: Liquid glass дизайн
 
 **Deferred:**
+- [ ] PLAT-09: Search functionality across lessons
+- [ ] PLAT-10: Dark/light theme toggle
 - [ ] PLAT-11: Export/import progress
 - [ ] CONT-01: MongoDB change streams module
 
@@ -131,4 +145,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-01 — v1.1 milestone complete*
+*Last updated: 2026-02-01 — v1.3 milestone started*

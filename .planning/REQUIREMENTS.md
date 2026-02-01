@@ -1,9 +1,48 @@
-# Requirements: Debezium Course v1.2
+# Requirements: Debezium Course v1.3
 
 **Defined:** 2026-02-01
 **Core Value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
 
-## v1.2 Requirements
+## v1.3 Requirements
+
+### Module Naming (UX-01)
+
+**Goal:** Заменить "Модуль N" на описательные названия для лучшей навигации.
+
+- [ ] **UX-01a**: Описательные названия модулей в сайдбаре
+- [ ] **UX-01b**: Описательные названия в хлебных крошках
+- [ ] **UX-01c**: Описательные названия на homepage
+
+### Homepage Accordion (UX-02)
+
+**Goal:** Организовать уроки по модулям на главной странице с accordion-меню.
+
+- [ ] **UX-02a**: Accordion-меню модулей (свёрнуты по умолчанию)
+- [ ] **UX-02b**: Список уроков раскрывается по клику
+- [ ] **UX-02c**: Индикатор прогресса по модулю
+
+### Table Redesign (UX-03)
+
+**Goal:** Улучшить читаемость таблиц с чёткими границами и контрастом.
+
+- [ ] **UX-03a**: Чёткие границы ячеек (1px solid)
+- [ ] **UX-03b**: Читаемый контраст текста (WCAG 4.5:1)
+- [ ] **UX-03c**: Light glass эффект (blur 8px, низкая прозрачность)
+
+### Liquid Glass Design (UX-04)
+
+**Goal:** Применить glassmorphism дизайн к UI элементам.
+
+- [ ] **UX-04a**: Gradient background (основа для glass эффекта)
+- [ ] **UX-04b**: Glass sidebar navigation
+- [ ] **UX-04c**: Glass callouts (info, warning, tip)
+- [ ] **UX-04d**: Glass карточки модулей на homepage
+- [ ] **UX-04e**: Responsive blur (меньше на mobile)
+- [ ] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency)
+
+---
+
+## v1.2 Requirements (Complete)
 
 ### Course Structure Reorganization (STRUCT-01)
 
@@ -19,8 +58,8 @@
 - [x] **STRUCT-01e**: Обновить progress tracking (localStorage keys) ✓
 
 **Verification:**
-- [ ] **STRUCT-01f**: Проверить все навигационные ссылки работают
-- [ ] **STRUCT-01g**: Проверить progress persistence после реорганизации
+- [x] **STRUCT-01f**: Проверить все навигационные ссылки работают ✓
+- [x] **STRUCT-01g**: Проверить progress persistence после реорганизации ✓
 
 ---
 
@@ -66,7 +105,7 @@
 
 - [x] **PLAT-07**: GitHub Pages deployment с GitHub Actions CI/CD ✓
 
-## Future Requirements (v1.3+)
+## Future Requirements (v1.4+)
 
 ### Platform Enhancements
 
@@ -92,7 +131,32 @@
 
 ## Traceability
 
-### v1.2
+### v1.3
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| UX-01a | Phase 22 | Pending |
+| UX-01b | Phase 22 | Pending |
+| UX-01c | Phase 22 | Pending |
+| UX-02a | Phase 23 | Pending |
+| UX-02b | Phase 23 | Pending |
+| UX-02c | Phase 23 | Pending |
+| UX-03a | Phase 24 | Pending |
+| UX-03b | Phase 24 | Pending |
+| UX-03c | Phase 24 | Pending |
+| UX-04a | Phase 22 | Pending |
+| UX-04b | Phase 22 | Pending |
+| UX-04c | Phase 24 | Pending |
+| UX-04d | Phase 23 | Pending |
+| UX-04e | Phase 25 | Pending |
+| UX-04f | Phase 25 | Pending |
+
+**Coverage:**
+- v1.3 requirements: 15 total
+- Mapped to phases: 15/15
+- Unmapped: 0
+
+### v1.2 (Complete)
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
@@ -101,8 +165,8 @@
 | STRUCT-01c | Phase 20 | Complete |
 | STRUCT-01d | Phase 20 | Complete (N/A) |
 | STRUCT-01e | Phase 20 | Complete |
-| STRUCT-01f | Phase 21 | Pending |
-| STRUCT-01g | Phase 21 | Pending |
+| STRUCT-01f | Phase 21 | Complete |
+| STRUCT-01g | Phase 21 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 7 total
@@ -136,4 +200,4 @@
 
 ---
 *Requirements defined: 2026-02-01*
-*Last updated: 2026-02-01 — v1.2 requirements added, STRUCT-01b corrected (Starlight reference removed)*
+*Last updated: 2026-02-01 — v1.3 UX/Design Refresh requirements added*

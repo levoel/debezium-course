@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 25 of 25 (Polish - Mobile + Accessibility + Verification)
-Plan: Ready for planning
-Status: Ready for /gsd:plan-phase 25
-Last activity: 2026-02-01 — Phase 24 verified complete (Content Components - Tables + Callouts)
+Plan: 01 of TBD complete
+Status: In progress
+Last activity: 2026-02-01 — Completed 25-01-PLAN.md (Safari CSS variable bug fix)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [██████████████████░░] 90%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100% | v1.3 [██████████████████░░] 92%
 
 ## Performance Metrics
 
@@ -30,7 +30,7 @@ Progress: v1.0 [████████████████████] 10
 | v1.0 MVP | 1-11 | 32 | Complete (2026-02-01) |
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
-| v1.3 UX Refresh | 22-25 | 8/TBD | In progress (Phase 25 ready for planning) |
+| v1.3 UX Refresh | 22-25 | 9/TBD | In progress (Phase 25: 1 plan complete) |
 
 ## Accumulated Context
 
@@ -65,6 +65,8 @@ Recent decisions affecting v1.3 work:
 - [24-01]: Table header rows have elevated opacity (0.1 vs 0.05) for visual hierarchy
 - [24-02]: Callout components use bg-{color}-500/10 glass tints (blue/green/yellow/red)
 - [24-02]: Remove dark mode variants - glass design is universal theme
+- [25-01]: Safari CSS variable workaround - hardcoded -webkit-backdrop-filter values (Safari 18 bug)
+- [25-01]: Mobile webkit overrides in media query - explicit class rules, not just CSS variable updates
 
 ### Pending Todos
 
@@ -85,9 +87,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Phase 24 verified complete, ready for Phase 25
+Stopped at: Completed 25-01-PLAN.md (Safari CSS variable bug fix)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Phase 24 verified complete, Phase 25 ready for planning*
+*Last updated: 2026-02-01 — Completed 25-01-PLAN.md (Safari CSS variable bug fix)*

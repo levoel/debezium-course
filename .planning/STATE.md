@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 15 of 18 (Production Operations)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 15-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 15-03-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████░░░░░░░░░░░░] 37%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████████░░░░░░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -31,12 +31,12 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 11
+- Plans completed: 12
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
-- Phase 15: 2/3 plans complete (in progress)
+- Phase 15: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -86,6 +86,11 @@ Recent decisions affecting current work:
 - [15-02]: gtid.source.includes=".*" recommended for Aurora Global Database (multi-region UUID support)
 - [15-02]: snapshot.mode=when_needed prevents unnecessary resnapshot after failover
 - [15-02]: heartbeat.interval.ms positioned as mandatory for production failover (prevents position loss on idle tables)
+- [15-03]: Signal table PRIMARY KEY mandatory - silent failure without PK documented as critical pitfall
+- [15-03]: Kafka signal channel positioned as solution for read-only Aurora replicas
+- [15-03]: GTID prerequisites (replica_preserve_commit_order) required for read-only snapshots
+- [15-03]: 7-day binlog retention recommended for large table snapshots with safety margin
+- [15-03]: Chunk size default 2048 rows with tuning guidance based on row width
 
 ### Pending Todos
 
@@ -105,10 +110,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:50:23Z
-Stopped at: Completed 15-02-PLAN.md (GTID Failover Procedures Lesson)
+Last session: 2026-02-01T12:51:40Z
+Stopped at: Completed 15-03-PLAN.md (Incremental Snapshots Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 15-02-PLAN.md*
+*Last updated: 2026-02-01 — Completed 15-03-PLAN.md*

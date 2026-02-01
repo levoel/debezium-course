@@ -20,11 +20,11 @@ export function LessonCompleteButton({ slug }: LessonCompleteButtonProps) {
     <button
       onClick={() => toggleLessonComplete(slug)}
       className={`
-        flex items-center gap-2 px-4 py-2 rounded-lg font-medium
-        transition-colors duration-200
+        flex items-center gap-2 px-4 py-2 rounded-xl font-medium
+        transition-all duration-200 backdrop-blur-sm border
         ${isComplete
-          ? 'bg-green-600 hover:bg-green-700 text-white'
-          : 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+          ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border-emerald-400/30'
+          : 'bg-white/5 hover:bg-white/10 text-gray-200 border-white/10'
         }
       `}
       aria-pressed={isComplete}

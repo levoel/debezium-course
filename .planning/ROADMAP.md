@@ -125,11 +125,12 @@ Plans:
   2. Learner can recover from schema history topic corruption using Kafka topic restoration
   3. Learner can deploy multiple MySQL connectors with proper server.id registry (conflict prevention)
   4. Learner understands gh-ost and pt-online-schema-change patterns for zero-downtime DDL with CDC
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 16-01: TBD
-- [ ] 16-02: TBD
+- [ ] 16-01-PLAN.md — Recovery procedures lesson (binlog loss + schema history corruption)
+- [ ] 16-02-PLAN.md — Multi-connector deployments lesson (server.id registry)
+- [ ] 16-03-PLAN.md — DDL tools integration lesson (gh-ost + pt-osc patterns)
 
 ### Phase 17: Multi-Database Capstone
 **Goal**: Course learner can design and implement a multi-database CDC pipeline combining PostgreSQL and MySQL
@@ -170,7 +171,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 16. Advanced + Recovery | v1.1 | 0/TBD | Not started | - |
+| 16. Advanced + Recovery | v1.1 | 0/3 | Planned | - |
 | 17. Multi-DB Capstone | v1.1 | 0/TBD | Not started | - |
 | 18. GitHub Deployment | v1.1 | 0/TBD | Not started | - |
 

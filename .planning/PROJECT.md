@@ -10,21 +10,35 @@
 
 ## Current State
 
-**Version:** v1.0 (shipped 2026-02-01)
-**Codebase:** 59 source files, 24,273 LOC (TypeScript, MDX, Astro)
-**Content:** 7 modules, 42+ lessons, 200+ code examples
-**Lab:** Docker Compose with PostgreSQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
+**Version:** v1.1 (shipped 2026-02-01)
+**Live:** https://levoel.github.io/debezium-course/
+**Codebase:** 74 source files, 35,000+ LOC (TypeScript, MDX, Astro)
+**Content:** 8 modules, 57+ lessons, 400+ code examples
+**Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 
-## Current Milestone: v1.1 MySQL/Aurora MySQL
+## Completed Milestones
 
-**Goal:** Add comprehensive MySQL/Aurora MySQL CDC module and deploy course to GitHub Pages.
+### v1.1 MySQL/Aurora MySQL + Deployment (shipped 2026-02-01)
 
-**Target features:**
+**Delivered:**
 - MySQL binlog deep-dive (binary log formats, GTID mode, server configuration)
-- Aurora MySQL specifics (parameter groups, read replicas, limitations)
+- Aurora MySQL specifics (parameter groups, Enhanced Binlog, limitations)
 - MySQL connector production operations (monitoring, failover, snapshots)
-- Hands-on labs with MySQL Docker environment
-- GitHub Pages deployment (deferred from v1.0)
+- Multi-database capstone (PostgreSQL + MySQL unified pipeline)
+- GitHub Pages deployment with CI/CD
+
+### v1.0 MVP (shipped 2026-02-01)
+
+- Complete CDC curriculum (Modules 1-7)
+- Interactive roadmap and progress tracking
+- Docker Compose lab environment (ARM64)
+
+## Next Milestone: v1.2
+
+**Potential features:**
+- Course structure reorganization (STRUCT-01: MySQL closer to PostgreSQL)
+- Search functionality across lessons
+- Dark/light theme toggle
 
 ## Requirements
 
@@ -38,18 +52,21 @@
 - ✓ Mermaid diagram rendering — v1.0
 - ✓ Mobile responsive design — v1.0
 - ✓ Docker Compose lab environment (ARM64) — v1.0
-- ✓ Complete CDC curriculum (Modules 1-6 + Capstone) — v1.0
+- ✓ Complete CDC curriculum (Modules 1-7 + Capstone) — v1.0
+- ✓ MySQL/Aurora MySQL comprehensive module (15 lessons) — v1.1
+- ✓ Multi-database capstone extension — v1.1
+- ✓ GitHub Pages deployment with CI/CD — v1.1
 
 ### Active
 
-**v1.1 Scope:**
-- [ ] MySQL/Aurora MySQL comprehensive module (8+ lessons)
-- [ ] GitHub Pages deployment
+**v1.2 Scope (tentative):**
+- [ ] STRUCT-01: Course structure reorganization (MySQL closer to PostgreSQL)
+- [ ] PLAT-09: Search functionality across lessons
+- [ ] PLAT-10: Dark/light theme toggle
 
-**Deferred to v1.2:**
-- [ ] Search functionality across lessons
-- [ ] Dark/light theme toggle
-- [ ] Export/import progress
+**Deferred:**
+- [ ] PLAT-11: Export/import progress
+- [ ] CONT-01: MongoDB change streams module
 
 ### Out of Scope
 
@@ -96,6 +113,10 @@
 | Russian text / English code | Target audience + code portability | ✓ Good |
 | BACKWARD Schema Registry | Easier consumer upgrades | ✓ Good |
 | Groovy for Filter SMT | Most documented approach | ✓ Good |
+| MySQL 8.0.40 | Stable, ARM64 compatible, binlog features complete | ✓ Good |
+| Port 3307 for MySQL | Avoids host conflicts with local MySQL | ✓ Good |
+| server.id range 184000-184999 | Debezium convention, avoids cluster conflicts | ✓ Good |
+| withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-01 — v1.1 milestone started*
+*Last updated: 2026-02-01 — v1.1 milestone complete*

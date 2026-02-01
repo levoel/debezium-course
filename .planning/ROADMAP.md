@@ -37,9 +37,13 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 
 </details>
 
-### v1.1 MySQL/Aurora MySQL + Deployment (In Progress)
+<details>
+<summary>[x] v1.1 MySQL/Aurora MySQL + Deployment (Phases 12-18) - SHIPPED 2026-02-01</summary>
 
 **Milestone Goal:** Add comprehensive MySQL/Aurora MySQL CDC module (Module 8) and deploy the course to GitHub Pages.
+
+**Stats:** 7 phases, 20 plans, 20/20 requirements (100%)
+**Live:** https://levoel.github.io/debezium-course/
 
 - [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
 - [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
@@ -162,6 +166,8 @@ Plans:
 Plans:
 - [x] 18-01-PLAN.md — Update workflow to use withastro/action + local verification
 - [x] 18-02-PLAN.md — Push, configure GitHub Pages, verify live deployment
+
+</details>
 
 ## Progress
 

@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.1 MySQL/Aurora MySQL + Deployment (Phase 18 in progress)
+**Current focus:** v1.1 Complete — course live at https://levoel.github.io/debezium-course/
 
 ## Current Position
 

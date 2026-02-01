@@ -15,6 +15,17 @@
 **Content:** 7 modules, 42+ lessons, 200+ code examples
 **Lab:** Docker Compose with PostgreSQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 
+## Current Milestone: v1.1 MySQL/Aurora MySQL
+
+**Goal:** Add comprehensive MySQL/Aurora MySQL CDC module and deploy course to GitHub Pages.
+
+**Target features:**
+- MySQL binlog deep-dive (binary log formats, GTID mode, server configuration)
+- Aurora MySQL specifics (parameter groups, read replicas, limitations)
+- MySQL connector production operations (monitoring, failover, snapshots)
+- Hands-on labs with MySQL Docker environment
+- GitHub Pages deployment (deferred from v1.0)
+
 ## Requirements
 
 ### Validated
@@ -31,7 +42,11 @@
 
 ### Active
 
-- [ ] GitHub Pages / Vercel deployment (PLAT-07 deferred)
+**v1.1 Scope:**
+- [ ] MySQL/Aurora MySQL comprehensive module (8+ lessons)
+- [ ] GitHub Pages deployment
+
+**Deferred to v1.2:**
 - [ ] Search functionality across lessons
 - [ ] Dark/light theme toggle
 - [ ] Export/import progress
@@ -42,7 +57,8 @@
 - Авторизация/аккаунты пользователей — прогресс только в localStorage
 - Платный контент/подписки — курс бесплатный и открытый
 - Мобильное приложение — только веб
-- Oracle/SQL Server коннекторы — фокус на PostgreSQL/Aurora
+- Oracle/SQL Server коннекторы — фокус на PostgreSQL/MySQL/Aurora
+- MongoDB connector — different paradigm, defer to v2+
 - Custom connector development — слишком продвинутая тема
 
 ## Context
@@ -82,4 +98,4 @@
 | Groovy for Filter SMT | Most documented approach | ✓ Good |
 
 ---
-*Last updated: 2026-02-01 after v1.0 milestone*
+*Last updated: 2026-02-01 — v1.1 milestone started*

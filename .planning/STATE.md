@@ -5,30 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.0 SHIPPED — Planning next milestone
+**Current focus:** v1.1 MySQL/Aurora MySQL + Deployment
 
 ## Current Position
 
-Phase: N/A (milestone complete)
-Plan: N/A
-Status: v1.0 milestone shipped
-Last activity: 2026-02-01 — v1.0 milestone complete
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-01 — Milestone v1.1 started
 
-Progress: v1.0 [████████████████████] 100% — SHIPPED
+Progress: v1.1 [░░░░░░░░░░░░░░░░░░░░] 0%
 
-## v1.0 Summary
+## v1.1 Scope
 
-**Shipped:** 2026-02-01
-**Phases:** 11 (32 plans)
-**Content:** 7 modules, 42+ lessons
-**Codebase:** 59 files, 24,273 LOC
+**Goal:** Add comprehensive MySQL/Aurora MySQL CDC module and deploy course.
+
+**Target features:**
+- MySQL binlog deep-dive
+- Aurora MySQL specifics
+- MySQL connector production operations
+- Hands-on labs
+- GitHub Pages deployment
 
 ## Accumulated Context
 
 ### Decisions
 
-Full decision log archived in `.planning/milestones/v1.0-ROADMAP.md`.
-Key architectural decisions documented in PROJECT.md Key Decisions table.
+v1.0 decisions archived in `.planning/milestones/v1.0-ROADMAP.md`.
+Key architectural decisions in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
@@ -49,9 +53,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: v1.0 milestone complete
+Stopped at: v1.1 requirements definition
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — v1.0 shipped*
+*Last updated: 2026-02-01 — v1.1 started*

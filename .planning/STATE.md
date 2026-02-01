@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 19 of 21 (Module Directory Renaming)
+Phase: 20 of 21 (Cross-Reference Updates)
 Plan: 1 of 1 in current phase
 Status: Phase complete
-Last activity: 2026-02-01 — Completed 19-01-PLAN.md
+Last activity: 2026-02-01 — Completed 20-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [█████░░░░░░░░░░░░░░░] 25%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [██████████░░░░░░░░░░] 50%
 
 ## Performance Metrics
 
@@ -42,9 +42,10 @@ Progress: v1.0 [████████████████████] 10
 - Phase 18: 2/2 plans complete (phase complete)
 
 **v1.2 Metrics:**
-- Plans completed: 1
-- Average duration: 1 min
+- Plans completed: 2
+- Average duration: 2 min
 - Phase 19: 1/1 plans complete (phase complete)
+- Phase 20: 1/1 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -139,6 +140,9 @@ Recent decisions affecting current work:
 - [19-01]: Two-stage rename (temp names) prevents filesystem collision during directory swap
 - [19-01]: Clear .astro/ cache before and after renames to prevent stale path references
 - [19-01]: Navigation auto-discovers module numbers from directory structure - no code changes needed
+- [20-01]: sed replacement order matters - module-8 first to prevent circular mapping
+- [20-01]: Progress migration uses prefix matching (not full slug map) for maintainability
+- [20-01]: Migration flag (course-progress-v1.2-migrated) prevents re-running on every page load
 
 ### Pending Todos
 
@@ -159,9 +163,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 19-01-PLAN.md, Phase 19 complete
+Stopped at: Completed 20-01-PLAN.md, Phase 20 complete
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Phase 19 complete, MySQL module renumbered*
+*Last updated: 2026-02-01 — Phase 20 complete, cross-references updated and progress migration implemented*

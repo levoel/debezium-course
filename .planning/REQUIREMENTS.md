@@ -25,9 +25,9 @@
 
 **Goal:** Улучшить читаемость таблиц с чёткими границами и контрастом.
 
-- [ ] **UX-03a**: Чёткие границы ячеек (1px solid)
-- [ ] **UX-03b**: Читаемый контраст текста (WCAG 4.5:1)
-- [ ] **UX-03c**: Light glass эффект (blur 8px, низкая прозрачность)
+- [x] **UX-03a**: Чёткие границы ячеек (1px solid) ✓
+- [x] **UX-03b**: Читаемый контраст текста (WCAG 4.5:1) ✓
+- [x] **UX-03c**: Light glass эффект (blur 8px, низкая прозрачность) ✓
 
 ### Liquid Glass Design (UX-04)
 
@@ -35,7 +35,7 @@
 
 - [x] **UX-04a**: Gradient background (основа для glass эффекта) ✓
 - [x] **UX-04b**: Glass sidebar navigation ✓
-- [ ] **UX-04c**: Glass callouts (info, warning, tip)
+- [x] **UX-04c**: Glass callouts (info, warning, tip) ✓
 - [x] **UX-04d**: Glass карточки модулей на homepage ✓
 - [ ] **UX-04e**: Responsive blur (меньше на mobile)
 - [ ] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency)
@@ -141,12 +141,12 @@
 | UX-02a | Phase 23 | Complete |
 | UX-02b | Phase 23 | Complete |
 | UX-02c | Phase 23 | Complete |
-| UX-03a | Phase 24 | Pending |
-| UX-03b | Phase 24 | Pending |
-| UX-03c | Phase 24 | Pending |
+| UX-03a | Phase 24 | Complete |
+| UX-03b | Phase 24 | Complete |
+| UX-03c | Phase 24 | Complete |
 | UX-04a | Phase 22 | Complete |
 | UX-04b | Phase 22 | Complete |
-| UX-04c | Phase 24 | Pending |
+| UX-04c | Phase 24 | Complete |
 | UX-04d | Phase 23 | Complete |
 | UX-04e | Phase 25 | Pending |
 | UX-04f | Phase 25 | Pending |

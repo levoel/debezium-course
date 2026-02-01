@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 10 of 11 (Module 6 - Cloud-Native GCP)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-02-01 — Completed 10-01-PLAN.md (Cloud SQL & Debezium Server Foundation)
+Last activity: 2026-02-01 — Completed 10-02-PLAN.md (GCP Security & BigQuery Replication)
 
-Progress: [█████████████████░░░] 85% (27/32 plans complete)
+Progress: [█████████████████░░░] 88% (28/32 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 27
+- Total plans completed: 28
 - Average duration: 3.9 minutes
-- Total execution time: 1.8 hours
+- Total execution time: 1.9 hours
 
 **By Phase:**
 
@@ -36,10 +36,10 @@ Progress: [█████████████████░░░] 85% (27
 | 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
 | 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
 | 09 - Module 5 Data Engineering | 4/4 ✓ | 18.7m | 4.7m |
-| 10 - Module 6 Cloud-Native GCP | 1/3 | 3.5m | 3.5m |
+| 10 - Module 6 Cloud-Native GCP | 2/3 | 8.3m | 4.2m |
 
 **Recent Trend:**
-- Last 5 plans: 10-01 (3.5m), 09-04 (3.2m), 09-01 (4.5m), 09-03 (5m), 09-02 (6m)
+- Last 5 plans: 10-02 (4.8m), 10-01 (3.5m), 09-04 (3.2m), 09-01 (4.5m), 09-03 (5m)
 - Trend: Content creation consistently efficient at ~4m/plan
 
 *Updated after each plan completion*
@@ -164,6 +164,12 @@ Recent decisions affecting current work:
 - File-based offset storage with PersistentVolumeClaim for single-instance Debezium Server (10-01)
 - 10-second heartbeat interval mandatory for WAL bloat prevention (10-01)
 - Topic naming convention {prefix}.{schema}.{table} requires exact case-sensitive matching (10-01)
+- Workload Identity over service account key files for GKE authentication (10-02)
+- Secret Manager for database credentials instead of environment variables (10-02)
+- At-least-once Dataflow mode recommended for cost optimization (MERGE handles duplicates) (10-02)
+- Two-table BigQuery pattern: changelog (staging) + replica for current state (10-02)
+- updateFrequencySecs=60 as default MERGE frequency for near-real-time consistency (10-02)
+- Managed template preferred over custom Dataflow pipeline for standard CDC use cases (10-02)
 
 ### Pending Todos
 
@@ -184,7 +190,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 10-01-PLAN.md (Cloud SQL & Debezium Server Foundation)
+Stopped at: Completed 10-02-PLAN.md (GCP Security & BigQuery Replication)
 Resume file: None
 
 ---

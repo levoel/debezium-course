@@ -12,9 +12,9 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 Phase: 16 of 18 (Advanced Topics + Recovery)
 Plan: 1 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 16-03-PLAN.md
+Last activity: 2026-02-01 — Completed 16-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 61%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 62%
 
 ## Performance Metrics
 
@@ -97,10 +97,11 @@ Recent decisions affecting current work:
 - [15-03]: GTID prerequisites (replica_preserve_commit_order) required for read-only snapshots
 - [15-03]: 7-day binlog retention recommended for large table snapshots with safety margin
 - [15-03]: Chunk size default 2048 rows with tuning guidance based on row width
-- [16-03]: Filter SMT positioned as recommended approach for DDL tool helper table filtering
-- [16-03]: Helper table naming conventions (_gho, _ghc for gh-ost; _new, _old for pt-osc)
-- [16-03]: Broad capture pattern (mydb.*) with Filter SMT removes helper events before Kafka
-- [16-03]: gh-ost triggerless (doubles binlog read load, no FK support) vs pt-osc trigger-based (FK support, trigger overhead)
+- [16-01]: snapshot.mode=when_needed positioned as default for automatic binlog recovery
+- [16-01]: snapshot.mode=recovery requires manual DDL verification via SHOW BINLOG EVENTS
+- [16-01]: Defense-in-depth approach: prevention cheaper than recovery (infinite retention costs MB, resnapshot costs hours)
+- [16-01]: Backup frequency: daily for active databases, before schema changes, before connector upgrades
+- [16-01]: Recovery mode dangerous if DDL happened since last offset - silent data corruption risk documented
 
 ### Pending Todos
 
@@ -120,10 +121,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T13:25:41Z
-Stopped at: Completed 16-03-PLAN.md (DDL Tools Integration - 1,222 lines)
+Last session: 2026-02-01T13:26:50Z
+Stopped at: Completed 16-01-PLAN.md (Recovery Procedures - 1,578 lines)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 16-03 (DDL Tools Integration)*
+*Last updated: 2026-02-01 — Completed 16-01 (Recovery Procedures)*

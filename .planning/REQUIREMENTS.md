@@ -1,9 +1,30 @@
-# Requirements: Debezium Course v1.1
+# Requirements: Debezium Course v1.2
 
 **Defined:** 2026-02-01
 **Core Value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
 
-## v1.1 Requirements
+## v1.2 Requirements
+
+### Course Structure Reorganization (STRUCT-01)
+
+**Goal:** Move Module 8 (MySQL/Aurora MySQL) to position 3, right after Module 2 (PostgreSQL), creating a "Database Track" for better comparison.
+
+**Module Renumbering:**
+- [ ] **STRUCT-01a**: Переименовать директории модулей (08→03, сдвинуть 03-07→04-08)
+- [ ] **STRUCT-01b**: Navigation auto-discovers new structure (no config changes needed - directory rename satisfies this)
+- [ ] **STRUCT-01c**: Обновить все внутренние ссылки между уроками
+
+**UI/UX Updates:**
+- [ ] **STRUCT-01d**: Обновить roadmap компонент (порядок модулей)
+- [ ] **STRUCT-01e**: Обновить progress tracking (localStorage keys)
+
+**Verification:**
+- [ ] **STRUCT-01f**: Проверить все навигационные ссылки работают
+- [ ] **STRUCT-01g**: Проверить progress persistence после реорганизации
+
+---
+
+## v1.1 Requirements (Complete)
 
 ### Module 8: MySQL/Aurora MySQL CDC
 
@@ -45,11 +66,7 @@
 
 - [x] **PLAT-07**: GitHub Pages deployment с GitHub Actions CI/CD ✓
 
-## Future Requirements (v1.2+)
-
-### Course Structure
-
-- **STRUCT-01**: Реорганизация MySQL контента — перенести Module 8 (MySQL) ближе к Module 2 (PostgreSQL) для лучшего сравнения. Создать "Database Track" (PostgreSQL + MySQL вместе) vs "Operations Track".
+## Future Requirements (v1.3+)
 
 ### Platform Enhancements
 
@@ -75,6 +92,25 @@
 
 ## Traceability
 
+### v1.2
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| STRUCT-01a | Phase 19 | Pending |
+| STRUCT-01b | Phase 19 | Pending |
+| STRUCT-01c | Phase 20 | Pending |
+| STRUCT-01d | Phase 20 | Pending |
+| STRUCT-01e | Phase 20 | Pending |
+| STRUCT-01f | Phase 21 | Pending |
+| STRUCT-01g | Phase 21 | Pending |
+
+**Coverage:**
+- v1.2 requirements: 7 total
+- Mapped to phases: 7/7
+- Unmapped: 0
+
+### v1.1 (Complete)
+
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | INFRA-09 | Phase 12 | Complete |
@@ -98,11 +134,6 @@
 | MYSQL-16 | Phase 17 | Complete |
 | PLAT-07 | Phase 18 | Complete |
 
-**Coverage:**
-- v1.1 requirements: 20 total
-- Mapped to phases: 20/20
-- Unmapped: 0
-
 ---
 *Requirements defined: 2026-02-01*
-*Last updated: 2026-02-01 — phase mappings added*
+*Last updated: 2026-02-01 — v1.2 requirements added, STRUCT-01b corrected (Starlight reference removed)*

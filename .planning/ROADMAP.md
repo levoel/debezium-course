@@ -45,7 +45,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 - [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
 - [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations ✓
 - [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots ✓
-- [ ] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools
+- [x] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools ✓
 - [ ] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline
 - [ ] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD
 
@@ -128,9 +128,9 @@ Plans:
 **Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 16-01-PLAN.md — Recovery procedures lesson (binlog loss + schema history corruption)
-- [ ] 16-02-PLAN.md — Multi-connector deployments lesson (server.id registry)
-- [ ] 16-03-PLAN.md — DDL tools integration lesson (gh-ost + pt-osc patterns)
+- [x] 16-01-PLAN.md — Recovery procedures lesson (binlog loss + schema history corruption)
+- [x] 16-02-PLAN.md — Multi-connector deployments lesson (server.id registry)
+- [x] 16-03-PLAN.md — DDL tools integration lesson (gh-ost + pt-osc patterns)
 
 ### Phase 17: Multi-Database Capstone
 **Goal**: Course learner can design and implement a multi-database CDC pipeline combining PostgreSQL and MySQL
@@ -171,7 +171,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 16. Advanced + Recovery | v1.1 | 0/3 | Planned | - |
+| 16. Advanced + Recovery | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 17. Multi-DB Capstone | v1.1 | 0/TBD | Not started | - |
 | 18. GitHub Deployment | v1.1 | 0/TBD | Not started | - |
 

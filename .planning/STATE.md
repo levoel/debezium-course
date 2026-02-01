@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 16 of 18 (Advanced Topics + Recovery)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 16-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed Phase 16 (3 plans, 4,197 lines)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 64%
+Progress: v1.0 [████████████████████] 100% | v1.1 [███████████████░░░░░] 71%
 
 ## Performance Metrics
 
@@ -31,13 +31,13 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 14
-- Average duration: 8 min
+- Plans completed: 15
+- Average duration: 7 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
 - Phase 15: 3/3 plans complete (phase complete)
-- Phase 16: 2/3 plans complete (in progress)
+- Phase 16: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -107,6 +107,10 @@ Recent decisions affecting current work:
 - [16-02]: Three mandatory unique properties per connector: database.server.id, database.server.name, schema.history.internal.kafka.topic
 - [16-02]: Registry template uses markdown table format for version control tracking
 - [16-02]: Shared schema history topic = data corruption (DDL pollution across connectors)
+- [16-03]: Filter SMT as recommended approach for helper table exclusion (removes before Kafka, saves storage)
+- [16-03]: Helper table patterns: _gho, _ghc (gh-ost), _new, _old (pt-osc)
+- [16-03]: gh-ost doubles binlog read load during migration (triggerless approach)
+- [16-03]: pt-osc supports foreign keys, gh-ost does not
 
 ### Pending Todos
 
@@ -126,10 +130,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T13:31:11Z
-Stopped at: Completed 16-02-PLAN.md (Multi-Connector Deployments - 1,397 lines)
+Last session: 2026-02-01T14:00:00Z
+Stopped at: Completed Phase 16 (Advanced Topics + Recovery - 3 plans, 4,197 lines)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 16-02 (Multi-Connector Deployments)*
+*Last updated: 2026-02-01 — Completed Phase 16 (Advanced Topics + Recovery)*

@@ -28,9 +28,9 @@
 - [x] **MYSQL-12**: Incremental snapshot конфигурация и signal table operations ✓
 
 **Advanced Topics:**
-- [ ] **MYSQL-13**: Recovery процедуры: binlog position loss, schema history topic corruption
-- [ ] **MYSQL-14**: Multi-connector deployments (server ID registry, conflict prevention)
-- [ ] **MYSQL-15**: DDL tool integration (gh-ost, pt-online-schema-change patterns)
+- [x] **MYSQL-13**: Recovery процедуры: binlog position loss, schema history topic corruption ✓
+- [x] **MYSQL-14**: Multi-connector deployments (server ID registry, conflict prevention) ✓
+- [x] **MYSQL-15**: DDL tool integration (gh-ost, pt-online-schema-change patterns) ✓
 
 **Capstone Extension:**
 - [ ] **MYSQL-16**: Multi-database CDC pipeline (PostgreSQL + MySQL → unified processing)
@@ -88,9 +88,9 @@
 | MYSQL-10 | Phase 15 | Complete |
 | MYSQL-11 | Phase 15 | Complete |
 | MYSQL-12 | Phase 15 | Complete |
-| MYSQL-13 | Phase 16 | Pending |
-| MYSQL-14 | Phase 16 | Pending |
-| MYSQL-15 | Phase 16 | Pending |
+| MYSQL-13 | Phase 16 | Complete |
+| MYSQL-14 | Phase 16 | Complete |
+| MYSQL-15 | Phase 16 | Complete |
 | MYSQL-16 | Phase 17 | Pending |
 | PLAT-07 | Phase 18 | Pending |
 

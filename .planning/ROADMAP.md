@@ -64,10 +64,11 @@ Plans:
   4. Table header row has elevated opacity compared to data rows (visual hierarchy)
   5. Callout components (info, warning, tip) render with type-specific colored glass tints and left border accent
   6. Code blocks inside content use solid backgrounds (no glass) to preserve syntax highlighting readability
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01, 02 parallel)
 
 Plans:
-- [ ] 24-01-PLAN.md — TBD
+- [ ] 24-01-PLAN.md — Glass table styles + solid code block styles (global.css)
+- [ ] 24-02-PLAN.md — Glass callout component enhancement (Callout.tsx)
 
 ### Phase 25: Polish (Mobile + Accessibility + Verification)
 **Goal**: Glass design performs well on mobile devices, respects accessibility preferences, and passes comprehensive audit
@@ -297,7 +298,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 |-------|-----------|----------------|--------|-----------|
 | 22. Foundation | v1.3 | 2/2 | Complete | 2026-02-01 |
 | 23. Homepage Redesign | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 24. Content Components | v1.3 | 0/TBD | Not started | - |
+| 24. Content Components | v1.3 | 0/2 | Not started | - |
 | 25. Polish | v1.3 | 0/TBD | Not started | - |
 
 ## Coverage

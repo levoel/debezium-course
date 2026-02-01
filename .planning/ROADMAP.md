@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery ✓
 - [x] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration ✓
 - [x] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing ✓
-- [ ] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration
+- [x] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration ✓
 - [ ] **Phase 11: Capstone Project** - End-to-end production CDC pipeline integrating all learnings
 
 ## Phase Details
@@ -209,10 +209,12 @@ Plans:
   4. Students can use Dataflow templates to sync CDC data to BigQuery
   5. Students can deploy Cloud Run functions for event-driven CDC processing
   6. Students can monitor end-to-end CDC pipeline in Cloud Monitoring
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 10-01-PLAN.md — Create Cloud SQL PostgreSQL and Debezium Server Pub/Sub lessons
+- [x] 10-02-PLAN.md — Create IAM/Workload Identity and Dataflow BigQuery lessons
+- [x] 10-03-PLAN.md — Create Cloud Run event-driven and Cloud Monitoring lessons
 
 ### Phase 11: Capstone Project
 **Goal**: Students can design and implement a production-ready end-to-end CDC pipeline integrating multiple technologies
@@ -243,7 +245,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 7. Module 3 - Production Operations | 3/3 | ✓ Complete | 2026-02-01 |
 | 8. Module 4 - Advanced Patterns | 4/4 | ✓ Complete | 2026-02-01 |
 | 9. Module 5 - Data Engineering | 4/4 | ✓ Complete | 2026-02-01 |
-| 10. Module 6 - Cloud-Native GCP | 0/TBD | Not started | - |
+| 10. Module 6 - Cloud-Native GCP | 3/3 | ✓ Complete | 2026-02-01 |
 | 11. Capstone Project | 0/TBD | Not started | - |
 
 ---

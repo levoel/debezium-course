@@ -68,12 +68,12 @@
 
 ### Module 6: Cloud-Native GCP
 
-- [ ] **MOD6-01**: Настройка Cloud SQL PostgreSQL для Debezium
-- [ ] **MOD6-02**: Debezium Server с Pub/Sub sink (Kafka-less архитектура)
-- [ ] **MOD6-03**: IAM и Workload Identity для безопасного доступа
-- [ ] **MOD6-04**: Dataflow templates для CDC в BigQuery
-- [ ] **MOD6-05**: Cloud Run для event-driven обработки CDC
-- [ ] **MOD6-06**: End-to-end мониторинг в Cloud Monitoring
+- [x] **MOD6-01**: Настройка Cloud SQL PostgreSQL для Debezium
+- [x] **MOD6-02**: Debezium Server с Pub/Sub sink (Kafka-less архитектура)
+- [x] **MOD6-03**: IAM и Workload Identity для безопасного доступа
+- [x] **MOD6-04**: Dataflow templates для CDC в BigQuery
+- [x] **MOD6-05**: Cloud Run для event-driven обработки CDC
+- [x] **MOD6-06**: End-to-end мониторинг в Cloud Monitoring
 
 ### Module 7: Capstone Project
 
@@ -175,12 +175,12 @@
 | MOD5-05 | Phase 9 | ✓ Done |
 | MOD5-06 | Phase 9 | ✓ Done |
 | MOD5-07 | Phase 9 | ✓ Done |
-| MOD6-01 | Phase 10 | Pending |
-| MOD6-02 | Phase 10 | Pending |
-| MOD6-03 | Phase 10 | Pending |
-| MOD6-04 | Phase 10 | Pending |
-| MOD6-05 | Phase 10 | Pending |
-| MOD6-06 | Phase 10 | Pending |
+| MOD6-01 | Phase 10 | ✓ Done |
+| MOD6-02 | Phase 10 | ✓ Done |
+| MOD6-03 | Phase 10 | ✓ Done |
+| MOD6-04 | Phase 10 | ✓ Done |
+| MOD6-05 | Phase 10 | ✓ Done |
+| MOD6-06 | Phase 10 | ✓ Done |
 | CAP-01 | Phase 11 | Pending |
 | CAP-02 | Phase 11 | Pending |
 | CAP-03 | Phase 11 | Pending |

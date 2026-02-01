@@ -2,33 +2,39 @@
 
 ## What This Is
 
-Интерактивный веб-курс по Debezium для middle+ дата-инженеров. Глубокое погружение в Change Data Capture с фокусом на реальные интеграции (Aurora DB, PostgreSQL, GCP) и их подводные камни. Статический сайт без бэкенда с интерактивным роадмапом и практической лабораторией на Docker.
+Интерактивный веб-курс по Debezium для middle+ дата-инженеров. Глубокое погружение в Change Data Capture с фокусом на реальные интеграции (Aurora DB, PostgreSQL, GCP) и их подводные камни. Статический сайт с интерактивным роадмапом, практической лабораторией на Docker, и 7 модулями от основ до production-ready capstone проекта.
 
 ## Core Value
 
 Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций.
 
+## Current State
+
+**Version:** v1.0 (shipped 2026-02-01)
+**Codebase:** 59 source files, 24,273 LOC (TypeScript, MDX, Astro)
+**Content:** 7 modules, 42+ lessons, 200+ code examples
+**Lab:** Docker Compose with PostgreSQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Interactive roadmap with module visualization — v1.0
+- ✓ Clickable roadmap navigation — v1.0
+- ✓ Progress persistence in localStorage — v1.0
+- ✓ Module/topic menu navigation — v1.0
+- ✓ Syntax highlighting (Python, YAML, SQL, JSON) — v1.0
+- ✓ Mermaid diagram rendering — v1.0
+- ✓ Mobile responsive design — v1.0
+- ✓ Docker Compose lab environment (ARM64) — v1.0
+- ✓ Complete CDC curriculum (Modules 1-6 + Capstone) — v1.0
 
 ### Active
 
-- [ ] Подробный контент для middle+ уровня с глубоким разбором тем
-- [ ] Чёткое разделение на топики в меню навигации
-- [ ] Интерактивный роадмап (навигация по модулям + трекинг прогресса)
-- [ ] Прогресс сохраняется в localStorage
-- [ ] Docker Compose окружение для практики (ARM64, macOS M-series)
-- [ ] Интеграция с PostgreSQL — настройка, подводные камни
-- [ ] Интеграция с Aurora DB — специфика, ограничения, workarounds
-- [ ] Интеграция с GCP — Pub/Sub, Cloud SQL, особенности
-- [ ] Python: Kafka consumers/producers для чтения CDC-событий
-- [ ] Python: обработка данных (Pandas, трансформации)
-- [ ] Python: потоковая обработка (PyFlink / PySpark)
-- [ ] Python: скрипты автоматизации (управление коннекторами, мониторинг)
-- [ ] Деплой как статический сайт (GitHub Pages / Vercel)
+- [ ] GitHub Pages / Vercel deployment (PLAT-07 deferred)
+- [ ] Search functionality across lessons
+- [ ] Dark/light theme toggle
+- [ ] Export/import progress
 
 ### Out of Scope
 
@@ -36,6 +42,8 @@
 - Авторизация/аккаунты пользователей — прогресс только в localStorage
 - Платный контент/подписки — курс бесплатный и открытый
 - Мобильное приложение — только веб
+- Oracle/SQL Server коннекторы — фокус на PostgreSQL/Aurora
+- Custom connector development — слишком продвинутая тема
 
 ## Context
 
@@ -46,31 +54,32 @@
 - Практические задания в локальном Docker-окружении
 - Реальные сценарии и подводные камни из production
 
-**Инструменты в курсе:**
-- Debezium (core)
-- Apache Kafka
-- PostgreSQL, Aurora DB, GCP Cloud SQL
-- Python (confluent-kafka, pandas, pyflink/pyspark)
-- Docker Compose
+**Tech Stack:**
+- Astro 5, React 19, Tailwind CSS 4
+- MDX with Shiki syntax highlighting
+- nanostores for state management
+- Docker Compose for lab infrastructure
 
-**Локализация:** Русский язык
+**Локализация:** Русский язык (Russian text, English code/config)
 
 ## Constraints
 
 - **Platform**: macOS M-series (ARM64) — Docker образы должны поддерживать ARM64
 - **No Backend**: Весь функционал через статику и localStorage
-- **Tech Stack (web)**: TBD — определится на этапе research
+- **Tech Stack (web)**: Astro 5, React 19, Tailwind CSS 4
 - **Tech Stack (course content)**: Python для всех практических примеров
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Статический сайт без бэкенда | Простота деплоя, нет инфраструктурных затрат | — Pending |
-| Прогресс в localStorage | Достаточно для персонального курса без аккаунтов | — Pending |
-| Docker Compose для практики | Универсальный, работает локально, не требует облака | — Pending |
-| Python как основной язык примеров | Стандарт для дата-инженеров, богатая экосистема | — Pending |
-| ARM64 как целевая платформа | Большинство современных Mac на M-series | — Pending |
+| Astro 5 for static site | Modern SSG with React islands | ✓ Good |
+| nanostores for state | Cross-island state sharing | ✓ Good |
+| Debezium 2.5.x (not 3.x) | Java 21 ARM64 compatibility | ✓ Good |
+| Confluent Kafka 7.8.1 | ARM64 native support | ✓ Good |
+| Russian text / English code | Target audience + code portability | ✓ Good |
+| BACKWARD Schema Registry | Easier consumer upgrades | ✓ Good |
+| Groovy for Filter SMT | Most documented approach | ✓ Good |
 
 ---
-*Last updated: 2026-01-31 after initialization*
+*Last updated: 2026-02-01 after v1.0 milestone*

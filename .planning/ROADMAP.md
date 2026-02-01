@@ -50,8 +50,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 23-01-PLAN.md — ModuleAccordion component with glass cards and per-module progress
-- [ ] 23-02-PLAN.md — Homepage integration with ModuleAccordion
+- [x] 23-01-PLAN.md — ModuleAccordion component with glass cards and per-module progress
+- [x] 23-02-PLAN.md — Homepage integration with ModuleAccordion
 
 ### Phase 24: Content Components (Tables + Callouts with Glass)
 **Goal**: Tables and callout components use light glass effect with optimized readability
@@ -296,7 +296,7 @@ Phases execute in numeric order: 22 -> 23 -> 24 -> 25
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 22. Foundation | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 23. Homepage Redesign | v1.3 | 0/2 | Planned | - |
+| 23. Homepage Redesign | v1.3 | 2/2 | Complete | 2026-02-01 |
 | 24. Content Components | v1.3 | 0/TBD | Not started | - |
 | 25. Polish | v1.3 | 0/TBD | Not started | - |
 

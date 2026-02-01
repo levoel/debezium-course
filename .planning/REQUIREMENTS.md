@@ -17,9 +17,9 @@
 
 **Goal:** Организовать уроки по модулям на главной странице с accordion-меню.
 
-- [ ] **UX-02a**: Accordion-меню модулей (свёрнуты по умолчанию)
-- [ ] **UX-02b**: Список уроков раскрывается по клику
-- [ ] **UX-02c**: Индикатор прогресса по модулю
+- [x] **UX-02a**: Accordion-меню модулей (свёрнуты по умолчанию) ✓
+- [x] **UX-02b**: Список уроков раскрывается по клику ✓
+- [x] **UX-02c**: Индикатор прогресса по модулю ✓
 
 ### Table Redesign (UX-03)
 
@@ -36,7 +36,7 @@
 - [x] **UX-04a**: Gradient background (основа для glass эффекта) ✓
 - [x] **UX-04b**: Glass sidebar navigation ✓
 - [ ] **UX-04c**: Glass callouts (info, warning, tip)
-- [ ] **UX-04d**: Glass карточки модулей на homepage
+- [x] **UX-04d**: Glass карточки модулей на homepage ✓
 - [ ] **UX-04e**: Responsive blur (меньше на mobile)
 - [ ] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency)
 
@@ -138,16 +138,16 @@
 | UX-01a | Phase 22 | Complete |
 | UX-01b | Phase 22 | Deferred (no breadcrumb component) |
 | UX-01c | Phase 22 | Complete |
-| UX-02a | Phase 23 | Pending |
-| UX-02b | Phase 23 | Pending |
-| UX-02c | Phase 23 | Pending |
+| UX-02a | Phase 23 | Complete |
+| UX-02b | Phase 23 | Complete |
+| UX-02c | Phase 23 | Complete |
 | UX-03a | Phase 24 | Pending |
 | UX-03b | Phase 24 | Pending |
 | UX-03c | Phase 24 | Pending |
 | UX-04a | Phase 22 | Complete |
 | UX-04b | Phase 22 | Complete |
 | UX-04c | Phase 24 | Pending |
-| UX-04d | Phase 23 | Pending |
+| UX-04d | Phase 23 | Complete |
 | UX-04e | Phase 25 | Pending |
 | UX-04f | Phase 25 | Pending |
 

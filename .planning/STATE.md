@@ -19,9 +19,9 @@ Progress: [███████████████░░░░░] 73% (8/
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
-- Average duration: 3.7 minutes
-- Total execution time: 1.2 hours
+- Total plans completed: 22
+- Average duration: 3.8 minutes
+- Total execution time: 1.3 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [███████████████░░░░░] 73% (8/
 | 05 - Module 1 Foundations | 3/3 ✓ | 8.5m | 2.8m |
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
 | 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
-| 08 - Module 4 Advanced Patterns | 3/4 | 12m | 4m |
+| 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (6m), 07-02 (11m), 07-03 (10m), 08-03 (4m)
-- Trend: Content creation averaging 7.8m/plan for deep technical content
+- Last 5 plans: 07-02 (11m), 07-03 (10m), 08-03 (4m), 08-04 (4.7m)
+- Trend: Content creation averaging 7.4m/plan for deep technical content
 
 *Updated after each plan completion*
 
@@ -130,6 +130,11 @@ Recent decisions affecting current work:
 - DELETE-in-transaction cleanup recommended for course simplicity, external job for scale (08-03)
 - table.expand.json.payload=true for structured JSON (not string) (08-03)
 - Single outbox table supports multiple aggregate types via aggregatetype routing (08-03)
+- BACKWARD compatibility mode default for CDC (consumers easier to upgrade than producers) (08-04)
+- Debezium 2.x requires manual Avro converter JAR installation (5 libraries from Confluent) (08-04)
+- Type changes never safe - require ADD new column → backfill → DROP old workflow (08-04)
+- Compatibility testing API mandatory before production schema changes (08-04)
+- Nullable columns with defaults for BACKWARD-safe additions (08-04)
 
 ### Pending Todos
 
@@ -150,7 +155,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 08-03-PLAN.md (Outbox Pattern theory and implementation, 2 lessons)
+Stopped at: Completed Phase 8 - Module 4 Advanced Patterns (all 4 plans, 8 lessons)
 Resume file: None
 
 ---

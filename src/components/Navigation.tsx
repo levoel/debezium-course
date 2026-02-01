@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { isSidebarOpen } from '../stores/navigation';
 import { $progress } from '../stores/progress';
+import { getModuleName, getModuleNumber } from '../utils/moduleNames';
 
 /**
  * Lesson item for navigation
@@ -33,15 +34,17 @@ interface NavigationProps {
 }
 
 /**
- * Format module ID for display
- * "01-intro" -> "Module 01"
+ * Format module header with number and descriptive name
+ * "01-module-1" -> "01. Введение в CDC"
  */
 function formatModuleHeader(moduleId: string): string {
-  const match = moduleId.match(/^(\d+)/);
-  if (match) {
-    return `Модуль ${match[1].padStart(2, '0')}`;
+  const number = getModuleNumber(moduleId);
+  const name = getModuleName(moduleId);
+
+  if (number) {
+    return `${number}. ${name}`;
   }
-  return moduleId;
+  return name;
 }
 
 /**

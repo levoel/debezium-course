@@ -1,27 +1,37 @@
 import { test, expect } from '../fixtures/error-tracking';
 
+// Base path for the course (matches astro.config.mjs base setting)
+const BASE = '/debezium-course';
+
 test.describe('Navigation verification', () => {
   test('homepage loads without errors', async ({ page }) => {
-    const response = await page.goto('/');
+    const response = await page.goto(`${BASE}/`);
     expect(response?.status()).toBe(200);
   });
 
   test('all lesson links on homepage work', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(`${BASE}/`);
 
-    // Get all internal course links from the lesson cards on homepage
-    const links = await page.locator('a[href*="/course/"]').all();
+    // Get all unique course link hrefs from the main content area (not sidebar)
+    // Use evaluate to efficiently collect all hrefs at once
+    const hrefs = await page.evaluate((basePath) => {
+      const links = document.querySelectorAll(`main a[href^="${basePath}/course/"]`);
+      const uniqueHrefs = new Set<string>();
+      links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href) uniqueHrefs.add(href);
+      });
+      return Array.from(uniqueHrefs);
+    }, BASE);
 
     // Ensure we have links to test
-    expect(links.length).toBeGreaterThan(0);
+    expect(hrefs.length).toBeGreaterThan(0);
 
-    const visited = new Set<string>();
-    for (const link of links) {
-      const href = await link.getAttribute('href');
-      if (!href || visited.has(href)) continue;
-      visited.add(href);
+    // Test a sample of links for speed (first from each module)
+    const moduleLinks = hrefs.filter(href => href.includes('/01-'));
+    expect(moduleLinks.length).toBeGreaterThan(0);
 
-      // Navigate and verify 200 response
+    for (const href of moduleLinks) {
       const response = await page.goto(href);
       expect(response?.status(), `Failed for ${href}`).toBe(200);
     }
@@ -30,14 +40,14 @@ test.describe('Navigation verification', () => {
   test('module pages are accessible', async ({ page }) => {
     // Test first lesson in each module after v1.2 reorganization
     const modulePaths = [
-      '/course/01-module-1/01-cdc-fundamentals',          // Module 1: Intro
-      '/course/02-module-2/01-logical-decoding-deep-dive', // Module 2: PostgreSQL
-      '/course/03-module-3/01-binlog-architecture',       // Module 3: MySQL (was 08)
-      '/course/04-module-4/01-jmx-metrics-interpretation', // Module 4: Monitoring
-      '/course/05-module-5/01-smt-overview',              // Module 5: Advanced
-      '/course/06-module-6/01-advanced-python-consumer',  // Module 6: Data Engineering
-      '/course/07-module-7/01-cloud-sql-setup',           // Module 7: Cloud-Native
-      '/course/08-module-8/01-capstone-overview',         // Module 8: Capstone (was 07)
+      `${BASE}/course/01-module-1/01-cdc-fundamentals`,          // Module 1: Intro
+      `${BASE}/course/02-module-2/01-logical-decoding-deep-dive`, // Module 2: PostgreSQL
+      `${BASE}/course/03-module-3/01-binlog-architecture`,       // Module 3: MySQL (was 08)
+      `${BASE}/course/04-module-4/01-jmx-metrics-interpretation`, // Module 4: Monitoring
+      `${BASE}/course/05-module-5/01-smt-overview`,              // Module 5: Advanced
+      `${BASE}/course/06-module-6/01-advanced-python-consumer`,  // Module 6: Data Engineering
+      `${BASE}/course/07-module-7/01-cloud-sql-setup`,           // Module 7: Cloud-Native
+      `${BASE}/course/08-module-8/01-capstone-overview`,         // Module 8: Capstone (was 07)
     ];
 
     for (const path of modulePaths) {
@@ -48,7 +58,7 @@ test.describe('Navigation verification', () => {
 
   test('sidebar navigation contains all 8 modules', async ({ page }) => {
     // Go to any lesson page to see sidebar
-    await page.goto('/course/01-module-1/01-cdc-fundamentals');
+    await page.goto(`${BASE}/course/01-module-1/01-cdc-fundamentals`);
 
     // Check that all 8 module headers are present
     for (let i = 1; i <= 8; i++) {

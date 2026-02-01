@@ -93,11 +93,12 @@ Plans:
   2. Learner understands Aurora Enhanced Binlog architecture (storage nodes, 99% faster recovery claims)
   3. Learner knows Aurora MySQL CDC limitations (global read lock prohibition, affected snapshot modes)
   4. Learner can choose appropriate snapshot.mode for Aurora MySQL based on table size and lock tolerance
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 14-01: TBD
-- [ ] 14-02: TBD
+- [ ] 14-01-PLAN.md — Aurora MySQL parameter groups and binlog retention (stored procedures)
+- [ ] 14-02-PLAN.md — Aurora Enhanced Binlog architecture and trade-offs
+- [ ] 14-03-PLAN.md — Aurora snapshot mode selection and large table strategies
 
 ### Phase 15: Production Operations
 **Goal**: Course learner can monitor, troubleshoot, and operate MySQL CDC in production

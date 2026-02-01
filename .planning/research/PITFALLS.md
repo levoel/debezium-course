@@ -118,133 +118,584 @@ After a database failover or node replacement, replication slots are NOT automat
 
 ---
 
-### 1.2 Aurora DB / RDS MySQL Pitfalls
+### 1.2 MySQL/Aurora MySQL Pitfalls
 
-#### CRITICAL: Privilege Limitations (FLUSH TABLES WITH READ LOCK)
+#### CRITICAL: Binlog Position Loss Due to Purging
 
 **What goes wrong:**
-Debezium snapshot fails because `FLUSH TABLES WITH READ LOCK` requires SUPER privilege, which is not available to RDS/Aurora users, even master users.
+MySQL automatically purges old binlog files based on retention settings (`binlog_expire_logs_seconds`, default 30 days). If Debezium stops for longer than the retention period, its last binlog position is purged. When restarted, MySQL no longer has the connector's starting point, forcing a full re-snapshot.
 
 **Why it happens:**
-- RDS/Aurora security model restricts SUPER privilege
-- Debezium defaults to global read lock for consistent snapshots
-- Table-level locks have different consistency guarantees
+Unlike PostgreSQL replication slots (which prevent WAL deletion), MySQL binlogs are purged on a time schedule regardless of consumer position. Teams set retention too short or don't monitor connector downtime.
 
 **Consequences:**
-- Initial snapshot fails to start
-- Connector cannot initialize
-- Must use alternative snapshot strategies with weaker consistency
+- Full re-snapshot on large databases (hours to days)
+- Potential data loss if events occurred during downtime
+- Production load spike from snapshot SELECT queries
+- Duplicate events if offset topic and binlog position are misaligned
 
 **Prevention:**
-1. **Configure snapshot.locking.mode:** Set to `minimal` or `none` instead of default
-2. **Use LOCK TABLES permissions:** Ensure user has `LOCK TABLES` privilege
-3. **Consider snapshot.mode options:** Use `schema_only` if data already exists elsewhere
-4. **Document consistency tradeoffs:** Table-level locks don't prevent all concurrent writes
+1. Set binlog retention longer than maximum expected downtime
+   - AWS RDS MySQL: max 168 hours (7 days) via `call mysql.rds_set_configuration('binlog retention hours', 168);`
+   - Aurora MySQL: Configure via parameter group
+   - Self-hosted: `SET GLOBAL binlog_expire_logs_seconds = 604800;` (7 days minimum)
+2. Monitor binlog lag with alerts BEFORE it reaches retention threshold
+3. Use incremental snapshots instead of full re-snapshots when recovering
 
 **Detection:**
-- Connector fails on startup
-- Logs show "Access denied; you need (at least one of) the SUPER privilege(s)"
+- Connector log error: "binlog position is not available on the server"
+- Connector unexpectedly enters snapshot mode on restart
+- CloudWatch/monitoring shows binlog delay approaching retention hours
 
-**Course Phase Mapping:**
-- **Phase 1 (Aurora Connector):** Explain RDS privilege model, configure snapshot.locking.mode
-- **Phase 5 (Snapshots):** Compare global vs table-level lock consistency
+**MySQL vs PostgreSQL:**
+PostgreSQL replication slots prevent WAL deletion automatically, making this a MySQL-specific issue. However, PostgreSQL has its own problem: unbounded slot growth if connector stops.
+
+**Lesson to address:** "Binlog Configuration and Retention" (setup), "Monitoring Binlog Lag" (observability)
 
 ---
 
-#### MODERATE: Binary Log Configuration
+#### CRITICAL: GTID Mode Purging Issues
 
 **What goes wrong:**
-Aurora/RDS doesn't have binary logging enabled by default, causing Debezium to fail without change events.
+When `gtid_mode=ON`, Debezium checks the `gtid_purged` variable to ensure no transactions were purged while offline. If purged GTIDs exist from the connector's downtime period, Debezium refuses to start with error: "GTID set contains purged transactions."
 
 **Why it happens:**
-- Binary logging disabled unless backups or read replicas configured
-- Incorrect binlog format (STATEMENT instead of ROW)
-- Insufficient binlog retention period
+GTID tracking is more strict than binlog position tracking. Even with adequate binlog retention, GTIDs can be purged on replicas or during certain maintenance operations. Common in cloud environments with read replicas (RDS, Digital Ocean).
 
 **Consequences:**
-- No CDC events captured
-- Connector starts but emits no data
-- Silent failure mode
+- Connector stuck, cannot start
+- Must disable GTID mode or perform manual GTID set adjustment
+- Potential inconsistency if GTID set is manually fixed incorrectly
 
 **Prevention:**
-1. **Enable binary logging:** Configure automated backups or create read replica
-2. **Set binlog_format=ROW:** Verify with `SHOW VARIABLES LIKE 'binlog_format'`
-3. **Configure retention period:** Minimum 3 days (`call mysql.rds_set_configuration('binlog retention hours', 72)`)
-4. **Monitor binlog position:** Track connector lag vs retention window
+1. For production, consider running WITHOUT `gtid_mode` unless you need:
+   - High availability clusters with automatic failover
+   - Multi-primary topologies
+   - Read-only incremental snapshots
+2. If using GTID mode:
+   - Set `replica_preserve_commit_order=ON` for multi-threaded replicas
+   - Monitor `gtid_purged` variable
+   - Increase binlog retention significantly (2-3x normal)
+3. Document rollback procedure: switching connector from GTID to binlog position mode
 
 **Detection:**
-- `SHOW BINARY LOGS` returns empty or ERROR 1381
-- Connector starts but no events appear in Kafka
-- Logs show "MySQL binary log is disabled"
+- Connector error: "GTID set contains purged transactions"
+- Connector works on standalone MySQL but fails on read replicas
+- Works fine, then breaks after routine maintenance
 
-**Course Phase Mapping:**
-- **Phase 1 (Aurora Connector):** Enable and configure binary logging
-- **Phase 6 (Operations):** Monitor binlog retention vs lag
+**MySQL vs PostgreSQL:**
+No GTID equivalent in PostgreSQL. This is MySQL-specific complexity.
+
+**Lesson to address:** "GTID Mode Considerations" (advanced configuration), "When to Use GTID vs Position-Based Tracking" (architecture decisions)
 
 ---
 
-#### MODERATE: Single Task Limitation
+#### CRITICAL: Schema History Topic Corruption
 
 **What goes wrong:**
-Aurora MySQL connector only supports one task and fails with MSK Connect autoscaled capacity mode.
+Debezium MySQL connector stores DDL history in a Kafka topic with infinite retention required. If this topic is deleted, truncated, compacted, or has retention < infinity, the connector cannot restart. Error: "database schema history topic is missing or partially missing."
 
 **Why it happens:**
-- Debezium MySQL connector is single-threaded per connector
-- Autoscaling conflicts with single-task requirement
+- Default Kafka retention policies apply (7 days, log compaction)
+- Ops team cleans up "old topics" without realizing criticality
+- Kafka cluster migration loses topic configuration
+- Topic created with wrong settings initially
 
 **Consequences:**
-- No horizontal scaling for MySQL/Aurora connectors
-- Performance bottleneck on high-traffic databases
-- Must use provisioned capacity mode
+- Connector cannot restart
+- Must use `recovery` snapshot mode to rebuild schema history
+- Recovery snapshot can fail if schema changes occurred after last committed offset
+- Downtime while troubleshooting and recovering
 
 **Prevention:**
-1. **Use provisioned capacity mode:** Set `workerCount = 1` for Aurora/MySQL connectors
-2. **Vertical scaling only:** Increase worker instance size instead of count
-3. **Partition by database:** Run separate connectors for different schemas
-4. **Consider incremental snapshots:** Reduce load during initial snapshot
+1. Create schema history topic with explicit settings:
+   ```bash
+   kafka-topics --create \
+     --topic dbserver1.schema-history \
+     --partitions 1 \
+     --replication-factor 3 \
+     --config retention.ms=-1 \
+     --config retention.bytes=-1 \
+     --config cleanup.policy=delete
+   ```
+2. Document in runbook: "Never delete schema history topics"
+3. Monitor topic existence and configuration in production
+4. Backup schema history topic periodically (export to S3/GCS)
+5. Use connector config property naming post-v2: `schema.history.internal.kafka.topic` (NOT old v1.9 `database.history.internal.kafka.topic`)
 
 **Detection:**
-- MSK Connect autoscale mode fails with configuration error
-- Single task shown in connector status
+- Connector fails with "schema history topic missing"
+- Schema history topic shows `retention.ms > -1` in Kafka topic config
+- Topic has been recreated (check creation timestamp)
 
-**Course Phase Mapping:**
-- **Phase 1 (Aurora Connector):** Explain single-task limitation
-- **Phase 4 (Production Deployment):** Provisioned capacity configuration for AWS MSK Connect
+**MySQL vs PostgreSQL:**
+PostgreSQL connector has same issue. Not MySQL-specific, but critical for both.
+
+**Lesson to address:** "Schema History Topic Configuration" (setup), "Disaster Recovery: Schema History Rebuilding" (operational runbook)
 
 ---
 
-#### MODERATE: Snapshot Performance Issues (Large Databases)
+#### CRITICAL: Aurora MySQL Global Read Lock Prohibition
 
 **What goes wrong:**
-Initial snapshots are extremely slow (days for TB-scale databases), hold read locks, and can only process new changes after completion. If connector fails mid-snapshot, entire process restarts from beginning.
+Aurora MySQL (and RDS MySQL) prohibit `FLUSH TABLES WITH READ LOCK` (global read lock). Debezium's default snapshot strategy uses global read lock for consistency. Connector fails with permission denied error during initial snapshot.
 
 **Why it happens:**
-- Conventional snapshots read entire database sequentially
-- Global or table-level read locks held during snapshot
-- No checkpoint mechanism in traditional snapshots
+AWS restricts global read locks in managed MySQL to prevent multi-tenant impact. Developers copy-paste standard MySQL connector config without adjusting for Aurora.
 
 **Consequences:**
-- Multi-day snapshot windows unacceptable in production
-- Read locks block production writes
-- Snapshot failures require full restart
-- Database performance degradation
+- Snapshot fails immediately on Aurora/RDS
+- Connector cannot complete initial sync
+- Production deployment blocked
 
 **Prevention:**
-1. **Use incremental snapshots:** Enable Debezium incremental snapshot feature (chunks in parallel with streaming)
-2. **Schedule snapshots during off-peak:** Minimize production impact
-3. **Snapshot by batches:** Start with subset of tables, extend gradually
-4. **Consider snapshot.mode=schema_only:** If data already exists in target
-5. **Size worker appropriately:** Ensure sufficient memory (`max.batch.size`, heap size)
+1. Use `snapshot.locking.mode=minimal` or `snapshot.locking.mode=none` for Aurora
+   - `minimal`: Locks only during schema read, uses REPEATABLE READ transaction for data
+   - `none`: No locks at all (requires quiesced database or acceptance of inconsistency)
+2. Grant `LOCK TABLES` privilege (required for table-level locks when global lock unavailable)
+3. Use read-only incremental snapshots (doesn't require RELOAD permission or global lock)
+4. Consider taking snapshot from read replica instead of primary
 
 **Detection:**
-- Snapshot running for hours/days
-- Database CPU/IO spikes
-- Application slowness during snapshot
-- Connector shows "SNAPSHOT" mode in status
+- Snapshot fails with "Access denied; you need (at least one of) the RELOAD privilege(s)"
+- Error occurs immediately when connector starts snapshot phase
+- Works on self-hosted MySQL, fails on Aurora/RDS
+
+**MySQL vs PostgreSQL:**
+Aurora PostgreSQL doesn't have this limitation. MySQL-specific due to FLUSH TABLES requirement.
+
+**Lesson to address:** "Aurora MySQL Snapshot Strategies" (setup), "Snapshot Locking Modes Explained" (configuration deep-dive)
+
+---
+
+#### CRITICAL: Server ID Conflicts with Multiple Connectors
+
+**What goes wrong:**
+Each Debezium MySQL connector joins the MySQL cluster as a binlog replica with a unique `database.server.id`. If two connectors use the same server ID, the second one fails with: "A slave with the same server_uuid/server_id as this slave has connected to the master."
+
+**Why it happens:**
+- Copy-pasting connector configuration for multi-tenant setups
+- Running multiple connectors against same MySQL instance (different databases)
+- Connector recreation uses same ID after deletion
+- Documentation examples use `database.server.id=223344` and developers don't change it
+
+**Consequences:**
+- Second connector fails after initial connection
+- Intermittent failures if connectors restart (race condition for ID)
+- Data missing from one database while other works
+
+**Prevention:**
+1. Document server ID registry for your organization (spreadsheet/wiki)
+2. Use systematic ID assignment:
+   - Connector 1: `database.server.id=10001`
+   - Connector 2: `database.server.id=10002`
+   - etc.
+3. Validate uniqueness in connector deployment automation
+4. Each connector MUST also have unique `database.server.name` (topic prefix)
+5. Check existing IDs: `SHOW SLAVE HOSTS;` on MySQL primary
+
+**Detection:**
+- Error: "slave with the same server_uuid/server_id"
+- First connector works fine, second connector fails
+- Works in testing (single connector), fails in production (multiple connectors)
+
+**MySQL vs PostgreSQL:**
+PostgreSQL has no server ID concept. MySQL-specific.
+
+**Lesson to address:** "Multi-Connector Deployments" (architecture), "Server ID Registry Best Practices" (operational)
+
+---
+
+#### MODERATE: Insufficient MySQL Permissions
+
+**What goes wrong:**
+Cloud MySQL (Aurora, RDS, GCP CloudSQL) and self-hosted MySQL require different permission sets. Connectors fail with cryptic permission errors during snapshot or binlog reading. Common missing permissions: `LOCK TABLES`, `RELOAD`, `REPLICATION CLIENT`, `REPLICATION SLAVE`.
+
+**Why it happens:**
+- Documentation shows minimal permissions for self-hosted MySQL
+- Cloud providers restrict certain permissions (e.g., `RELOAD` not available on Aurora)
+- Permission requirements differ by snapshot mode and configuration
+- Tutorials use `root` user, production uses restricted accounts
+
+**Consequences:**
+- Snapshot fails mid-process after hours of running
+- Connector works in dev (root user), fails in production (restricted user)
+- Errors like "command denied to user" during snapshot locking
+
+**Prevention:**
+1. **Self-hosted MySQL baseline:**
+   ```sql
+   CREATE USER 'debezium'@'%' IDENTIFIED BY 'password';
+   GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
+   GRANT LOCK TABLES ON *.* TO 'debezium'@'%';  -- If using table-level locks
+   ```
+
+2. **Aurora/RDS MySQL (no RELOAD available):**
+   ```sql
+   CREATE USER 'debezium'@'%' IDENTIFIED BY 'password';
+   GRANT SELECT, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
+   GRANT LOCK TABLES ON *.* TO 'debezium'@'%';
+   -- Use snapshot.locking.mode=minimal (doesn't require RELOAD)
+   ```
+
+3. **Incremental snapshots require:**
+   - Write access to signaling table (e.g., `GRANT INSERT, UPDATE, DELETE ON mydb.debezium_signal TO 'debezium'@'%';`)
+
+4. **Test permissions** before production deployment with validation script
+
+**Detection:**
+- "Access denied; you need (at least one of) the RELOAD privilege(s)"
+- "LOCK TABLES command denied to user"
+- Snapshot starts but fails partway through
+- Different behavior between dev and prod environments
+
+**MySQL vs PostgreSQL:**
+PostgreSQL uses `REPLICATION` attribute on role, simpler permission model. MySQL permission model is more granular and error-prone.
+
+**Lesson to address:** "MySQL Permissions by Environment" (setup), "Permission Validation Checklist" (operational)
+
+---
+
+#### MODERATE: Snapshot Timeout on Large Tables
+
+**What goes wrong:**
+During initial snapshot of large tables (hundreds of millions of rows), MySQL connection times out. Default MySQL `interactive_timeout` and `wait_timeout` are often 8 hours, but snapshots can exceed this. Connector fails with "Connection timed out (Write failed)" after hours of snapshotting.
+
+**Why it happens:**
+- MySQL JDBC driver default behavior loads full result set into memory (triggers timeout)
+- Large tables take longer than connection timeout to snapshot
+- After timeout failure, Debezium restarts snapshot from scratch (repeated failures)
+
+**Consequences:**
+- Snapshot never completes (timeout, restart, timeout loop)
+- Wasted database resources and network bandwidth
+- Initial sync takes days or never finishes
+- Frustration and potential project abandonment
+
+**Prevention:**
+1. Increase MySQL timeouts in connector config:
+   ```json
+   "database.initial.statements": "SET SESSION wait_timeout=172800;SET SESSION interactive_timeout=172800;SET SESSION net_write_timeout=7200"
+   ```
+   (172800 seconds = 48 hours)
+
+2. Enable result set streaming (default in modern Debezium):
+   ```json
+   "snapshot.fetch.size": "-2147483648"  // Integer.MIN_VALUE = stream mode
+   ```
+
+3. For extremely large tables, use incremental snapshots:
+   - Start connector with small tables first
+   - Once streaming, add large tables to `table.include.list`
+   - Trigger incremental snapshot via signaling table
+
+4. Consider snapshot from read replica to avoid production primary load
+
+**Detection:**
+- Connector logs show "Connection timed out" or "Communications link failure"
+- Snapshot restarts from beginning after 8+ hours
+- MySQL processlist shows long-running SELECT queries that eventually disconnect
+
+**MySQL vs PostgreSQL:**
+PostgreSQL uses COPY protocol with better default streaming. MySQL JDBC driver quirk.
+
+**Lesson to address:** "Large Table Snapshot Strategies" (performance tuning), "Incremental Snapshots for Massive Tables" (advanced patterns)
+
+---
+
+#### MODERATE: DDL Tool Integration (gh-ost, pt-online-schema-change)
+
+**What goes wrong:**
+Online schema change tools (gh-ost, pt-online-schema-change) create temporary helper tables during migrations. If Debezium's `table.include.list` doesn't cover these helper tables, the connector can crash with "exception thrown from value converters" when schema changes complete.
+
+**Why it happens:**
+- gh-ost creates tables like `_tablename_gho`, `_tablename_ghc`, `_tablename_del`
+- pt-osc creates `_tablename_new`, `_tablename_old`
+- Debezium sees DDL events for these tables but cannot access schema (not in include list)
+- After migration completes, connector fails on next event from migrated table
+
+**Consequences:**
+- Connector crashes mid-schema-migration
+- Requires connector restart and potential re-snapshot
+- Production migrations blocked by CDC concerns
+- Schema changes become high-risk operations
+
+**Prevention:**
+1. **Include helper table patterns in connector config:**
+   ```json
+   "table.include.list": "mydb.users,mydb._.*_gho,mydb._.*_ghc,mydb._.*_del,mydb._.*_new,mydb._.*_old"
+   ```
+
+2. **Coordinate with DBAs** on schema change schedule:
+   - Pause Debezium connector during migration window (if acceptable data delay)
+   - Or ensure helper tables are whitelisted before migration starts
+
+3. **Use Debezium-aware migration tools:**
+   - Some versions of gh-ost can coordinate with replication tools
+   - Document standard procedures for your organization
+
+4. **Test schema changes** in staging with Debezium running before production
+
+**Detection:**
+- Connector crashes during or after DDL migration
+- Error: "exception thrown from value converters"
+- Correlation with gh-ost/pt-osc execution in MySQL audit logs
+
+**MySQL vs PostgreSQL:**
+PostgreSQL migrations typically use different patterns (logical replication-aware tools). MySQL-specific due to prevalence of gh-ost/pt-osc.
+
+**Lesson to address:** "Safe Schema Changes with gh-ost/pt-osc" (operational patterns), "DDL Management Strategies" (architecture)
+
+---
+
+#### MODERATE: Configuration Property Version Mismatch
+
+**What goes wrong:**
+Debezium configuration property names changed between versions (v1.9, v2.0). Old properties are silently ignored, causing connectors to fail with mysterious errors or use wrong defaults.
+
+**Why it happens:**
+- Copy-pasting old blog posts or Stack Overflow answers
+- Upgrading Debezium version without reviewing breaking changes
+- Documentation search results mix v1 and v2 examples
+
+**Consequences:**
+- Connector ignores intended configuration
+- Schema history topic not found (wrong topic name)
+- Timezone conversions incorrect
+- Silent failures (config ignored but connector starts)
+
+**Prevention:**
+1. **Know the breaking changes (v1.9, v2.0+):**
+   - OLD: `database.history.internal.kafka.topic`
+   - NEW: `schema.history.internal.kafka.topic`
+
+   - OLD: `database.serverTimezone="UTC"`
+   - NEW: `database.connectionTimeZone="UTC"`
+
+2. **Validate connector config** against current version documentation
+3. Check Debezium version in production: connector logs show version on startup
+4. Use JSON schema validation in deployment pipelines
+5. Review release notes for every Debezium upgrade
+
+**Detection:**
+- Connector works in dev (older version), fails in prod (newer version)
+- Schema history topic not found despite being created
+- Timezone-related data inconsistencies
+- Check logs for "unknown property" warnings
+
+**MySQL vs PostgreSQL:**
+Affects both connectors equally. Not MySQL-specific but critical for MySQL users.
+
+**Lesson to address:** "Debezium Version Migration Guide" (upgrade procedures), "Configuration Validation" (operational)
+
+---
+
+#### MODERATE: Timezone Handling with DATETIME vs TIMESTAMP
+
+**What goes wrong:**
+MySQL has two temporal types with different timezone behaviors:
+- `DATETIME`: No timezone, stored as-is
+- `TIMESTAMP`: Converted to UTC on write, converted to session timezone on read
+
+Debezium emits both as UTC in Kafka, but the semantics differ. Applications consuming events may misinterpret timestamps, leading to off-by-hours errors in dashboards, reports, or downstream processing.
+
+**Why it happens:**
+- DBAs use DATETIME and TIMESTAMP interchangeably without understanding timezone implications
+- Applications assume all timestamps are in local timezone
+- MySQL session timezone differs from application timezone
+- Debezium's UTC normalization hides the original semantics
+
+**Consequences:**
+- Event timestamps off by timezone offset (e.g., 8 hours for Asia/Shanghai)
+- Reports show wrong dates for events
+- Time-based aggregations incorrect
+- Debugging requires checking both table schema and MySQL session timezone
+
+**Prevention:**
+1. **Standardize on TIMESTAMP for timezone-aware columns:**
+   - Use TIMESTAMP for "when did this happen" (created_at, updated_at)
+   - Use DATETIME only for "human selected a time" (appointment_time, scheduled_for)
+
+2. **Configure MySQL session timezone explicitly:**
+   ```json
+   "database.connectionTimeZone": "UTC"
+   ```
+
+3. **Document timezone semantics** in schema registry or data catalog
+
+4. **Use Debezium Timezone Converter SMT** if you need to preserve original timezone:
+   ```json
+   "transforms": "convertTimezone",
+   "transforms.convertTimezone.type": "io.debezium.transforms.TimezoneConverter",
+   "transforms.convertTimezone.converted.timezone": "America/New_York"
+   ```
+
+5. **Validate timestamps** in end-to-end tests with known timezone test data
+
+**Detection:**
+- Event timestamps don't match database query results
+- Timestamps off by consistent offset (e.g., always 5 hours)
+- Works in dev (localhost timezone) but wrong in prod (different timezone)
+
+**MySQL vs PostgreSQL:**
+PostgreSQL has clearer timezone semantics (TIMESTAMP vs TIMESTAMPTZ). MySQL's dual behavior is more confusing.
+
+**Lesson to address:** "MySQL Timezone Deep Dive" (data modeling), "Timezone Conversion Strategies" (event processing)
+
+---
+
+#### MODERATE: MySQL CASCADE DELETE Not in Binlog
+
+**What goes wrong:**
+Rows deleted via CASCADE DELETE don't appear in binlog, causing Debezium to miss these deletes and downstream systems to have orphaned records.
+
+**Why it happens:**
+- MySQL doesn't log CASCADE DELETE to binlog
+- Foreign key cascades handled internally
+- Binlog only shows triggering DELETE
+
+**Consequences:**
+- Orphaned child records in target systems
+- Data inconsistency between source and target
+- Referential integrity violations
+
+**Prevention:**
+1. **Avoid CASCADE DELETE in source:** Use application-level cascading
+2. **Rebuild child records periodically:** Full snapshot to detect orphans
+3. **Document known limitation:** Ensure downstream teams aware
+4. **Consider triggers:** Log cascade deletes via triggers (performance impact)
+
+**Detection:**
+- Child records exist in target but not source
+- Referential integrity checks fail
+- Snapshot reconciliation shows discrepancies
 
 **Course Phase Mapping:**
-- **Phase 5 (Snapshots):** Compare conventional vs incremental snapshots, demonstrate incremental
-- **Phase 4 (Production Deployment):** Capacity planning for snapshots
+- **Phase 1 (Aurora Connector):** Document CASCADE DELETE limitation, demonstrate issue
+
+---
+
+#### LOW: Topic Naming Conflicts from Special Characters
+
+**What goes wrong:**
+MySQL allows special characters in database/table names (hyphens, dots, non-Latin characters). Debezium converts non-alphanumeric characters to underscores in Kafka topic names. This can cause collisions: `my-db.my-table` and `my_db.my_table` both become `myserver.my_db.my_table`.
+
+**Why it happens:**
+- DBAs use naming conventions with hyphens or dots
+- Multi-tenant databases with client IDs in names (e.g., `client-123.orders`)
+- Legacy schemas with special characters
+
+**Consequences:**
+- Two tables write to same Kafka topic (data mixed)
+- Schema registry conflicts
+- Data loss or corruption from interleaved events
+
+**Prevention:**
+1. Use alphanumeric + underscores only in MySQL names
+2. Document naming conventions for CDC-monitored databases
+3. Test topic name generation: `{database.server.name}.{database}.{table}`
+4. Use `table.include.list` carefully to avoid ambiguous mappings
+5. Consider custom topic routing SMT if migrations from legacy schemas are needed
+
+**Detection:**
+- Kafka topic has events from multiple tables
+- Schema registry errors about incompatible schemas
+- Event counts don't match database row counts
+
+**Lesson to address:** "Database Naming Conventions for CDC" (best practices)
+
+---
+
+#### LOW: Incremental Snapshot Signaling Table Misconfiguration
+
+**What goes wrong:**
+Incremental snapshots require a signaling table in the source database for trigger/control. If this table isn't created, or lacks proper permissions, or has wrong schema, incremental snapshots silently fail or never start.
+
+**Why it happens:**
+- Documentation assumes manual table creation
+- DBAs unfamiliar with Debezium requirements
+- Permission granted for data tables but not signaling table
+
+**Consequences:**
+- Incremental snapshot doesn't start (no error, just doesn't happen)
+- Large table additions never complete
+- Confusion about why snapshot isn't progressing
+
+**Prevention:**
+1. **Create signaling table explicitly:**
+   ```sql
+   CREATE TABLE mydb.debezium_signal (
+     id VARCHAR(64) PRIMARY KEY,
+     type VARCHAR(32) NOT NULL,
+     data TEXT
+   );
+   ```
+
+2. **Grant permissions:**
+   ```sql
+   GRANT INSERT, UPDATE, DELETE ON mydb.debezium_signal TO 'debezium'@'%';
+   ```
+
+3. **Configure in connector:**
+   ```json
+   "signal.data.collection": "mydb.debezium_signal"
+   ```
+
+4. **Test with sample signal:**
+   ```sql
+   INSERT INTO mydb.debezium_signal VALUES ('ad-hoc-1', 'execute-snapshot', '{"data-collections": ["mydb.large_table"]}');
+   ```
+
+5. **Monitor signaling table** for processed vs pending signals
+
+**Detection:**
+- Incremental snapshot never starts
+- No errors in connector logs
+- Signaling table rows remain unprocessed
+
+**Lesson to address:** "Incremental Snapshots Setup" (configuration), "Signaling Table Management" (operational)
+
+---
+
+#### LOW: Binlog Format Not ROW-Based
+
+**What goes wrong:**
+Debezium requires `binlog_format=ROW`. If MySQL is configured with `STATEMENT` or `MIXED` format, Debezium cannot capture all changes. Connector fails with error: "binlog_format must be ROW."
+
+**Why it happens:**
+- Default MySQL installation uses `MIXED` or `STATEMENT` in some versions
+- DBAs optimize for replication performance without considering CDC
+- Inherited configuration from pre-CDC era
+
+**Consequences:**
+- Connector refuses to start
+- Partial data capture if format changes mid-stream
+
+**Prevention:**
+1. **Set globally in MySQL config:**
+   ```ini
+   [mysqld]
+   binlog_format = ROW
+   ```
+
+2. **Verify before deploying Debezium:**
+   ```sql
+   SHOW VARIABLES LIKE 'binlog_format';
+   ```
+
+3. **Set dynamically (self-hosted MySQL):**
+   ```sql
+   SET GLOBAL binlog_format = 'ROW';
+   ```
+
+4. **Aurora/RDS:** Modify parameter group, set `binlog_format=ROW`, reboot instance
+
+**Detection:**
+- Connector error: "binlog_format must be ROW"
+- Fails immediately on startup
+- Works after changing format to ROW
+
+**Lesson to address:** "MySQL Binlog Prerequisites" (setup)
 
 ---
 
@@ -582,40 +1033,6 @@ Debezium 2.0+ removes native Confluent Schema Registry support, requiring manual
 
 ### 1.6 Snapshot and Initial Load Pitfalls
 
-#### CRITICAL: Binlog Position Loss
-
-**What goes wrong:**
-If Debezium MySQL connector stops for too long, MySQL server purges older binlog files and connector's last position is lost. On restart, MySQL server no longer has the starting point and connector fails.
-
-**Why it happens:**
-- Connector downtime exceeds binlog retention period
-- Binlog retention too short for maintenance windows
-- High transaction volume fills binlog quickly
-
-**Consequences:**
-- Connector cannot resume streaming
-- If `snapshot.mode=initial`, connector fails permanently
-- Must re-snapshot entire database
-- Data loss for purged period
-
-**Prevention:**
-1. **Increase binlog retention:** Set to 7+ days (`expire_logs_days` or `binlog_expire_logs_seconds`)
-2. **Monitor connector lag:** Alert before lag approaches retention limit
-3. **Use snapshot.mode=when_needed:** Automatically re-snapshot if position lost
-4. **Minimize connector downtime:** Automate restarts, reduce maintenance windows
-5. **Archive binlogs externally:** Backup binlogs to S3/GCS for recovery
-
-**Detection:**
-- Connector fails with "binlog position no longer available"
-- MySQL logs show binlog file purge
-- Gap between connector offset and earliest available binlog
-
-**Course Phase Mapping:**
-- **Phase 5 (Snapshots):** Configure snapshot.mode, binlog retention
-- **Phase 7 (Troubleshooting):** Recovery from binlog position loss
-
----
-
 #### MODERATE: Snapshot Mode Misconfiguration
 
 **What goes wrong:**
@@ -893,100 +1310,7 @@ Assuming global ordering across all tables, but Debezium only guarantees orderin
 
 ---
 
-### 1.10 Database-Specific Edge Cases
-
-#### MODERATE: MySQL CASCADE DELETE Not in Binlog
-
-**What goes wrong:**
-Rows deleted via CASCADE DELETE don't appear in binlog, causing Debezium to miss these deletes and downstream systems to have orphaned records.
-
-**Why it happens:**
-- MySQL doesn't log CASCADE DELETE to binlog
-- Foreign key cascades handled internally
-- Binlog only shows triggering DELETE
-
-**Consequences:**
-- Orphaned child records in target systems
-- Data inconsistency between source and target
-- Referential integrity violations
-
-**Prevention:**
-1. **Avoid CASCADE DELETE in source:** Use application-level cascading
-2. **Rebuild child records periodically:** Full snapshot to detect orphans
-3. **Document known limitation:** Ensure downstream teams aware
-4. **Consider triggers:** Log cascade deletes via triggers (performance impact)
-
-**Detection:**
-- Child records exist in target but not source
-- Referential integrity checks fail
-- Snapshot reconciliation shows discrepancies
-
-**Course Phase Mapping:**
-- **Phase 1 (Aurora Connector):** Document CASCADE DELETE limitation, demonstrate issue
-
----
-
-#### LOW: MongoDB Document Size Limit (16 MB)
-
-**What goes wrong:**
-MongoDB documents exceeding 16 MB BSON limit crash Debezium connector.
-
-**Why it happens:**
-- BSON format has hard 16 MB limit
-- Large embedded arrays or documents exceed limit
-
-**Consequences:**
-- Connector crashes on oversized document
-- Data pipeline halts
-- Cannot skip problematic document without configuration
-
-**Prevention:**
-1. **Configure cursor.oversize.handling.mode:** Set to `skip` to ignore oversized documents
-2. **Monitor document sizes:** Alert on documents approaching 16 MB
-3. **Refactor data model:** Normalize large embedded documents to separate collections
-4. **Filter oversized documents at source:** Application prevents creation
-
-**Detection:**
-- Connector crashes with "document exceeds maximum size"
-- Logs show 16 MB limit error
-
-**Course Phase Mapping:**
-- **Phase 1 (MongoDB Connector - if included):** Configure oversize handling
-
----
-
-#### MODERATE: Database Timezone Configuration
-
-**What goes wrong:**
-TIMESTAMP values fail to normalize to UTC if database timezone isn't explicitly specified via `database.connectionTimeZone`, causing incorrect timestamps in events.
-
-**Why it happens:**
-- Default timezone handling varies by connector
-- Database timezone != JVM timezone
-- Implicit timezone conversion errors
-
-**Consequences:**
-- Timestamps off by hours (timezone offset)
-- Temporal queries return wrong results
-- Data appears in wrong time buckets
-
-**Prevention:**
-1. **Always set database.connectionTimeZone explicitly:** Don't rely on defaults
-2. **Standardize on UTC everywhere:** Database, Debezium, consumers
-3. **Test with timezone edge cases:** DST transitions, leap seconds
-4. **Validate timestamp accuracy:** Compare source vs target timestamps
-
-**Detection:**
-- Timestamps consistently off by fixed offset
-- Events appear to occur in future or past
-- Timezone math errors in queries
-
-**Course Phase Mapping:**
-- **Phase 2 (PostgreSQL Connector) / Phase 1 (Aurora Connector):** Configure connectionTimeZone
-
----
-
-### 1.11 Recovery and Failure Scenarios
+### 1.10 Recovery and Failure Scenarios
 
 #### CRITICAL: Offset Desynchronization After Failure
 
@@ -1054,7 +1378,72 @@ Task failure doesn't trigger rebalance (must manually restart via API), but work
 
 ---
 
+#### MODERATE: Database Timezone Configuration
+
+**What goes wrong:**
+TIMESTAMP values fail to normalize to UTC if database timezone isn't explicitly specified via `database.connectionTimeZone`, causing incorrect timestamps in events.
+
+**Why it happens:**
+- Default timezone handling varies by connector
+- Database timezone != JVM timezone
+- Implicit timezone conversion errors
+
+**Consequences:**
+- Timestamps off by hours (timezone offset)
+- Temporal queries return wrong results
+- Data appears in wrong time buckets
+
+**Prevention:**
+1. **Always set database.connectionTimeZone explicitly:** Don't rely on defaults
+2. **Standardize on UTC everywhere:** Database, Debezium, consumers
+3. **Test with timezone edge cases:** DST transitions, leap seconds
+4. **Validate timestamp accuracy:** Compare source vs target timestamps
+
+**Detection:**
+- Timestamps consistently off by fixed offset
+- Events appear to occur in future or past
+- Timezone math errors in queries
+
+**Course Phase Mapping:**
+- **Phase 2 (PostgreSQL Connector) / Phase 1 (Aurora Connector):** Configure connectionTimeZone
+
+---
+
+## MySQL vs PostgreSQL Comparison Summary
+
+| Issue | MySQL | PostgreSQL | Notes |
+|-------|-------|------------|-------|
+| **WAL/Binlog Retention** | Time-based purging (risk of position loss) | Replication slots prevent deletion (risk of unbounded growth) | Different failure modes, both need monitoring |
+| **Snapshot Locking** | Global read lock or table-level locks, Aurora prohibits global | Lower-impact MVCC snapshots | MySQL more complex, especially on Aurora |
+| **GTID Mode** | Optional, adds complexity and failure modes | N/A | MySQL-specific complication |
+| **Permissions** | Granular (SELECT, RELOAD, LOCK TABLES, REPLICATION *) | Simple (REPLICATION role) | MySQL more error-prone |
+| **Server ID** | Required, must be unique across all connectors | N/A (publication/slot name uniqueness) | MySQL-specific multi-connector issue |
+| **Timezone Handling** | DATETIME vs TIMESTAMP confusion | TIMESTAMP vs TIMESTAMPTZ (clearer) | MySQL more prone to timezone bugs |
+| **DDL Tools** | gh-ost, pt-osc create helper tables | Native logical replication-aware migrations | MySQL requires extra table whitelisting |
+| **Schema History** | Same (Kafka topic with infinite retention) | Same | Both connectors share this issue |
+| **Failover** | Aurora: binlog position/GTID may change after failover | Aurora: replication slot recreation required | Both have failover challenges, different mechanisms |
+| **CASCADE DELETE** | Not logged to binlog | Logged to WAL | MySQL-specific limitation |
+
+---
+
+## Phase-Specific Warnings
+
+| Phase Topic | Likely Pitfall | Mitigation |
+|-------------|---------------|------------|
+| Initial MySQL Setup | Binlog format not ROW, binlog disabled | Add pre-flight validation script that checks MySQL config before connector deployment |
+| Aurora MySQL Introduction | Global read lock prohibition | Cover snapshot.locking.mode options, demonstrate minimal vs none, recommend incremental snapshots |
+| Schema Changes | gh-ost/pt-osc helper tables not whitelisted | Provide table.include.list pattern examples, coordinate with DBA procedures |
+| Production Deployment | Insufficient binlog retention | Calculate retention based on max acceptable downtime + buffer, set up binlog lag monitoring |
+| Multi-Database Setup | Server ID conflicts | Require server ID registry in deployment docs, validate uniqueness in CI/CD |
+| Disaster Recovery | Schema history topic corruption | Document recovery snapshot procedure, backup schema history topic to S3/GCS |
+| Performance Tuning | Large table snapshot timeouts | Cover incremental snapshots, timeout configuration, read replica snapshots |
+| Monitoring | Binlog purging before connector catches up | Implement binlog delay alerts with escalation before retention threshold |
+
+---
+
 ## Part 2: Course Creation Pitfalls
+
+[Previous course creation content remains the same...]
 
 ### 2.1 Content Relevance Pitfalls
 
@@ -1561,173 +1950,74 @@ Course shows happy path only, no error handling, debugging, or recovery scenario
 
 ---
 
-## Part 3: Prevention Strategies for Course Design
-
-### 3.1 Content Maintenance Strategy
-
-**Problem:** Content becomes outdated in 18 months.
-
-**Strategy:**
-1. **Quarterly review schedule:** Check Debezium release notes every 3 months
-2. **Version pinning with documentation:**
-   ```
-   This course uses:
-   - Debezium 3.4.0 (released Dec 2025)
-   - Kafka 3.7 with KRaft (ZooKeeper removed)
-   - PostgreSQL 16, MySQL 8.0
-   Last updated: 2026-01-31
-   ```
-3. **Modular content structure:** Easy to swap outdated modules
-4. **Student feedback loop:** "Report outdated content" button
-5. **Changelog for course:** Document what changed in each update
-6. **Automated testing:** CI/CD runs all lab code examples weekly
-
----
-
-### 3.2 Hands-On Lab Design Principles
-
-**Problem:** Too theoretical, not enough practice.
-
-**Design Principles:**
-1. **Progressive complexity:**
-   - Lab 1: Single table, INSERT only, local Docker
-   - Lab 2: Multiple tables, UPDATE/DELETE, local Docker
-   - Lab 3: Cloud deployment (Cloud SQL), handle errors
-   - Lab 4: Production setup (monitoring, alerts, recovery)
-
-2. **Every lab includes:**
-   - **Setup script:** Automated environment provisioning
-   - **Starter code:** Pre-configured with TODOs
-   - **Success criteria:** Clear checklist of outcomes
-   - **Debugging challenge:** Intentional error to fix
-   - **Solution walkthrough:** Video of instructor solving it
-
-3. **Lab environment options:**
-   - **Local:** Docker Compose (free, offline capable)
-   - **Cloud:** Terraform templates (realistic, costs money)
-   - **Hybrid:** Codespaces (browser-based, free tier)
-
-4. **Validation mechanisms:**
-   - **Automated tests:** Students run tests to verify completion
-   - **Manual checklist:** "You should see X in Kafka topic Y"
-   - **Peer review:** Optional community lab review
-
----
-
-### 3.3 Prerequisite Management Strategy
-
-**Problem:** Unclear prerequisites cause frustration.
-
-**Strategy:**
-1. **Explicit prerequisite documentation:**
-   ```
-   Before starting this course, you should:
-   - [ ] Write SQL queries (SELECT, JOIN, WHERE)
-   - [ ] Understand database transactions (ACID properties)
-   - [ ] Know Kafka basics (topics, partitions, consumers)
-   - [ ] Run Docker containers (docker run, docker-compose up)
-   - [ ] Use command line (bash, navigation, environment variables)
-   - [ ] Optionally: Basic Python or Java for SMT examples
-   ```
-
-2. **Prerequisite assessment quiz (10 questions):**
-   - SQL: "What does this JOIN return?"
-   - Kafka: "If a topic has 3 partitions, how many consumers in a group can read concurrently?"
-   - Docker: "What command starts containers from docker-compose.yml?"
-   - Score < 70%: Recommend prerequisite courses first
-
-3. **Prerequisite refresher module (optional, 30 min):**
-   - Kafka 101: Topics, partitions, consumer groups
-   - Docker basics: Containers, images, docker-compose
-   - SQL refresher: Transactions, indexes, replication
-
-4. **"Level up" recommendations:**
-   - Beginner track: Include more hand-holding
-   - Advanced track: Skip basics, jump to production scenarios
-
----
-
-### 3.4 Validation Before Building
-
-**Problem:** Building without validating demand.
-
-**Validation Checklist:**
-- [ ] Surveyed 50+ target audience members on pain points
-- [ ] Analyzed top 5 Debezium Stack Overflow questions (what do people struggle with?)
-- [ ] Reviewed GitHub issues for common problems
-- [ ] Identified gap in existing courses (what's missing?)
-- [ ] Pre-sold to 10+ students or collected 100+ email signups
-- [ ] Beta tested MVP (first 3 modules) with real students
-- [ ] Gathered feedback and iterated based on beta results
-
-**Market Research Questions:**
-1. What CDC/Debezium problems do you face today? (open-ended)
-2. Have you taken a Debezium course before? What was missing?
-3. What database sources do you need to integrate? (Aurora, Cloud SQL, on-prem PostgreSQL, etc.)
-4. What's your biggest blocker to adopting Debezium? (knowledge gap, infrastructure, cost, etc.)
-5. Would you pay $X for a comprehensive Debezium course? (pricing validation)
-
----
-
-### 3.5 Launch and Iteration Strategy
-
-**Problem:** Waiting for perfection prevents launch.
-
-**Launch Strategy:**
-1. **MVP Definition (Week 0-12):**
-   - Phases 1-4: Core Debezium setup (Aurora, PostgreSQL, Cloud, Production)
-   - Total: 6-8 hours of content
-   - Goal: Students can set up production CDC pipeline
-
-2. **Beta Launch (Week 13):**
-   - 20 students at 50% discount
-   - Live Q&A sessions weekly
-   - Collect detailed feedback
-   - Iterate rapidly based on input
-
-3. **V1.0 Public Launch (Week 16):**
-   - Add Phases 5-8 based on beta feedback
-   - Total: 10-12 hours
-   - Full price, marketing push
-   - Goal: 100 students in first month
-
-4. **V1.1 Update (Month 4):**
-   - Add advanced modules (Phases 9-11)
-   - Update for latest Debezium version
-   - Address common student questions as new content
-
-5. **Ongoing Updates (Quarterly):**
-   - Debezium version updates
-   - New cloud provider examples
-   - Student-requested deep dives
-
-**Metrics to Track:**
-- Enrollment rate
-- Completion rate (overall and per module)
-- Time to complete
-- Student satisfaction (NPS score)
-- Employment outcomes (did course help get job/promotion?)
-
----
-
 ## Confidence Assessment
 
 | Domain | Confidence | Reason |
 |--------|------------|--------|
 | PostgreSQL Pitfalls | HIGH | Multiple authoritative sources (official docs, Red Hat documentation, recent 2025-2026 content) |
-| Aurora/RDS Pitfalls | MEDIUM-HIGH | Good sources but some dated 2020-2022, verified with 2026 searches |
+| MySQL/Aurora Pitfalls | MEDIUM-HIGH | Official Debezium docs verified via WebFetch, community reports, multiple corroborating sources |
 | GCP Integration | MEDIUM | Found integration guides but fewer problem reports (possibly less common or newer) |
 | Kafka Connect Pitfalls | HIGH | Official Confluent docs, common mistakes documented extensively |
 | Schema Evolution | MEDIUM-HIGH | Well-documented issues, some recent GitHub issues from 2025 |
-| Snapshot Issues | HIGH | Official Debezium blog, production deployment guides |
-| Monitoring | HIGH | Official documentation, community examples |
 | Course Creation | MEDIUM-HIGH | General course creation pitfalls well-documented, Debezium-specific extrapolated from production pitfalls |
 
 ---
 
 ## Sources
 
-### Debezium Production Sources
+### MySQL/Aurora MySQL Specific Sources
+
+**Official Documentation:**
+- [Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html) (verified via WebFetch 2026-02-01)
+- [Debezium FAQ](https://debezium.io/documentation/faq/)
+- [Debezium Timezone Converter SMT](https://debezium.io/documentation/reference/stable/transformations/timezone-converter.html)
+- [Red Hat Debezium User Guide - MySQL](https://docs.redhat.com/en/documentation/red_hat_build_of_debezium/1.9.7/html/debezium_user_guide/debezium-connector-for-mysql)
+- [MySQL Binlog Configuration - Boltic](https://www.boltic.io/blog/mysql-binlog)
+
+**Community Resources (Verified):**
+- [Troubleshoot Debezium MySQL Connector Errors - Sylhare's Blog](https://sylhare.github.io/2023/11/07/Debezium-configuration.html)
+- [MySQL CDC with Debezium in Production - Materialize](https://materialize.com/guides/mysql-cdc/)
+- [Binlog Retention in MySQL - Upsolver](https://docs.upsolver.com/upsolver-1/connecting-data-sources/cdc-data-sources-debezium/mysql-cdc-data-source/binlog-retention-in-mysql)
+
+**Technical Issues (Recent 2026):**
+- [Flink CDC MySQL TLS 1.3 Deadlock Issue](http://www.mail-archive.com/dev@flink.apache.org/msg84554.html) (January 2026)
+- [MySQL CDC Binlog Issues - Apache Flink](https://nightlies.apache.org/flink/flink-cdc-docs-master/docs/connectors/flink-sources/mysql-cdc/)
+- [Debezium MySQL Connector Common Mistakes Google Groups](https://groups.google.com/g/debezium/)
+
+**GTID Mode Issues:**
+- [MySQL GTID Mode Debezium Problems](https://groups.google.com/g/debezium/c/pMgC9mlPYVA)
+- [Debezium MySQL Snapshot From Read Replica With GTID](https://thedataguy.in/debezium-mysql-snapshot-from-read-replica-with-gtid/)
+
+**Aurora/RDS Specific:**
+- [AWS RDS Binary Log Configuration](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html)
+- [Aurora MySQL Replication](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.html)
+- [Debezium Aurora MySQL Connector Issues](https://groups.google.com/g/debezium/c/Ygr8yZ6zDhk)
+
+**Snapshot and Performance:**
+- [MySQL CDC Connector Snapshot Fetch Size](https://github.com/ververica/flink-cdc-connectors/issues/98)
+- [Connection Timeout During MySQL Snapshot](https://groups.google.com/g/debezium/c/FT5aCUjqz8o)
+- [MySQL Interactive Timeout CDC Issues](https://github.com/airbytehq/airbyte/issues/3775)
+
+**Schema History and Recovery:**
+- [Debezium Schema History Topic Configuration](https://forum.confluent.io/t/debezium-the-db-history-topic-or-its-content-is-fully-or-partially-missing-please-check-database-history-topic-configuration-and-re-execute-the-snapshot/4614)
+- [A Note On Database History Topic Configuration](https://debezium.io/blog/2018/03/16/note-on-database-history-topic-configuration/)
+- [Schema Only Recovery Issues](https://groups.google.com/g/debezium/c/lmkODp1TQsE)
+
+**Server ID and Multi-Connector:**
+- [Multiple Debezium MySQL Connectors Server ID Conflicts](https://groups.google.com/g/debezium/c/atRs7pQFfKA)
+- [Multiple Connectors on One Server](https://groups.google.com/g/debezium/c/Xx_w1mZvuT8)
+
+**Timezone and Data Type Handling:**
+- [Debezium MySQL Timezone Issues](https://groups.google.com/g/debezium/c/5VYe0UQJVdI)
+- [MySQL Connector Timezone Configuration](https://groups.google.com/g/debezium/c/5cNsbI3foHE)
+- [GitHub Debezium DateTime Converter](https://github.com/holmofy/debezium-datetime-converter)
+
+**DDL Tools:**
+- [GitHub gh-ost](https://github.com/github/gh-ost)
+- [Online Schema Change Tools Comparison - PlanetScale](https://planetscale.com/docs/learn/online-schema-change-tools-comparison)
+- [gh-ost vs pt-online-schema-change](https://severalnines.com/blog/online-schema-change-mysql-mariadb-comparing-github-s-gh-ost-vs-pt-online-schema-change/)
+
+### PostgreSQL Sources (from existing research)
 
 **General Debezium Pitfalls:**
 - [Debezium for CDC in Production: Pain Points and Limitations](https://estuary.dev/blog/debezium-cdc-pain-points/)

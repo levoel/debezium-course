@@ -1,684 +1,519 @@
-# Technology Stack Research
+# Technology Stack: MySQL/Aurora MySQL CDC Module
 
-**Project:** Interactive Debezium Course
-**Type:** Static web course for middle+ data engineers
-**Researched:** 2025-01-31
+**Project:** Debezium Course - MySQL/Aurora MySQL Module (v1.1)
+**Scope:** Stack additions for MySQL CDC content
+**Researched:** 2026-02-01
 **Overall Confidence:** HIGH
 
 ---
 
 ## Executive Summary
 
-For a static interactive technical course in 2025, **Astro 5** emerges as the optimal framework choice over Docusaurus and Next.js. Astro offers superior performance for content-heavy sites (5x faster builds for Markdown, 2x for MDX), ships zero JavaScript by default, and provides excellent MDX support for interactive components. Combined with React for interactive elements, TypeScript for type safety, and Tailwind CSS for styling, this stack delivers a professional, fast, and maintainable learning platform.
+Adding MySQL/Aurora MySQL CDC content to the existing Debezium course requires **minimal stack changes**. The existing Docker Compose infrastructure (Debezium 2.5.4, Kafka 7.8.1 KRaft) supports MySQL CDC with only the addition of a MySQL container. Use **MySQL 8.0.x** (not 8.4 LTS) for compatibility with Debezium 2.5.4. MySQL 8.0+ has native ARM64 support in official Docker images. Aurora MySQL-specific features cannot be fully simulated locally but can be covered through configuration examples and documentation.
 
-**Key Decision:** Astro over Docusaurus because while Docusaurus is documentation-focused, this is a learning course requiring custom interactive experiences (roadmap navigation, progress tracking, exercises) where Astro's flexibility and performance advantages are critical.
+**Key Decision:** MySQL 8.0.40 over MySQL 8.4 LTS because Debezium 2.5.4 officially supports MySQL 8.0/8.2 but not 8.4 (which requires Debezium 3.0+). Maintaining consistency with the existing Debezium version avoids infrastructure changes.
 
 ---
 
-## Recommended Stack
+## Recommended Stack Additions
 
-### Core Framework
+### MySQL Database
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **Astro** | 5.0+ | Static site generator | Ships zero JS by default, 5x faster Markdown builds, 2x faster MDX builds, 25-50% less memory. Content Layer API provides type-safe content management. Islands architecture allows selective hydration of interactive components. |
-| **TypeScript** | 5.9+ | Type safety | Essential for large content sites. Astro 5 includes type-safe environment variables (`astro:env`). Version 5.9 is stable; avoid 6.0 beta (final JS-based version). |
-| **Vite** | 6.0+ | Build tool | Bundled with Astro 5. Environment API improves dev experience. Fast HMR for development iteration. |
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| **mysql** (official) | 8.0.40+ | CDC source database | Official Docker image has native ARM64 support. MySQL 8.0 is fully compatible with Debezium 2.5.4. Version 8.0.40 is latest 8.0.x before 8.4 LTS transition. MySQL 8.0 EOL is April 2026, acceptable for course material published in Q1 2026. |
 
-**Confidence:** HIGH - All versions verified from official sources. Astro 5 released December 2024, actively used in production at Cloudflare, Google, Microsoft, OpenAI.
+**Confidence:** HIGH - MySQL 8.0+ ARM64 support verified from Docker Hub. Debezium 2.5.4 MySQL 8.0/8.2 compatibility confirmed from official release notes.
 
-### UI Framework for Interactive Components
+### Required MySQL Configuration
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **React** | 19.2+ | Interactive components | Astro supports React islands for interactive elements (quizzes, code editors, progress trackers). React 19 stable since December 2024, compatible with Astro 5. Use sparingly via islands architecture. |
+| Configuration | Value | Purpose | Why Required |
+|---------------|-------|---------|--------------|
+| `server-id` | 1 (unique) | Replication identifier | Debezium uses replication protocol; server-id must be set |
+| `log_bin` | mysql-bin | Binary log path | Debezium reads binlog for CDC events |
+| `binlog_format` | ROW | Binlog format | Debezium requires row-level events (not statement-based) |
+| `binlog_row_image` | FULL | Row change detail | Debezium requires full before/after row images |
+| `gtid_mode` | ON (optional) | GTID support | Simplifies failover and replication positioning (best practice) |
+| `enforce_gtid_consistency` | ON (optional) | GTID consistency | Required when gtid_mode=ON |
+| `binlog_expire_logs_seconds` | 604800 (7 days) | Binlog retention | Prevents disk fill-up in lab environment |
 
-**Confidence:** HIGH - React 19 stable, Astro React integration well-documented.
+**Confidence:** HIGH - All requirements verified from official Debezium MySQL connector documentation and Confluent platform guides.
 
-### Content Management
+### MySQL User Privileges
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **MDX** | 3.x | Interactive documentation | Write course content in Markdown with embedded React components. Astro 5 provides 2x faster MDX builds. Essential for mixing prose with interactive demos. |
-| **Astro Content Collections** | Built-in | Type-safe content | Astro 5 Content Layer provides type-safe queries, frontmatter validation, automatic routing. Up to 5x faster than Astro 4. |
+```sql
+CREATE USER 'debezium'@'%' IDENTIFIED BY 'debezium_password';
+GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
+FLUSH PRIVILEGES;
+```
 
-**Confidence:** HIGH - Core Astro features, extensively documented.
+**Privileges explained:**
+- `SELECT` - Read table data during snapshots
+- `RELOAD` - Flush tables during snapshot
+- `SHOW DATABASES` - Discover databases
+- `REPLICATION SLAVE` - Read binlog events
+- `REPLICATION CLIENT` - Monitor replication status
 
-### Styling
+**Confidence:** HIGH - Privilege requirements from official Debezium MySQL connector documentation.
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **Tailwind CSS** | 4.x | Utility-first CSS | Rapid UI development, excellent documentation, widely used in 2025. Smaller bundle than Bootstrap. Good for technical documentation styling. |
+---
 
-**Confidence:** MEDIUM - Tailwind 4.x recommended but verify latest stable version. Tailwind dominates utility-first category in 2025.
+## No Changes Required to Existing Stack
 
-### Code Presentation
+The following components from v1.0 remain unchanged:
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **Shiki** | Latest | Syntax highlighting | TextMate-based (VS Code engine), ships zero JS (renders at build time), supports all major languages including SQL, Java, YAML (essential for Debezium). Used by Vercel, Astro, Nextra. |
-| **@uiw/react-codemirror** | 4.x+ | Interactive code editor | CodeMirror 6-based React wrapper for interactive code exercises. TypeScript support, theme customization, language modes. |
+| Component | Version | Status |
+|-----------|---------|--------|
+| **Debezium Connect** | 2.5.4.Final | ✓ No change - supports MySQL connector |
+| **Kafka** | 7.8.1 (KRaft) | ✓ No change - same event bus |
+| **Schema Registry** | 7.8.1 | ✓ No change - schema management unchanged |
+| **Prometheus/Grafana** | Latest | ✓ No change - JMX metrics work identically |
+| **Python consumers** | confluent-kafka | ✓ No change - consume MySQL CDC events identically |
 
-**Confidence:** HIGH - Shiki built into Astro. CodeMirror 6 is current standard for web code editors.
+**Rationale:** Debezium 2.5.4 connector image includes both PostgreSQL and MySQL connectors. No version upgrades needed.
 
-### Diagrams
+**Confidence:** HIGH - Existing infrastructure verified in v1.0. Debezium multi-connector support confirmed.
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **Mermaid.js** | Latest | Diagrams as code | Markdown-based diagrams (flowcharts, sequence diagrams, entity relationships). Essential for visualizing CDC pipelines, data flows. Supported natively in many frameworks. |
+---
 
-**Confidence:** HIGH - Industry standard for documentation diagrams. Active development, extensive diagram types.
+## Docker Compose Integration
 
-### Progress Tracking
+### Add MySQL Service
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **localStorage API** | Native | Client-side persistence | Browser-native, no backend required. Ideal for tracking course progress, completed topics, user preferences. 5-10MB storage limit sufficient for progress data. |
-| **Custom React hooks** | N/A | Progress state management | Build custom `useProgress()` hook wrapping localStorage. Enables progress tracking, roadmap completion state, topic markers. |
+```yaml
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command:
+      # Binlog configuration for CDC
+      - "mysqld"
+      - "--server-id=1"
+      - "--log-bin=mysql-bin"
+      - "--binlog-format=ROW"
+      - "--binlog-row-image=FULL"
+      - "--gtid-mode=ON"
+      - "--enforce-gtid-consistency=ON"
+      - "--binlog-expire-logs-seconds=604800"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-**Confidence:** HIGH - Standard web API, well-supported. Common pattern for static site user state.
+volumes:
+  mysql-data:
+```
 
-### Deployment
+### Environment Variables (.env)
 
-| Technology | Version | Purpose | Rationale |
-|------------|---------|---------|-----------|
-| **GitHub Pages** | N/A | Free static hosting | Free for public repos, official Astro GitHub Action (withastro/action@5) provides one-command deployment. Supports custom domains via CNAME. |
-| **Vercel** | N/A | Alternative hosting | Zero-config Astro detection, automatic builds, preview deployments, custom domains, faster CDN than GitHub Pages. Free tier generous. |
+```bash
+# MySQL Configuration
+MYSQL_VERSION=8.0.40
+MYSQL_PORT=3307
+MYSQL_ROOT_PASSWORD=mysql_root
+MYSQL_DB=inventory
+MYSQL_USER=debezium
+MYSQL_PASSWORD=debezium_password
+```
 
-**Confidence:** HIGH - Both officially supported by Astro with documented workflows.
+**Port 3307 rationale:** Avoids conflict with any local MySQL installations on default port 3306.
+
+**Confidence:** HIGH - Docker Compose patterns verified from multiple sources including OLake CDC integration guide and Debezium tutorials.
+
+---
+
+## Aurora MySQL Simulation Approach
+
+**Reality Check:** Full Aurora MySQL simulation is not possible in local Docker. Aurora has architectural differences from standard MySQL:
+- Aurora uses cluster-level parameter groups
+- Aurora binlog retention is managed differently (tied to backup retention)
+- Aurora read replicas don't support binlog access
+- Enhanced binlog is Aurora MySQL 3.03.1+ only
+
+### Recommended Approach for Course Content
+
+| Aspect | Local Docker | Aurora MySQL Coverage |
+|--------|--------------|----------------------|
+| **Basic CDC** | ✓ Fully functional with MySQL 8.0 | Document Aurora-specific parameter groups in lesson text |
+| **Binlog configuration** | ✓ Identical commands in Docker | Show RDS parameter group screenshots/examples |
+| **GTID mode** | ✓ Fully functional | Same configuration applies to Aurora |
+| **Binlog retention** | ✓ `binlog_expire_logs_seconds` | Document Aurora-specific `mysql.rds_set_configuration` procedure |
+| **Read replicas** | ✗ Not simulated | Text-based explanation with diagrams of Aurora limitations |
+| **Multi-AZ** | ✗ Not simulated | Cloud-specific content (screenshots, documentation) |
+
+### Aurora-Specific Content Strategy
+
+**Lab exercises:** Use local MySQL 8.0 Docker for hands-on practice
+**Aurora coverage:** Dedicated lesson sections covering:
+1. Aurora MySQL parameter groups (show real AWS console screenshots)
+2. Binlog retention configuration via `mysql.rds_set_configuration` stored procedure
+3. Read replica limitations (cannot be CDC source)
+4. Enhanced binlog feature (Aurora MySQL 3.03.1+)
+5. Connection endpoints (cluster vs instance endpoints)
+
+**Confidence:** MEDIUM - Aurora simulation limitations confirmed from AWS documentation and community resources. This approach mirrors industry practice (local dev with MySQL, production on Aurora).
+
+---
+
+## MySQL Connector Configuration Example
+
+```json
+{
+  "name": "mysql-inventory-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "debezium",
+    "database.password": "debezium_password",
+    "database.server.id": "184054",
+    "topic.prefix": "mysql",
+    "database.include.list": "inventory",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+    "schema.history.internal.kafka.topic": "schema-changes.inventory"
+  }
+}
+```
+
+**Key differences from PostgreSQL connector:**
+- Uses `MySqlConnector` class (vs `PostgresConnector`)
+- Requires `database.server.id` (PostgreSQL uses slot name)
+- Uses `schema.history.internal.*` for DDL tracking (PostgreSQL tracks in replication slot)
+- No `plugin.name` (PostgreSQL requires pgoutput/decoderbufs)
+
+**Confidence:** HIGH - Configuration verified from official Debezium MySQL connector documentation.
 
 ---
 
 ## Alternatives Considered
 
-### Why Not Docusaurus 3?
+### MySQL 8.4 LTS vs MySQL 8.0
 
-**Version:** 3.9.2 (latest as of January 2025)
+| Criterion | MySQL 8.0.40 | MySQL 8.4 LTS |
+|-----------|--------------|---------------|
+| **ARM64 support** | ✓ Native | ✓ Native |
+| **Debezium 2.5.4 compatibility** | ✓ Fully supported | ✗ Requires Debezium 3.0+ |
+| **Support lifecycle** | EOL April 2026 | 5 years premier + 3 years extended |
+| **Course timeline** | ✓ Acceptable for v1.1 (Q1 2026) | Future-proof but requires stack upgrade |
 
-**Strengths:**
-- Excellent documentation features out-of-box (versioning, i18n, search)
-- Battle-tested at Meta, large community
-- Built-in Algolia DocSearch v4 with AI-powered search
-- Extensive plugin ecosystem
+**Verdict:** Use MySQL 8.0.40 for v1.1 to maintain compatibility with existing Debezium 2.5.4. MySQL 8.0 EOL in April 2026 is acceptable for course material published in Q1 2026. If course requires MySQL 8.4, upgrade entire stack to Debezium 3.0 in future milestone.
 
-**Why Not Chosen:**
-- **Heavier JavaScript:** Ships full React hydration (87KB min+gzip on blank page). For a course site, this is overhead.
-- **Documentation paradigm, not learning paradigm:** Optimized for API docs, not interactive learning experiences.
-- **Less flexible content structure:** Designed for docs hierarchy, not course progression/roadmap.
-- **Slower builds:** No Content Layer equivalent; Astro 5x faster for Markdown-heavy sites.
+**Confidence:** HIGH - Debezium compatibility matrix verified from official release notes.
 
-**Verdict:** Docusaurus excellent for product documentation; Astro better for custom learning experiences requiring performance and flexibility.
+### MariaDB vs MySQL
 
-**Confidence:** HIGH - Docusaurus 3.9.2 features verified from official releases.
-
-### Why Not Next.js 15?
-
-**Strengths:**
-- Full-stack capabilities (SSR, ISR, API routes)
-- Excellent React integration
-- Large ecosystem, extensive documentation
-- Image optimization, code splitting
+**MariaDB strengths:**
+- Open-source governance
+- Some advanced features
 
 **Why Not Chosen:**
-- **Overkill for static course:** No backend needed; Next.js SSR/ISR features unused.
-- **Performance overhead:** 87KB+ JavaScript baseline. Astro ships 0KB by default.
-- **Complexity:** Next.js App Router adds complexity unnecessary for static content.
-- **Slower for pure static:** Astro optimized for content sites; Next.js optimized for apps.
+- Course explicitly targets MySQL/Aurora MySQL (AWS managed MySQL)
+- Debezium MariaDB connector is separate from MySQL connector
+- MariaDB != MySQL in Aurora context (AWS Aurora is MySQL/PostgreSQL only)
+- Additional connector introduces unnecessary complexity
 
-**Verdict:** Next.js is the enterprise full-stack choice; for static content-heavy sites, Astro is faster and simpler.
+**Verdict:** Stick with MySQL as specified in project requirements.
 
-**Confidence:** HIGH - Next.js vs Astro comparison well-documented in 2025 sources.
+**Confidence:** HIGH - Project requirements explicitly state MySQL/Aurora MySQL.
 
-### Why Not Astro Starlight?
+### Aurora-Compatible Docker Images
 
-**What it is:** Official Astro documentation theme/framework
+Community images like `atsnngs/mysql-aurora-compatible` exist but:
+- Not officially maintained
+- Unknown ARM64 support
+- Unclear version currency
+- Adds dependency on unmaintained third-party image
 
-**Strengths:**
-- Full-featured docs solution built on Astro
-- Built-in search, navigation, accessibility
-- Multi-framework support (React, Vue, Svelte)
-- Used by Cloudflare, Google, Microsoft, OpenAI
-- Approaching v1.0 in 2025
+**Verdict:** Use official `mysql:8.0` image with documentation noting Aurora-specific differences. This is standard industry practice.
 
-**Why Not Chosen:**
-- **Documentation theme, not learning platform:** Designed for API/product docs, not courses with progress tracking.
-- **Less customization needed:** A course needs custom roadmap UI, progress indicators, exercise flows - building from base Astro gives more control.
-- **v1.0 pending:** Still beta software; frequent breaking changes expected.
-
-**Verdict:** Consider Starlight if you want a documentation site quickly. For a custom course experience, use base Astro.
-
-**Confidence:** MEDIUM - Starlight actively developed, approaching v1.0. Features well-documented but may change.
-
-### Why Not VitePress?
-
-**Strengths:**
-- Vue-enhanced Markdown
-- Vite-powered, very fast
-- Optimized for technical documentation
-
-**Why Not Chosen:**
-- **Vue ecosystem:** Course author likely more familiar with React (broader ecosystem).
-- **Less flexible than Astro:** Locked into Vue; Astro supports React, Vue, Svelte interchangeably.
-- **Smaller community:** Astro has broader adoption in 2025.
-
-**Verdict:** Excellent for Vue-based teams; Astro more flexible for mixed framework needs.
-
-**Confidence:** MEDIUM - VitePress features from WebSearch; not verified with official docs.
+**Confidence:** MEDIUM - Aurora simulation approach based on WebSearch findings and community practices.
 
 ---
 
-## Key Dependencies
+## Installation & Setup
 
-### Core Installation
+### Update Docker Compose
 
-```bash
-# Create Astro project
-npm create astro@latest
+1. Add MySQL service to `labs/docker-compose.yml` (see Docker Compose Integration section)
+2. Add MySQL environment variables to `labs/.env`
+3. Create `labs/mysql/init.sql` for sample database schema
 
-# Core dependencies (installed automatically)
-astro@^5.0.0
-vite@^6.0.0
+### Sample Database Schema
 
-# TypeScript (included by default)
-typescript@^5.9.0
+```sql
+-- labs/mysql/init.sql
+CREATE DATABASE IF NOT EXISTS inventory;
+USE inventory;
 
-# React integration
-npx astro add react
-# Installs: @astrojs/react, react@^19.0.0, react-dom@^19.0.0
+CREATE TABLE customers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-# MDX integration
-npx astro add mdx
-# Installs: @astrojs/mdx
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_number VARCHAR(50) NOT NULL UNIQUE,
+  customer_id INT NOT NULL,
+  order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
+  total_amount DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
 
-# Tailwind CSS integration
-npx astro add tailwind
-# Installs: @astrojs/tailwind, tailwindcss
+-- Create Debezium user
+CREATE USER IF NOT EXISTS 'debezium'@'%' IDENTIFIED BY 'debezium_password';
+GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
+FLUSH PRIVILEGES;
 ```
 
-### Interactive Components
+### Start MySQL Service
 
 ```bash
-# Code editor for interactive exercises
-npm install @uiw/react-codemirror
-npm install @codemirror/lang-javascript
-npm install @codemirror/lang-sql
+# From labs/ directory
+docker-compose up -d mysql
 
-# Diagrams
-npm install mermaid
+# Verify MySQL is running with binlog enabled
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW VARIABLES LIKE 'log_bin';"
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW VARIABLES LIKE 'binlog_format';"
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW VARIABLES LIKE 'binlog_row_image';"
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW VARIABLES LIKE 'gtid_mode';"
 
-# Progress indicator (Material UI or build custom)
-npm install @mui/material @emotion/react @emotion/styled
-# OR build custom with Tailwind
+# Create MySQL connector
+curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json" -d @mysql-connector-config.json
 ```
 
-### Development Tools
-
-```bash
-# Development
-npm install -D @types/react @types/react-dom
-
-# Code quality
-npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
-npm install -D prettier prettier-plugin-astro prettier-plugin-tailwindcss
-```
-
-### Deployment
-
-```bash
-# GitHub Pages deployment: use official Astro GitHub Action
-# No package installation needed
-
-# Vercel deployment: zero-config
-# Or install Vercel CLI: npm install -g vercel
-```
+**Confidence:** HIGH - Standard Docker Compose and Debezium setup patterns.
 
 ---
 
-## Implementation Recommendations
+## Testing & Validation
 
-### Project Structure
+### Verify Binlog Configuration
 
-```
-/
-├── src/
-│   ├── content/
-│   │   ├── config.ts              # Content collections schema
-│   │   ├── course/                # Course content
-│   │   │   ├── 01-intro/
-│   │   │   │   ├── index.mdx
-│   │   │   │   └── exercises.mdx
-│   │   │   ├── 02-basics/
-│   │   │   └── ...
-│   │   └── roadmap/
-│   │       └── structure.json     # Roadmap metadata
-│   ├── components/
-│   │   ├── CourseLayout.astro     # Course page layout
-│   │   ├── ProgressTracker.tsx    # React island
-│   │   ├── CodeEditor.tsx         # React island
-│   │   ├── Quiz.tsx               # React island
-│   │   └── Navigation.astro       # Static navigation
-│   ├── layouts/
-│   │   └── BaseLayout.astro
-│   ├── pages/
-│   │   ├── index.astro            # Landing page
-│   │   ├── roadmap.astro          # Course roadmap
-│   │   └── course/
-│   │       └── [...slug].astro    # Dynamic course pages
-│   └── styles/
-│       └── global.css
-├── public/
-│   └── assets/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml             # GitHub Actions deployment
-├── astro.config.mjs
-├── tsconfig.json
-└── tailwind.config.mjs
+```bash
+# Check binlog status
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW BINARY LOGS;"
+
+# Monitor binlog position
+docker exec -it mysql mysql -uroot -pmysql_root -e "SHOW MASTER STATUS;"
+
+# Verify GTID mode
+docker exec -it mysql mysql -uroot -pmysql_root -e "SELECT @@gtid_mode, @@enforce_gtid_consistency;"
 ```
 
-### Content Collections Schema
+### Test CDC Flow
 
-```typescript
-// src/content/config.ts
-import { defineCollection, z } from 'astro:content';
+```sql
+-- Insert test data
+INSERT INTO customers (first_name, last_name, email) VALUES ('Ivan', 'Petrov', 'ivan@example.com');
 
-const courseCollection = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    order: z.number(),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
-    estimatedTime: z.number(), // minutes
-    topics: z.array(z.string()),
-    prerequisites: z.array(z.string()).optional(),
-  }),
-});
+-- Update test data
+UPDATE customers SET email = 'ivan.petrov@example.com' WHERE id = 1;
 
-export const collections = {
-  course: courseCollection,
-};
+-- Delete test data
+DELETE FROM customers WHERE id = 1;
 ```
 
-### Astro Configuration
+Expected Kafka topics:
+- `mysql.inventory.customers` - Customer table changes
+- `mysql.inventory.orders` - Orders table changes
+- `schema-changes.inventory` - DDL changes
 
-```javascript
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import mdx from '@astrojs/mdx';
-import tailwind from '@astrojs/tailwind';
+**Confidence:** HIGH - Standard Debezium testing patterns verified in existing PostgreSQL labs.
 
-export default defineConfig({
-  site: 'https://yourusername.github.io',
-  base: '/debezium-course', // If using repo-based GitHub Pages
-  integrations: [
-    react(),
-    mdx(),
-    tailwind(),
-  ],
-  markdown: {
-    shikiConfig: {
-      theme: 'github-dark',
-      langs: ['javascript', 'typescript', 'sql', 'yaml', 'json', 'java'],
-    },
-  },
-});
-```
+---
 
-### GitHub Pages Deployment Workflow
+## Performance Considerations
+
+### MySQL vs PostgreSQL CDC Differences
+
+| Aspect | PostgreSQL (v1.0) | MySQL (v1.1) |
+|--------|-------------------|--------------|
+| **CDC mechanism** | Logical replication slots | Binlog reading |
+| **Snapshot impact** | Table-level locks during snapshot | Table-level locks during snapshot |
+| **Disk usage** | WAL retention | Binlog retention |
+| **GTID support** | Not applicable | Optional but recommended |
+| **Connector tasks** | Single task only | Single task only |
+
+### Binlog Disk Management
 
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+# Recommended binlog retention for lab environment
+--binlog-expire-logs-seconds=604800  # 7 days
 ```
 
----
+**Production recommendation:** Aurora MySQL supports up to 2160 hours (90 days) binlog retention. Document this in Aurora-specific lessons.
 
-## Interactive Features Implementation
-
-### 1. Progress Tracking with localStorage
-
-```typescript
-// src/hooks/useProgress.ts
-import { useState, useEffect } from 'react';
-
-interface Progress {
-  completedTopics: string[];
-  currentTopic: string | null;
-  lastVisited: string;
-}
-
-export function useProgress() {
-  const [progress, setProgress] = useState<Progress>({
-    completedTopics: [],
-    currentTopic: null,
-    lastVisited: new Date().toISOString(),
-  });
-
-  useEffect(() => {
-    const stored = localStorage.getItem('courseProgress');
-    if (stored) {
-      setProgress(JSON.parse(stored));
-    }
-  }, []);
-
-  const markComplete = (topicId: string) => {
-    const updated = {
-      ...progress,
-      completedTopics: [...progress.completedTopics, topicId],
-      lastVisited: new Date().toISOString(),
-    };
-    setProgress(updated);
-    localStorage.setItem('courseProgress', JSON.stringify(updated));
-  };
-
-  const setCurrentTopic = (topicId: string) => {
-    const updated = { ...progress, currentTopic: topicId };
-    setProgress(updated);
-    localStorage.setItem('courseProgress', JSON.stringify(updated));
-  };
-
-  return { progress, markComplete, setCurrentTopic };
-}
-```
-
-### 2. Interactive Code Editor
-
-```typescript
-// src/components/CodeEditor.tsx
-import React, { useState } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import { sql } from '@codemirror/lang-sql';
-import { githubDark } from '@uiw/codemirror-theme-github';
-
-interface CodeEditorProps {
-  initialCode: string;
-  language?: 'sql' | 'javascript';
-  readonly?: boolean;
-}
-
-export function CodeEditor({ initialCode, language = 'sql', readonly = false }: CodeEditorProps) {
-  const [code, setCode] = useState(initialCode);
-
-  const extensions = language === 'sql' ? [sql()] : [];
-
-  return (
-    <div className="my-4 rounded-lg overflow-hidden border border-gray-700">
-      <CodeMirror
-        value={code}
-        height="300px"
-        theme={githubDark}
-        extensions={extensions}
-        onChange={setCode}
-        editable={!readonly}
-        basicSetup={{
-          lineNumbers: true,
-          highlightActiveLineGutter: true,
-          foldGutter: true,
-        }}
-      />
-    </div>
-  );
-}
-```
-
-### 3. Mermaid Diagrams in MDX
-
-```mdx
-// src/content/course/01-intro/index.mdx
----
-title: "Introduction to CDC"
-order: 1
----
-
-import { Mermaid } from '@/components/Mermaid';
-
-# Change Data Capture Overview
-
-CDC captures database changes in real-time:
-
-<Mermaid chart={`
-graph LR
-    A[Database] -->|Changes| B[Debezium]
-    B -->|Events| C[Kafka]
-    C -->|Stream| D[Consumers]
-`} />
-```
-
-```typescript
-// src/components/Mermaid.tsx
-import React, { useEffect, useRef } from 'react';
-import mermaid from 'mermaid';
-
-interface MermaidProps {
-  chart: string;
-}
-
-export function Mermaid({ chart }: MermaidProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      mermaid.initialize({ startOnLoad: true, theme: 'dark' });
-      mermaid.contentLoaded();
-    }
-  }, [chart]);
-
-  return (
-    <div ref={ref} className="mermaid my-6">
-      {chart}
-    </div>
-  );
-}
-```
-
-### 4. Progress Indicator Component
-
-```typescript
-// src/components/ProgressIndicator.tsx
-import React from 'react';
-
-interface ProgressIndicatorProps {
-  completed: number;
-  total: number;
-}
-
-export function ProgressIndicator({ completed, total }: ProgressIndicatorProps) {
-  const percentage = Math.round((completed / total) * 100);
-
-  return (
-    <div className="w-full bg-gray-700 rounded-full h-2.5 mb-4">
-      <div
-        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-        style={{ width: `${percentage}%` }}
-      />
-      <p className="text-sm text-gray-400 mt-2">
-        {completed} of {total} topics completed ({percentage}%)
-      </p>
-    </div>
-  );
-}
-```
-
----
-
-## Performance Optimization
-
-### Astro Islands Strategy
-
-- **Static by default:** Navigation, layout, content rendered as pure HTML
-- **Interactive islands:** Only hydrate components needing interactivity
-  - Progress tracker: `<ProgressTracker client:load />`
-  - Code editor: `<CodeEditor client:visible />` (load when scrolled into view)
-  - Quiz: `<Quiz client:idle />` (load after page interactive)
-
-### Build Optimization
-
-```javascript
-// astro.config.mjs
-export default defineConfig({
-  build: {
-    inlineStylesheets: 'auto', // Inline critical CSS
-  },
-  vite: {
-    build: {
-      cssMinify: true,
-      minify: 'esbuild',
-    },
-  },
-});
-```
-
-### Content Collections Benefits
-
-- Type-safe queries prevent runtime errors
-- Automatic content validation
-- 5x faster builds for Markdown (Astro 5)
-- Content caching during development
-
----
-
-## Internationalization Considerations
-
-**Note:** Project targets Russian-speaking data engineers.
-
-### Current Approach (Recommended for MVP)
-
-- Single language (Russian) content in MDX files
-- Simple, no i18n overhead
-- Fast to build and deploy
-
-### Future Multi-language Support
-
-If English version needed later:
-
-```typescript
-// src/content/config.ts
-const courseCollection = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    lang: z.enum(['ru', 'en']),
-    // ... other fields
-  }),
-});
-```
-
-Astro supports i18n routing natively:
-
-```javascript
-// astro.config.mjs
-export default defineConfig({
-  i18n: {
-    defaultLocale: 'ru',
-    locales: ['ru', 'en'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
-});
-```
-
-**Confidence:** MEDIUM - i18n features documented but not critical for MVP.
+**Confidence:** HIGH - Performance characteristics verified from Debezium documentation and community resources.
 
 ---
 
 ## Security Considerations
 
-### Static Site Security
+### MySQL User Privileges
 
-- **No server vulnerabilities:** Purely static HTML/CSS/JS, no backend to compromise
-- **Content Security Policy:** Configure CSP headers via hosting provider
-- **Dependency scanning:** Use `npm audit` and Dependabot for vulnerability detection
+**Principle of least privilege:** Debezium user should not have:
+- ✗ INSERT, UPDATE, DELETE privileges (read-only CDC)
+- ✗ CREATE, DROP privileges (no schema modification)
+- ✗ SUPER privilege (unnecessary for CDC)
 
-### GitHub Pages Security
+**Required privileges only:**
+- ✓ SELECT (read data)
+- ✓ RELOAD (flush tables for snapshots)
+- ✓ SHOW DATABASES (discover databases)
+- ✓ REPLICATION SLAVE (read binlog)
+- ✓ REPLICATION CLIENT (monitor replication)
 
-```yaml
-# Enable Dependabot
-# .github/dependabot.yml
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-```
+### Production Best Practices
+
+Document in Aurora MySQL lessons:
+1. Use AWS Secrets Manager for database credentials
+2. Enable SSL/TLS for database connections
+3. Use IAM authentication for RDS/Aurora (not applicable to standard MySQL)
+4. Restrict network access via security groups
+
+**Confidence:** HIGH - Security best practices from Debezium and AWS documentation.
 
 ---
 
-## Accessibility
+## Documentation Requirements
 
-### Built-in Astro Accessibility
+### New Content Sections
 
-- Semantic HTML by default
-- Shiki syntax highlighting respects WCAG contrast ratios
-- Keyboard navigation support
+1. **MySQL Binlog Deep-Dive**
+   - Binlog formats (STATEMENT, ROW, MIXED)
+   - Row image options (FULL, MINIMAL, NOBLOB)
+   - GTID architecture and benefits
+   - Binlog retention and disk management
 
-### Interactive Component Accessibility
+2. **Aurora MySQL Specifics**
+   - Aurora architecture differences
+   - Parameter groups (cluster vs instance level)
+   - Binlog configuration via RDS parameters
+   - Binlog retention using `mysql.rds_set_configuration`
+   - Read replica limitations
+   - Enhanced binlog feature (Aurora MySQL 3.03.1+)
 
-```typescript
-// Add ARIA labels to interactive components
-<button
-  onClick={handleComplete}
-  aria-label="Mark topic as complete"
-  className="..."
->
-  Complete
-</button>
+3. **MySQL Connector Operations**
+   - Connector configuration properties
+   - Schema history topic (vs PostgreSQL slots)
+   - Snapshot modes (initial, schema_only, never)
+   - Incremental snapshots
+   - GTID-based failover
 
-// Progress indicators
-<div
-  role="progressbar"
-  aria-valuenow={completed}
-  aria-valuemin={0}
-  aria-valuemax={total}
-  aria-label="Course progress"
->
-  {/* Progress bar UI */}
-</div>
-```
+4. **Hands-On Labs**
+   - Set up MySQL with binlog in Docker
+   - Deploy MySQL connector
+   - Monitor binlog position
+   - Test snapshot and streaming modes
+   - Simulate failover with GTID
 
-**Confidence:** HIGH - Accessibility patterns well-documented for React and Astro.
+**Confidence:** HIGH - Content structure informed by existing PostgreSQL module and Debezium official tutorials.
+
+---
+
+## Monitoring & Observability
+
+### JMX Metrics (Identical to PostgreSQL)
+
+MySQL connector exposes same JMX metrics structure:
+- `debezium.mysql:type=connector-metrics,context=snapshot,server=<topic.prefix>`
+- `debezium.mysql:type=connector-metrics,context=streaming,server=<topic.prefix>`
+
+**Grafana dashboards:** Existing Debezium dashboards from v1.0 work with MySQL connector (same metric names).
+
+### MySQL-Specific Metrics
+
+Additional monitoring points:
+- Binlog position lag
+- GTID executed set
+- Binlog disk usage
+
+**Confidence:** HIGH - Debezium monitoring patterns consistent across connectors.
+
+---
+
+## Migration from PostgreSQL Module
+
+### What Students Already Know (Module 2)
+
+From existing PostgreSQL/Aurora PostgreSQL module (v1.0), students understand:
+- CDC fundamentals
+- Debezium architecture
+- Kafka integration
+- Connector deployment
+- Monitoring with Prometheus/Grafana
+
+### New Concepts for MySQL Module
+
+| Concept | PostgreSQL | MySQL |
+|---------|-----------|-------|
+| **CDC source** | WAL (Write-Ahead Log) | Binlog (Binary Log) |
+| **Position tracking** | Replication slot | Binlog position / GTID |
+| **DDL tracking** | Captured in WAL | schema.history.internal topic |
+| **Connector plugin** | pgoutput, decoderbufs | N/A (built-in) |
+| **Replication ID** | Slot name | server.id |
+
+**Teaching approach:** Compare/contrast with PostgreSQL to leverage existing knowledge.
+
+**Confidence:** HIGH - Pedagogical approach informed by course structure.
+
+---
+
+## Roadmap Implications
+
+### Phase Structure Recommendations
+
+1. **Phase 1: MySQL Binlog Fundamentals**
+   - MySQL binlog architecture
+   - Row-based logging
+   - GTID concepts
+   - Binlog retention strategies
+
+2. **Phase 2: MySQL CDC Lab Setup**
+   - Docker Compose MySQL service
+   - Binlog configuration
+   - Debezium user setup
+   - Connector deployment
+
+3. **Phase 3: Aurora MySQL Specifics**
+   - Aurora architecture overview
+   - Parameter groups configuration
+   - Binlog retention with RDS procedures
+   - Read replica limitations
+   - Production deployment patterns
+
+4. **Phase 4: Production Operations**
+   - Monitoring binlog position
+   - GTID-based failover
+   - Snapshot strategies
+   - Performance tuning
+
+**Dependency order:** Phase 1 (concepts) → Phase 2 (local lab) → Phase 3 (Aurora specifics) → Phase 4 (production)
+
+**Research flags:**
+- Phase 1-2: Standard patterns, low research risk
+- Phase 3: Aurora-specific research likely needed (AWS console screenshots, CloudFormation examples)
+- Phase 4: May need production case studies
+
+**Confidence:** HIGH - Phasing informed by existing PostgreSQL module structure and MySQL-specific requirements.
 
 ---
 
@@ -686,20 +521,14 @@ updates:
 
 | Technology | Confidence | Notes |
 |------------|------------|-------|
-| **Astro 5** | HIGH | Verified from official blog, docs. Used in production by major companies. |
-| **React 19** | HIGH | Stable since Dec 2024. Official React docs. |
-| **TypeScript 5.9** | HIGH | Current stable version. Avoid 6.0 beta. |
-| **Vite 6** | HIGH | Bundled with Astro 5. Official release notes verified. |
-| **MDX** | HIGH | Core Astro integration, well-documented. |
-| **Tailwind CSS** | MEDIUM | Dominant in 2025 but verify 4.x stability. Recommendation based on ecosystem trends. |
-| **Shiki** | HIGH | Built into Astro. TextMate grammar, industry standard. |
-| **@uiw/react-codemirror** | HIGH | CodeMirror 6 wrapper. npm downloads, GitHub activity verified. |
-| **Mermaid.js** | HIGH | Industry standard for diagrams-as-code. |
-| **localStorage API** | HIGH | Native web API. MDN-documented. |
-| **GitHub Pages deployment** | HIGH | Official Astro GitHub Action documented. |
-| **Vercel deployment** | HIGH | Zero-config Astro support verified. |
-| **Astro Starlight** | MEDIUM | Active development, approaching v1.0. Features may change. |
-| **VitePress** | MEDIUM | WebSearch only; not verified with official docs. |
+| **MySQL 8.0 Docker** | HIGH | ARM64 support verified from Docker Hub. Native support confirmed. |
+| **Debezium 2.5.4 MySQL compatibility** | HIGH | MySQL 8.0/8.2 support verified from official release notes. |
+| **Binlog configuration** | HIGH | Requirements verified from Debezium documentation and multiple sources. |
+| **MySQL connector config** | HIGH | Official Debezium MySQL connector documentation. |
+| **Aurora MySQL simulation** | MEDIUM | Limitations confirmed; approach based on industry practice. |
+| **GTID configuration** | HIGH | GTID benefits and configuration verified from Debezium docs. |
+| **Docker Compose integration** | HIGH | Standard patterns verified from multiple CDC integration guides. |
+| **MySQL 8.4 compatibility** | HIGH | Requires Debezium 3.0; confirmed from release notes. Not using for v1.1. |
 
 ---
 
@@ -707,67 +536,71 @@ updates:
 
 ### Official Documentation
 
-- [Astro 5.0 Release](https://astro.build/blog/astro-5/)
-- [Astro GitHub Pages Deployment](https://docs.astro.build/en/guides/deploy/github/)
-- [Astro Vercel Deployment](https://docs.astro.build/en/guides/deploy/vercel/)
-- [React 19 Release](https://react.dev/blog/2024/12/05/react-19)
-- [Docusaurus Changelog](https://docusaurus.io/changelog)
-- [Vite 6.0 Announcement](https://vite.dev/blog/announcing-vite6)
-- [Shiki Documentation](https://shiki.style/guide/)
-- [Mermaid Documentation](https://mermaid.js.org/)
+- [MySQL Official Docker Image](https://hub.docker.com/_/mysql) - ARM64 support, versions
+- [Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html) - Configuration requirements
+- [Debezium 2.5 Release Series](https://debezium.io/releases/2.5/) - MySQL compatibility
+- [Red Hat Debezium 2.5.4 MySQL Connector](https://docs.redhat.com/en/documentation/red_hat_build_of_debezium/2.5.4/html/debezium_user_guide/debezium-connector-for-mysql) - Official requirements
+- [Confluent Debezium MySQL Connector](https://docs.confluent.io/kafka-connectors/debezium-mysql-source/current/overview.html) - Configuration reference
 
-### Comparison Articles
+### Aurora MySQL Resources
 
-- [Astro vs Next.js 2025](https://pagepro.co/blog/astro-nextjs/)
-- [React-based Static Site Generators 2025](https://crystallize.com/blog/react-static-site-generators)
-- [Top Static Site Generators 2025](https://cloudcannon.com/blog/the-top-five-static-site-generators-for-2025-and-when-to-use-them/)
-- [Best CSS Frameworks 2025](https://www.valoremreply.com/resources/insights/blog/2025/april/6-best-css-frameworks-for-developers/)
+- [AWS Aurora MySQL Binlog Configuration](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html) - Parameter groups
+- [Aurora MySQL CDC Setup Guide - OLake](https://olake.io/docs/connectors/mysql/setup/aurora/) - CDC configuration
+- [AWS Aurora MySQL Enhanced Binlog](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Enhanced.binlog.html) - Enhanced binlog feature
+- [AWS Aurora MySQL Binlog Retention](https://repost.aws/knowledge-center/aurora-mysql-increase-binlog-retention) - Retention configuration
+- [Resolve Aurora MySQL Binary Logging Errors](https://aws.amazon.com/premiumsupport/knowledge-center/dms-binary-logging-aurora-mysql/) - Common issues
 
-### Interactive Components
+### MySQL CDC Best Practices
 
-- [React CodeMirror](https://uiwjs.github.io/react-codemirror/)
-- [MDX Introduction](https://medium.com/@techwritershub/introduction-to-mdx-how-to-create-interactive-documentation-d3fe5c5b6b23)
-- [Progress Tracking with localStorage](https://www.geeksforgeeks.org/progress-tracker-using-react-and-local-storage/)
+- [Initial Database Configurations for Debezium MySQL](https://amit-kumar-manjhi.medium.com/initial-database-configurations-for-debezium-mysql-source-connector-e9ca5121ee91) - Medium (WebSearch)
+- [Local MySQL Setup with Docker Compose - OLake](https://olake.io/docs/connectors/mysql/setup/local/) - Docker setup patterns
+- [MySQL CDC with Debezium in Production - Materialize](https://materialize.com/guides/mysql-cdc/) - Production patterns
+- [How to Set Up Debezium MySQL Connector](https://hevodata.com/learn/debezium-mysql/) - Configuration tutorial
 
-### Astro Starlight
+### MySQL Version Lifecycle
 
-- [Starlight Documentation](https://starlight.astro.build/)
-- [Astro 2025 Year in Review](https://astro.build/blog/year-in-review-2025/)
+- [MySQL 8.0 EOL 2026](https://www.jusdb.com/blog/mysql-80-eol-in-2026-why-upgrading-to-mysql-84-lts-is-mission-critical) - EOL timeline
+- [MySQL 8.4 LTS on AWS RDS](https://aws.amazon.com/blogs/database/amazon-rds-for-mysql-lts-version-8-4-is-now-generally-available/) - LTS availability
+- [Debezium 3.0 Release](https://debezium.io/releases/3.0/) - MySQL 8.4 support
+
+### Docker & ARM64 Support
+
+- [MySQL on Docker ARM64 Support](https://hub.docker.com/r/arm64v8/mysql/) - ARM64 images
+- [MySQL 5.7 ARM64 Limitations](https://betterprogramming.pub/mysql-5-7-does-not-have-an-official-docker-image-on-arm-m1-mac-e55cbe093d4c) - ARM64 compatibility notes
+- [Simplified Guide to MySQL Replication with Docker Compose](https://www.linkedin.com/pulse/simplified-guide-mysql-replication-docker-compose-rakesh-shekhawat) - Docker Compose patterns
 
 ---
 
-## Next Steps for Roadmap Creation
+## Next Steps for Implementation
 
-This stack research informs the following roadmap decisions:
+### Prerequisites (Existing)
+✓ Docker Compose infrastructure (v1.0)
+✓ Debezium 2.5.4 Connect (v1.0)
+✓ Kafka 7.8.1 KRaft (v1.0)
+✓ Schema Registry 7.8.1 (v1.0)
+✓ Prometheus/Grafana monitoring (v1.0)
 
-1. **Phase 1: Foundation**
-   - Set up Astro 5 project with TypeScript
-   - Configure Tailwind CSS
-   - Implement base layout and navigation
-   - Set up GitHub Pages deployment
+### Required Changes
+1. Add MySQL service to `labs/docker-compose.yml`
+2. Add MySQL environment variables to `labs/.env`
+3. Create `labs/mysql/init.sql` initialization script
+4. Create MySQL connector configuration template
+5. Update lab README with MySQL setup instructions
 
-2. **Phase 2: Content Infrastructure**
-   - Define content collections schema
-   - Create MDX templates for course topics
-   - Implement Shiki syntax highlighting
-   - Add Mermaid diagram support
+### Content Development
+1. Write MySQL binlog lessons (Russian text)
+2. Create Aurora MySQL parameter group examples
+3. Develop hands-on lab exercises
+4. Create Mermaid diagrams for MySQL CDC flow
+5. Write production operations guide
 
-3. **Phase 3: Interactive Features**
-   - Build progress tracking with localStorage
-   - Implement interactive code editor
-   - Create quiz/exercise components
-   - Add progress indicators
+### Validation
+1. Test MySQL 8.0.40 on ARM64 macOS
+2. Verify binlog configuration
+3. Test connector deployment
+4. Validate Kafka topic creation
+5. Confirm monitoring dashboards work
 
-4. **Phase 4: Course Content**
-   - Write course modules in MDX
-   - Create diagrams for CDC concepts
-   - Build practical exercises
-   - Add code examples
+**Timeline estimate:** 2-3 days for infrastructure setup, 1-2 weeks for content development.
 
-5. **Phase 5: Polish & Launch**
-   - Accessibility audit
-   - Performance optimization
-   - SEO metadata
-   - Deploy to production
-
-**Research confidence supports immediate roadmap creation.** No critical gaps requiring additional research before proceeding.
+**Confidence:** HIGH - Implementation path clear, no major blockers identified.

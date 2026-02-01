@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.2 Course Reorganization — MySQL module moving to position 3
+**Current focus:** v1.2 Course Reorganization — COMPLETE (MySQL is now Module 3)
 
 ## Current Position
 
 Phase: 21 of 21 (Verification and QA)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 21-01-PLAN.md
+Plan: 2 of 2 in current phase
+Status: Phase complete - v1.2 SHIPPED
+Last activity: 2026-02-01 — Completed 21-02-PLAN.md (production deployment verified)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [███████████████░░░░░] 75%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [████████████████████] 100%
 
 ## Performance Metrics
 
@@ -42,11 +42,11 @@ Progress: v1.0 [████████████████████] 10
 - Phase 18: 2/2 plans complete (phase complete)
 
 **v1.2 Metrics:**
-- Plans completed: 3
-- Average duration: 5 min
+- Plans completed: 4
+- Average duration: 6 min
 - Phase 19: 1/1 plans complete (phase complete)
 - Phase 20: 1/1 plans complete (phase complete)
-- Phase 21: 1/2 plans complete (in progress)
+- Phase 21: 2/2 plans complete (phase complete) - v1.2 SHIPPED
 
 ## Accumulated Context
 
@@ -148,6 +148,8 @@ Recent decisions affecting current work:
 - [21-01]: Base path testing uses explicit constant (Playwright baseURL path component ignored for absolute paths)
 - [21-01]: Progress tests use native Playwright test (avoid false positives from intentional hydration mismatches)
 - [21-01]: Sample link testing (first lesson per module) for faster CI
+- [21-02]: GitHub Actions deployment triggered via git push (not manual)
+- [21-02]: Human verification required for production deployment (checkpoint pattern)
 
 ### Pending Todos
 
@@ -168,9 +170,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 21-01-PLAN.md
+Stopped at: Completed 21-02-PLAN.md - v1.2 SHIPPED
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Phase 21 plan 1 complete, Playwright E2E tests for v1.2 verification*
+*Last updated: 2026-02-01 — v1.2 Course Reorganization complete. MySQL is now Module 3. Site deployed and verified at https://levoel.github.io/debezium-course/*

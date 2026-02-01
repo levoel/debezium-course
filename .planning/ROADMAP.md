@@ -54,7 +54,11 @@ Plans:
   2. Progress tracking verified after reorganization
   3. Site deployed and verified on GitHub Pages
   4. No console errors, all pages accessible
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
+
+Plans:
+- [ ] 21-01-PLAN.md — Setup Playwright E2E tests for navigation and progress verification
+- [ ] 21-02-PLAN.md — Deploy and verify on GitHub Pages
 
 <details>
 <summary>[x] v1.0 MVP (Phases 1-11) - SHIPPED 2026-02-01</summary>
@@ -219,7 +223,7 @@ Phases execute in numeric order: 19 -> 20 -> 21
 |-------|-----------|----------------|--------|-----------|
 | 19. Module Renaming | v1.2 | 1/1 | Complete | 2026-02-01 |
 | 20. Cross-Reference Updates | v1.2 | 1/1 | Complete | 2026-02-01 |
-| 21. Verification & QA | v1.2 | 0/? | Not started | — |
+| 21. Verification & QA | v1.2 | 0/2 | Not started | — |
 
 ## Coverage
 

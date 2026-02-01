@@ -168,7 +168,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </span>
-                        <span className={`text-xs text-gray-400 mt-0.5 block ${isComplete ? 'ml-6' : ''}`}>
+                        <span className={`text-xs mt-0.5 block ${isComplete ? 'ml-6' : ''} ${isCurrentPage ? 'text-white' : 'text-gray-400'}`}>
                           {lesson.estimatedTime} мин
                         </span>
                       </a>

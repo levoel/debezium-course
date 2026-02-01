@@ -99,3 +99,50 @@ export function resetProgress(): void {
     lastUpdated: Date.now(),
   });
 }
+
+/**
+ * One-time migration: Rename module slugs after v1.2 reorganization.
+ * Converts old module-X slugs to new 0X-module-X format.
+ * Called once on app initialization, skipped if already migrated.
+ */
+export function migrateModuleSlugs(): void {
+  const MIGRATION_KEY = 'course-progress-v1.2-migrated';
+
+  // Skip if already migrated
+  if (typeof window === 'undefined') return;
+  if (localStorage.getItem(MIGRATION_KEY) === 'true') return;
+
+  const data = $progress.get();
+  if (!data || !Array.isArray(data.completed) || data.completed.length === 0) {
+    // No progress to migrate, mark as done
+    localStorage.setItem(MIGRATION_KEY, 'true');
+    return;
+  }
+
+  // Slug prefix mapping (old → new)
+  const prefixMap: Record<string, string> = {
+    '08-module-8': '03-module-3',  // MySQL → position 3
+    '03-module-3': '04-module-4',  // Production Ops → position 4
+    '04-module-4': '05-module-5',  // Advanced Patterns → position 5
+    '05-module-5': '06-module-6',  // Data Engineering → position 6
+    '06-module-6': '07-module-7',  // Cloud-Native → position 7
+    '07-module-7': '08-module-8',  // Capstone → position 8
+  };
+
+  const migratedCompleted = data.completed.map(slug => {
+    // Check each prefix and replace if matching
+    for (const [oldPrefix, newPrefix] of Object.entries(prefixMap)) {
+      if (slug.startsWith(oldPrefix + '/')) {
+        return newPrefix + slug.slice(oldPrefix.length);
+      }
+    }
+    return slug; // Unchanged (modules 1-2 or already migrated)
+  });
+
+  $progress.set({
+    completed: migratedCompleted,
+    lastUpdated: Date.now(),
+  });
+
+  localStorage.setItem(MIGRATION_KEY, 'true');
+}

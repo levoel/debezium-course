@@ -22,7 +22,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration ✓
 - [x] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing ✓
 - [x] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration ✓
-- [ ] **Phase 11: Capstone Project** - End-to-end production CDC pipeline integrating all learnings
+- [x] **Phase 11: Capstone Project** - End-to-end production CDC pipeline integrating all learnings ✓
 
 ## Phase Details
 
@@ -224,10 +224,11 @@ Plans:
   1. Students understand the capstone project requirements (Aurora -> Outbox -> PyFlink -> BigQuery)
   2. Students can self-assess their architecture against production readiness checklist
   3. Students can complete the capstone with monitoring, documentation, and working code
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 11-01-PLAN.md — Create capstone overview and architecture requirements lessons
+- [x] 11-02-PLAN.md — Create production readiness self-assessment checklist lesson
 
 ## Progress
 
@@ -246,7 +247,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 8. Module 4 - Advanced Patterns | 4/4 | ✓ Complete | 2026-02-01 |
 | 9. Module 5 - Data Engineering | 4/4 | ✓ Complete | 2026-02-01 |
 | 10. Module 6 - Cloud-Native GCP | 3/3 | ✓ Complete | 2026-02-01 |
-| 11. Capstone Project | 0/TBD | Not started | - |
+| 11. Capstone Project | 2/2 | ✓ Complete | 2026-02-01 |
 
 ---
 *Roadmap created: 2026-01-31*

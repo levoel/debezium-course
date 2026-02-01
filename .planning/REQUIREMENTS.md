@@ -77,9 +77,9 @@
 
 ### Module 7: Capstone Project
 
-- [ ] **CAP-01**: Описание capstone проекта (Aurora → Outbox → PyFlink → BigQuery)
-- [ ] **CAP-02**: Требования к архитектуре и deliverables
-- [ ] **CAP-03**: Чеклист для самопроверки
+- [x] **CAP-01**: Описание capstone проекта (Aurora → Outbox → PyFlink → BigQuery)
+- [x] **CAP-02**: Требования к архитектуре и deliverables
+- [x] **CAP-03**: Чеклист для самопроверки
 
 ### Infrastructure
 
@@ -181,9 +181,9 @@
 | MOD6-04 | Phase 10 | ✓ Done |
 | MOD6-05 | Phase 10 | ✓ Done |
 | MOD6-06 | Phase 10 | ✓ Done |
-| CAP-01 | Phase 11 | Pending |
-| CAP-02 | Phase 11 | Pending |
-| CAP-03 | Phase 11 | Pending |
+| CAP-01 | Phase 11 | ✓ Done |
+| CAP-02 | Phase 11 | ✓ Done |
+| CAP-03 | Phase 11 | ✓ Done |
 
 **Coverage:**
 - v1 requirements: 60 total
@@ -192,4 +192,4 @@
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after roadmap creation*
+*Last updated: 2026-02-01 after Phase 11 completion*

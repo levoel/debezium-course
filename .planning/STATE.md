@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 16 of 18 (Advanced Topics + Recovery)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed Phase 16 (3 plans, 4,197 lines)
+Phase: 17 of 18 (Multi-Database Capstone)
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 17-02-PLAN.md (Multi-Database Configuration)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [███████████████░░░░░] 71%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████░░░░] 76%
 
 ## Performance Metrics
 
@@ -31,13 +31,14 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 15
+- Plans completed: 17
 - Average duration: 7 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
 - Phase 15: 3/3 plans complete (phase complete)
 - Phase 16: 3/3 plans complete (phase complete)
+- Phase 17: 2/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -111,6 +112,16 @@ Recent decisions affecting current work:
 - [16-03]: Helper table patterns: _gho, _ghc (gh-ost), _new, _old (pt-osc)
 - [16-03]: gh-ost doubles binlog read load during migration (triggerless approach)
 - [16-03]: pt-osc supports foreign keys, gh-ost does not
+- [17-01]: Multi-database CDC architecture lesson created with separate-topics vs unified-topics comparison
+- [17-01]: Separate topics pattern (database-specific topics) recommended for learning and traceability
+- [17-01]: Unified topics pattern (ByLogicalTableRouter SMT) documented as advanced pattern for identical schemas
+- [17-01]: Key uniqueness complexity in unified topics requires __dbz__physicalTableIdentifier handling
+- [17-02]: Separate topics architecture chosen as primary pattern for capstone extension
+- [17-02]: Topic naming convention: outbox.event.{database}.{aggregate} for source traceability
+- [17-02]: PyFlink UNION ALL pattern for multi-source stream consolidation with source_database tracking
+- [17-02]: Composite key strategy (PG-/MY- prefix) prevents order_id conflicts across databases
+- [17-02]: Database-specific monitoring: PostgreSQL WAL lag (bytes) vs MySQL time lag (milliseconds)
+- [17-02]: Isolation testing emphasized - verify each connector independently before unified processing
 
 ### Pending Todos
 
@@ -130,10 +141,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T14:00:00Z
-Stopped at: Completed Phase 16 (Advanced Topics + Recovery - 3 plans, 4,197 lines)
+Last session: 2026-02-01T14:06:30Z
+Stopped at: Completed 17-02-PLAN.md (Multi-Database Configuration - 695 lines)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed Phase 16 (Advanced Topics + Recovery)*
+*Last updated: 2026-02-01 — Completed 17-02 (Multi-Database Configuration)*

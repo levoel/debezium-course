@@ -43,9 +43,13 @@
 
 ### Platform
 
-- [ ] **PLAT-07**: GitHub Pages deployment с GitHub Actions CI/CD
+- [x] **PLAT-07**: GitHub Pages deployment с GitHub Actions CI/CD ✓
 
 ## Future Requirements (v1.2+)
+
+### Course Structure
+
+- **STRUCT-01**: Реорганизация MySQL контента — перенести Module 8 (MySQL) ближе к Module 2 (PostgreSQL) для лучшего сравнения. Создать "Database Track" (PostgreSQL + MySQL вместе) vs "Operations Track".
 
 ### Platform Enhancements
 
@@ -92,7 +96,7 @@
 | MYSQL-14 | Phase 16 | Complete |
 | MYSQL-15 | Phase 16 | Complete |
 | MYSQL-16 | Phase 17 | Complete |
-| PLAT-07 | Phase 18 | Pending |
+| PLAT-07 | Phase 18 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 20 total

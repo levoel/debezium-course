@@ -8,9 +8,9 @@
 ### Module 8: MySQL/Aurora MySQL CDC
 
 **Binlog Fundamentals:**
-- [ ] **MYSQL-01**: Контент объясняет архитектуру MySQL binlog (форматы ROW/STATEMENT/MIXED, события, ротация)
-- [ ] **MYSQL-02**: Контент описывает GTID mode и его влияние на CDC (преимущества, ограничения, конфигурация)
-- [ ] **MYSQL-03**: Контент объясняет binlog retention и heartbeat events для предотвращения потери позиции
+- [x] **MYSQL-01**: Контент объясняет архитектуру MySQL binlog (форматы ROW/STATEMENT/MIXED, события, ротация) ✓
+- [x] **MYSQL-02**: Контент описывает GTID mode и его влияние на CDC (преимущества, ограничения, конфигурация) ✓
+- [x] **MYSQL-03**: Контент объясняет binlog retention и heartbeat events для предотвращения потери позиции ✓
 
 **Connector Setup:**
 - [ ] **MYSQL-04**: Пошаговая настройка MySQL коннектора в Docker Compose окружении
@@ -37,9 +37,9 @@
 
 ### Infrastructure
 
-- [ ] **INFRA-09**: MySQL 8.0.40 Docker service в существующем docker-compose.yml (port 3307)
-- [ ] **INFRA-10**: Binlog конфигурация (ROW format, GTID mode, retention)
-- [ ] **INFRA-11**: ARM64 совместимость для MySQL Docker образа
+- [x] **INFRA-09**: MySQL 8.0.40 Docker service в существующем docker-compose.yml (port 3307) ✓
+- [x] **INFRA-10**: Binlog конфигурация (ROW format, GTID mode, retention) ✓
+- [x] **INFRA-11**: ARM64 совместимость для MySQL Docker образа ✓
 
 ### Platform
 
@@ -73,12 +73,12 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-09 | Phase 12 | Pending |
-| INFRA-10 | Phase 12 | Pending |
-| INFRA-11 | Phase 12 | Pending |
-| MYSQL-01 | Phase 12 | Pending |
-| MYSQL-02 | Phase 12 | Pending |
-| MYSQL-03 | Phase 12 | Pending |
+| INFRA-09 | Phase 12 | Complete |
+| INFRA-10 | Phase 12 | Complete |
+| INFRA-11 | Phase 12 | Complete |
+| MYSQL-01 | Phase 12 | Complete |
+| MYSQL-02 | Phase 12 | Complete |
+| MYSQL-03 | Phase 12 | Complete |
 | MYSQL-04 | Phase 13 | Pending |
 | MYSQL-05 | Phase 13 | Pending |
 | MYSQL-06 | Phase 13 | Pending |

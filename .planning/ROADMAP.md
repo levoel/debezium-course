@@ -41,7 +41,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 
 **Milestone Goal:** Add comprehensive MySQL/Aurora MySQL CDC module (Module 8) and deploy the course to GitHub Pages.
 
-- [ ] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory
+- [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
 - [ ] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison
 - [ ] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations
 - [ ] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots
@@ -64,9 +64,9 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 **Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 12-01-PLAN.md — MySQL Docker infrastructure with binlog configuration
-- [ ] 12-02-PLAN.md — Binlog architecture lesson (ROW/STATEMENT/MIXED formats)
-- [ ] 12-03-PLAN.md — GTID mode and retention/heartbeat lessons
+- [x] 12-01-PLAN.md — MySQL Docker infrastructure with binlog configuration
+- [x] 12-02-PLAN.md — Binlog architecture lesson (ROW/STATEMENT/MIXED formats)
+- [x] 12-03-PLAN.md — GTID mode and retention/heartbeat lessons
 
 ### Phase 13: Connector Setup + Comparison
 **Goal**: Course learner can configure MySQL CDC connector and understand architectural differences from PostgreSQL
@@ -163,7 +163,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 12. MySQL Infra + Binlog | v1.1 | 0/3 | Planned | - |
+| 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 13. Connector Setup | v1.1 | 0/TBD | Not started | - |
 | 14. Aurora MySQL | v1.1 | 0/TBD | Not started | - |
 | 15. Production Ops | v1.1 | 0/TBD | Not started | - |

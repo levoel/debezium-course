@@ -118,7 +118,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                 <span className="flex items-center gap-2">
                   {formatModuleHeader(moduleId)}
                   {completedCount > 0 && (
-                    <span className="text-xs text-green-400 font-normal normal-case">
+                    <span className="text-xs text-emerald-300/70 font-normal normal-case">
                       {completedCount}/{lessons.length}
                     </span>
                   )}
@@ -162,7 +162,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                       >
                         <span className="flex items-center gap-2">
                           {isComplete && (
-                            <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-emerald-300/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           )}

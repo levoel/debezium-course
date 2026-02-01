@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 12 of 18 (MySQL Infrastructure + Binlog Fundamentals)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 12-03-PLAN.md
+Phase: 13 of 18 (Connector Setup + Comparison)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 13-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [███░░░░░░░░░░░░░░░░░] 15%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████░░░░░░░░░░░░░░░░] 20%
 
 ## Performance Metrics
 
@@ -31,9 +31,10 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 3
-- Average duration: 2.5 min
+- Plans completed: 4
+- Average duration: 3 min
 - Phase 12: 3/3 plans complete (phase complete)
+- Phase 13: 1/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -56,6 +57,10 @@ Recent decisions affecting current work:
 - [12-03]: GTID mode as primary tracking mechanism (not optional alternative to file:position)
 - [12-03]: Heartbeat events as mandatory pattern for idle table protection
 - [12-03]: Retention planning formula: Max Expected Downtime + Safety Margin
+- [13-01]: Schema history topic infinite retention (retention.ms=-1) as critical prerequisite
+- [13-01]: database.server.id range 184000-184999 for Debezium connectors (avoid MySQL cluster conflicts)
+- [13-01]: Single partition for schema history topic (preserves DDL ordering)
+- [13-01]: Heartbeat configuration as recommended (not optional) for production deployments
 
 ### Pending Todos
 
@@ -75,10 +80,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T10:26:57Z
-Stopped at: Completed 12-03-PLAN.md (GTID Mode and Binlog Retention Lessons)
+Last session: 2026-02-01T10:54:16Z
+Stopped at: Completed 13-01-PLAN.md (MySQL Connector Configuration Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 12-03-PLAN.md (Phase 12 complete)*
+*Last updated: 2026-02-01 — Completed 13-01-PLAN.md (Phase 13 in progress)*

@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 12 of 18 (MySQL Infrastructure + Binlog Fundamentals)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 12-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 12-03-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [██░░░░░░░░░░░░░░░░░░] 10%
+Progress: v1.0 [████████████████████] 100% | v1.1 [███░░░░░░░░░░░░░░░░░] 15%
 
 ## Performance Metrics
 
@@ -31,9 +31,9 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 2
-- Average duration: 2 min
-- Phase 12: 2/3 plans complete
+- Plans completed: 3
+- Average duration: 2.5 min
+- Phase 12: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -53,6 +53,9 @@ Recent decisions affecting current work:
 - [12-02]: ROW format positioned as mandatory for CDC (STATEMENT/MIXED discouraged)
 - [12-02]: 5 Mermaid diagrams for visual learning in binlog architecture lesson
 - [12-02]: PostgreSQL WAL comparison table to bridge Module 2 knowledge
+- [12-03]: GTID mode as primary tracking mechanism (not optional alternative to file:position)
+- [12-03]: Heartbeat events as mandatory pattern for idle table protection
+- [12-03]: Retention planning formula: Max Expected Downtime + Safety Margin
 
 ### Pending Todos
 
@@ -72,10 +75,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T10:22:58Z
-Stopped at: Completed 12-02-PLAN.md (MySQL Binlog Architecture Lesson)
+Last session: 2026-02-01T10:26:57Z
+Stopped at: Completed 12-03-PLAN.md (GTID Mode and Binlog Retention Lessons)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 12-02-PLAN.md*
+*Last updated: 2026-02-01 — Completed 12-03-PLAN.md (Phase 12 complete)*

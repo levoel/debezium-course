@@ -61,12 +61,12 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
   3. Learner can explain ROW vs STATEMENT vs MIXED binlog formats and when to use each
   4. Learner understands GTID mode benefits for CDC (failover, position tracking) and configuration requirements
   5. Learner knows how to configure binlog retention and heartbeat events to prevent position loss
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 12-01: TBD
-- [ ] 12-02: TBD
-- [ ] 12-03: TBD
+- [ ] 12-01-PLAN.md — MySQL Docker infrastructure with binlog configuration
+- [ ] 12-02-PLAN.md — Binlog architecture lesson (ROW/STATEMENT/MIXED formats)
+- [ ] 12-03-PLAN.md — GTID mode and retention/heartbeat lessons
 
 ### Phase 13: Connector Setup + Comparison
 **Goal**: Course learner can configure MySQL CDC connector and understand architectural differences from PostgreSQL
@@ -163,7 +163,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 12. MySQL Infra + Binlog | v1.1 | 0/TBD | Not started | - |
+| 12. MySQL Infra + Binlog | v1.1 | 0/3 | Planned | - |
 | 13. Connector Setup | v1.1 | 0/TBD | Not started | - |
 | 14. Aurora MySQL | v1.1 | 0/TBD | Not started | - |
 | 15. Production Ops | v1.1 | 0/TBD | Not started | - |

@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.1 MySQL/Aurora MySQL + Deployment (Phase 17 complete)
+**Current focus:** v1.1 MySQL/Aurora MySQL + Deployment (Phase 18 in progress)
 
 ## Current Position
 
-Phase: 17 of 18 (Multi-Database Capstone)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 17-03-PLAN.md (Multi-Database Self-Assessment)
+Phase: 18 of 18 (GitHub Pages Deployment)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 18-01-PLAN.md (GitHub Actions Workflow Update)
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [██████████████████░░] 86%
+Progress: v1.0 [████████████████████] 100% | v1.1 [███████████████████░] 95%
 
 ## Performance Metrics
 
@@ -31,7 +31,7 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 18
+- Plans completed: 19
 - Average duration: 6 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
@@ -39,6 +39,7 @@ Progress: v1.0 [████████████████████] 10
 - Phase 15: 3/3 plans complete (phase complete)
 - Phase 16: 3/3 plans complete (phase complete)
 - Phase 17: 3/3 plans complete (phase complete)
+- Phase 18: 1/2 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -127,6 +128,8 @@ Recent decisions affecting current work:
 - [17-03]: Shared schema history topic = critical error for MySQL multi-connector (DDL pollution)
 - [17-03]: Recovery procedures differ by connector type: PostgreSQL (replication slots) vs MySQL (schema history topic + GTID/binlog position)
 - [17-03]: Self-assessment Section 8 provides multi-database verification checklist for capstone extension
+- [18-01]: withastro/action@v5 over manual npm steps (auto-detection, caching, simplified maintenance)
+- [18-01]: actions/checkout@v6 for latest stable version
 
 ### Pending Todos
 
@@ -146,10 +149,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T16:15:00Z
-Stopped at: Completed Phase 17 (Multi-Database Capstone - 3 plans, 1,186+ lines)
+Last session: 2026-02-01T14:39:48Z
+Stopped at: Completed 18-01-PLAN.md (GitHub Actions Workflow Update)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed Phase 17 (Multi-Database Capstone)*
+*Last updated: 2026-02-01 — Completed 18-01-PLAN.md*

@@ -28,7 +28,7 @@ export function ProgressIndicator({ totalLessons }: ProgressIndicatorProps) {
           <span className="text-sm text-gray-400">Прогресс курса</span>
           <span className="text-sm text-gray-400">--%</span>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-2.5">
+        <div className="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-full h-2.5">
           <div className="bg-gray-600 h-2.5 rounded-full w-0" />
         </div>
       </div>
@@ -48,9 +48,9 @@ export function ProgressIndicator({ totalLessons }: ProgressIndicatorProps) {
         <span className="text-sm text-gray-400">Прогресс курса</span>
         <span className="text-sm text-gray-300 font-medium">{percentage}%</span>
       </div>
-      <div className="w-full bg-gray-700 rounded-full h-2.5">
+      <div className="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-full h-2.5">
         <div
-          className="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+          className="bg-blue-400/60 h-2.5 rounded-full transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

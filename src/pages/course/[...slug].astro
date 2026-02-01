@@ -37,17 +37,17 @@ const currentIndex = sortedLessons.findIndex((lesson) => lesson.id === entry.id)
 const prevLesson = currentIndex > 0 ? sortedLessons[currentIndex - 1] : null;
 const nextLesson = currentIndex < sortedLessons.length - 1 ? sortedLessons[currentIndex + 1] : null;
 
-// Get difficulty badge color
+// Get difficulty badge color - muted glass style
 function getDifficultyColor(difficulty: string) {
   switch (difficulty) {
     case 'beginner':
-      return 'bg-green-500/20 text-green-300 border-green-500';
+      return 'bg-emerald-500/10 text-emerald-300/80 border-emerald-400/20';
     case 'intermediate':
-      return 'bg-yellow-500/20 text-yellow-300 border-yellow-500';
+      return 'bg-amber-500/10 text-amber-300/80 border-amber-400/20';
     case 'advanced':
-      return 'bg-red-500/20 text-red-300 border-red-500';
+      return 'bg-rose-500/10 text-rose-300/80 border-rose-400/20';
     default:
-      return 'bg-gray-500/20 text-gray-300 border-gray-500';
+      return 'bg-gray-500/10 text-gray-300/80 border-gray-400/20';
   }
 }
 
@@ -89,7 +89,7 @@ function translateDifficulty(difficulty: string) {
   <!-- Lesson metadata -->
   <div class="mb-8 pb-6 border-b border-gray-700">
     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">
-      <span class={`px-3 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(entry.data.difficulty)}`}>
+      <span class={`px-3 py-1 rounded-full text-xs font-medium border backdrop-blur-sm ${getDifficultyColor(entry.data.difficulty)}`}>
         {translateDifficulty(entry.data.difficulty)}
       </span>
 

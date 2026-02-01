@@ -184,22 +184,24 @@ body {
   @apply text-blue-400 hover:text-blue-300 underline;
 }
 
-/* Inline code - solid background, no glass */
+/* Inline code - glass style */
 .prose :not(pre) > code {
-  @apply bg-gray-800/90 text-gray-100 px-1.5 py-0.5 rounded text-sm;
-  backdrop-filter: none;
+  @apply text-gray-100 px-1.5 py-0.5 rounded-md text-sm;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Code blocks - solid background, NO glass effect for syntax highlighting readability */
+/* Code blocks - Apple liquid glass style */
 .prose pre {
-  background: rgba(30, 30, 40, 0.95);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
   padding: 16px;
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .prose pre code {

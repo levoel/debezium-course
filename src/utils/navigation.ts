@@ -84,7 +84,12 @@ export async function getNavigationTree(): Promise<NavigationTree> {
     lessons.sort((a, b) => a.order - b.order);
   }
 
-  return tree;
+  // Sort modules by their ID (which has numeric prefix like "01-module-1")
+  const sortedTree: NavigationTree = new Map(
+    Array.from(tree.entries()).sort(([a], [b]) => a.localeCompare(b))
+  );
+
+  return sortedTree;
 }
 
 /**

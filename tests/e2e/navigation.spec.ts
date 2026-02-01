@@ -65,8 +65,8 @@ test.describe('Navigation verification', () => {
     const moduleNames = [
       '01. Введение в CDC',
       '02. PostgreSQL и Aurora',
-      '03. MySQL и Aurora MySQL',
-      '04. Production Operations',
+      '03. MySQL/Aurora',
+      '04. Prod Operations',
       '05. SMT и Паттерны',
       '06. Data Engineering',
       '07. Cloud-Native GCP',

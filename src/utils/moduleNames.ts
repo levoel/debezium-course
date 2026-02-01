@@ -11,8 +11,8 @@
 export const MODULE_NAMES: Record<string, string> = {
   '01-module-1': 'Введение в CDC',
   '02-module-2': 'PostgreSQL и Aurora',
-  '03-module-3': 'MySQL и Aurora MySQL',
-  '04-module-4': 'Production Operations',
+  '03-module-3': 'MySQL/Aurora',
+  '04-module-4': 'Prod Operations',
   '05-module-5': 'SMT и Паттерны',
   '06-module-6': 'Data Engineering',
   '07-module-7': 'Cloud-Native GCP',

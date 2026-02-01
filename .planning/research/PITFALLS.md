@@ -1,1428 +1,451 @@
-# Pitfalls Research: Debezium Course
+# Glassmorphism Implementation Pitfalls
 
-**Domain:** Change Data Capture / Debezium / Technical Education
-**Researched:** 2026-01-31
-**Confidence:** MEDIUM-HIGH
-
-## Executive Summary
-
-This research identifies critical pitfalls in two dimensions: (1) Debezium/CDC production deployments, and (2) technical course creation. Debezium pitfalls cluster around operational complexity, database-specific configuration issues, and recovery scenarios. Course creation pitfalls center on outdated content, missing hands-on elements, and poor prerequisite management.
-
-The most critical production pitfalls are **replication slot management** (PostgreSQL), **snapshot failures** (all connectors), and **offset desynchronization** (recovery scenarios). For course creation, the most damaging mistakes are **outdated examples** (18-month shelf life) and **insufficient hands-on practice** (theory without application).
+**Domain:** Liquid glass/glassmorphism design for technical documentation
+**Context:** Dark theme dominant, code examples, comparison tables
+**Researched:** 2026-02-01
+**Confidence:** HIGH (verified with MDN, Nielsen Norman Group, Axess Lab)
 
 ---
 
-## Part 1: Debezium/CDC Production Pitfalls
+## Critical Pitfalls
 
-### 1.1 PostgreSQL Replication Slot Pitfalls
+Mistakes that cause accessibility violations, rewrites, or major usability issues.
 
-#### CRITICAL: Replication Slot Growth / WAL Accumulation
+### Pitfall 1: WCAG Contrast Violations
 
-**What goes wrong:**
-PostgreSQL disk space consumed by WAL (Write-Ahead Log) files spikes and grows indefinitely. On Amazon RDS PostgreSQL and Cloud SQL, replication slots can constantly increase without being cleaned, causing the database to run out of disk space and potentially crash.
-
-**Why it happens:**
-- PostgreSQL fails to detect stale connections due to insufficient TCP keepalive settings
-- Connector only processes changes on whitelisted tables; if only non-whitelisted tables change, no events are emitted, no offsets are committed, and logs are retained indefinitely
-- Internal Kafka topics (offsets, status, schema-history) deleted earlier cause misalignment between Debezium state and PostgreSQL replication slot
-
-**Consequences:**
-- Database runs out of disk space
-- Production database outage
-- Expensive emergency disk expansion
-- Data loss if binlog/WAL files are purged
-
-**Prevention:**
-1. **Enable heartbeat configuration:** Set `heartbeat.interval.ms` to ensure regular offset commits even when no data changes
-2. **Configure TCP keepalive:** Prevent stale connection detection failures
-3. **Monitor replication slot lag:** Alert when `pg_replication_slots.confirmed_flush_lsn` falls behind
-4. **Set retention policies:** Configure appropriate WAL retention limits
-5. **Whitelist tables carefully:** Ensure at least one high-traffic table triggers regular offset commits
-
-**Detection (Warning Signs):**
-- Disk space usage growing linearly over time
-- `SELECT * FROM pg_replication_slots` shows large `restart_lsn` gap
-- Database monitoring shows WAL file count increasing
-- Replication lag metrics increasing
-
-**Course Phase Mapping:**
-- **Phase 2 (PostgreSQL Connector):** Explain replication slots, demonstrate monitoring
-- **Phase 4 (Production Deployment):** Configure heartbeat, set up alerts
-- **Phase 7 (Troubleshooting):** Recovery procedures for full disks
-
----
-
-#### CRITICAL: Stale/Active Replication Slot Failures
-
-**What goes wrong:**
-Connector fails to restart with errors like "Failed to start replication stream" and "replication slot is active for PID" even though no backend process exists with that PID.
+**What goes wrong:** Text on semi-transparent glassmorphic backgrounds fails to meet WCAG 2.2 contrast requirements (4.5:1 for normal text, 3:1 for large text/UI components). When text layers over translucent panes that sit atop variable backgrounds, contrast ratios fluctuate unpredictably and often fall below legal minimums.
 
 **Why it happens:**
-- PostgreSQL doesn't detect stale connections when TCP keepalive is misconfigured
-- Internal Kafka topics deleted cause state mismatch
-- Connector crashes mid-stream without properly releasing slot
+- Designers test against a single background color instead of all possible backgrounds
+- Translucency allows background patterns/colors to bleed through, reducing contrast
+- Dark mode exacerbates the problem as translucent panels fade into dark backgrounds
 
 **Consequences:**
-- Connector cannot restart without manual intervention
-- Data streaming stops until resolved
-- Requires database admin access to manually drop and recreate slot
+- Legal liability (WCAG 2.1 Level AA is legally required for government sites starting April 2026)
+- Users with visual impairments, color blindness, or age-related vision problems cannot read content
+- Screen readers work but visual presentation fails accessibility audits
+- Code examples and technical content become illegible
 
 **Prevention:**
-1. **Configure TCP keepalive properly:** `tcp_keepalives_idle`, `tcp_keepalives_interval`, `tcp_keepalives_count`
-2. **Never delete internal Kafka topics:** Protect `connect-offsets`, `connect-configs`, `connect-status`, schema history topic
-3. **Use publication-based replication:** Prefer `pgoutput` plugin over older `decoderbufs`
-4. **Implement graceful shutdown:** Ensure connector shutdown procedures complete
+1. **Test dynamically:** Check contrast with all background variations that might appear behind glass elements (not just static mockups)
+2. **Add solid overlays:** Layer a semi-opaque fill (10-30% opacity) behind text to separate it from background:
+   ```css
+   .glass-card {
+     background: linear-gradient(
+       135deg,
+       rgba(255, 255, 255, 0.1),
+       rgba(255, 255, 255, 0.05)
+     );
+     backdrop-filter: blur(10px);
+   }
 
-**Detection:**
-- Connector status shows FAILED
-- Logs contain "replication slot is active for PID"
-- `SELECT * FROM pg_stat_replication` shows no matching PID
-
-**Course Phase Mapping:**
-- **Phase 2 (PostgreSQL Connector):** Demonstrate proper TCP keepalive configuration
-- **Phase 7 (Troubleshooting):** Manual slot recovery procedures
-
----
-
-#### CRITICAL: Node Replacement Data Loss (Cloud SQL, RDS)
-
-**What goes wrong:**
-After a database failover or node replacement, replication slots are NOT automatically recreated on the newly promoted primary. If changes occur before Debezium recreates the slot, those changes are permanently lost.
-
-**Why it happens:**
-- Replication slots are not replicated to standby nodes
-- Cloud providers (GCP Cloud SQL, AWS RDS) handle failovers automatically
-- Time gap between failover and slot recreation
-
-**Consequences:**
-- Permanent data loss for changes made during gap
-- No warning or error - silent data loss
-- Compliance and audit issues
-
-**Prevention:**
-1. **Monitor failover events:** Set up Cloud SQL/RDS event notifications
-2. **Use logical replication slot management:** Configure slot recreation scripts
-3. **Consider Event Sourcing pattern:** Maintain source-of-truth event log
-4. **Test failover procedures:** Regular disaster recovery drills
-5. **Document acceptable data loss window:** Define RPO (Recovery Point Objective)
-
-**Detection:**
-- Cloud provider failover logs
-- Gap in Debezium event timestamps
-- Replication slot query shows recent creation time after old traffic
-
-**Course Phase Mapping:**
-- **Phase 3 (Cloud Integrations - GCP):** Demonstrate Cloud SQL failover behavior
-- **Phase 4 (Production Deployment):** Failover detection and recovery automation
-- **Phase 7 (Troubleshooting):** Data loss assessment and mitigation
-
----
-
-### 1.2 MySQL/Aurora MySQL Pitfalls
-
-#### CRITICAL: Binlog Position Loss Due to Purging
-
-**What goes wrong:**
-MySQL automatically purges old binlog files based on retention settings (`binlog_expire_logs_seconds`, default 30 days). If Debezium stops for longer than the retention period, its last binlog position is purged. When restarted, MySQL no longer has the connector's starting point, forcing a full re-snapshot.
-
-**Why it happens:**
-Unlike PostgreSQL replication slots (which prevent WAL deletion), MySQL binlogs are purged on a time schedule regardless of consumer position. Teams set retention too short or don't monitor connector downtime.
-
-**Consequences:**
-- Full re-snapshot on large databases (hours to days)
-- Potential data loss if events occurred during downtime
-- Production load spike from snapshot SELECT queries
-- Duplicate events if offset topic and binlog position are misaligned
-
-**Prevention:**
-1. Set binlog retention longer than maximum expected downtime
-   - AWS RDS MySQL: max 168 hours (7 days) via `call mysql.rds_set_configuration('binlog retention hours', 168);`
-   - Aurora MySQL: Configure via parameter group
-   - Self-hosted: `SET GLOBAL binlog_expire_logs_seconds = 604800;` (7 days minimum)
-2. Monitor binlog lag with alerts BEFORE it reaches retention threshold
-3. Use incremental snapshots instead of full re-snapshots when recovering
-
-**Detection:**
-- Connector log error: "binlog position is not available on the server"
-- Connector unexpectedly enters snapshot mode on restart
-- CloudWatch/monitoring shows binlog delay approaching retention hours
-
-**MySQL vs PostgreSQL:**
-PostgreSQL replication slots prevent WAL deletion automatically, making this a MySQL-specific issue. However, PostgreSQL has its own problem: unbounded slot growth if connector stops.
-
-**Lesson to address:** "Binlog Configuration and Retention" (setup), "Monitoring Binlog Lag" (observability)
-
----
-
-#### CRITICAL: GTID Mode Purging Issues
-
-**What goes wrong:**
-When `gtid_mode=ON`, Debezium checks the `gtid_purged` variable to ensure no transactions were purged while offline. If purged GTIDs exist from the connector's downtime period, Debezium refuses to start with error: "GTID set contains purged transactions."
-
-**Why it happens:**
-GTID tracking is more strict than binlog position tracking. Even with adequate binlog retention, GTIDs can be purged on replicas or during certain maintenance operations. Common in cloud environments with read replicas (RDS, Digital Ocean).
-
-**Consequences:**
-- Connector stuck, cannot start
-- Must disable GTID mode or perform manual GTID set adjustment
-- Potential inconsistency if GTID set is manually fixed incorrectly
-
-**Prevention:**
-1. For production, consider running WITHOUT `gtid_mode` unless you need:
-   - High availability clusters with automatic failover
-   - Multi-primary topologies
-   - Read-only incremental snapshots
-2. If using GTID mode:
-   - Set `replica_preserve_commit_order=ON` for multi-threaded replicas
-   - Monitor `gtid_purged` variable
-   - Increase binlog retention significantly (2-3x normal)
-3. Document rollback procedure: switching connector from GTID to binlog position mode
-
-**Detection:**
-- Connector error: "GTID set contains purged transactions"
-- Connector works on standalone MySQL but fails on read replicas
-- Works fine, then breaks after routine maintenance
-
-**MySQL vs PostgreSQL:**
-No GTID equivalent in PostgreSQL. This is MySQL-specific complexity.
-
-**Lesson to address:** "GTID Mode Considerations" (advanced configuration), "When to Use GTID vs Position-Based Tracking" (architecture decisions)
-
----
-
-#### CRITICAL: Schema History Topic Corruption
-
-**What goes wrong:**
-Debezium MySQL connector stores DDL history in a Kafka topic with infinite retention required. If this topic is deleted, truncated, compacted, or has retention < infinity, the connector cannot restart. Error: "database schema history topic is missing or partially missing."
-
-**Why it happens:**
-- Default Kafka retention policies apply (7 days, log compaction)
-- Ops team cleans up "old topics" without realizing criticality
-- Kafka cluster migration loses topic configuration
-- Topic created with wrong settings initially
-
-**Consequences:**
-- Connector cannot restart
-- Must use `recovery` snapshot mode to rebuild schema history
-- Recovery snapshot can fail if schema changes occurred after last committed offset
-- Downtime while troubleshooting and recovering
-
-**Prevention:**
-1. Create schema history topic with explicit settings:
-   ```bash
-   kafka-topics --create \
-     --topic dbserver1.schema-history \
-     --partitions 1 \
-     --replication-factor 3 \
-     --config retention.ms=-1 \
-     --config retention.bytes=-1 \
-     --config cleanup.policy=delete
+   .glass-card::before {
+     content: '';
+     position: absolute;
+     inset: 0;
+     background: rgba(0, 0, 0, 0.3); /* Dark overlay for contrast */
+     z-index: -1;
+   }
    ```
-2. Document in runbook: "Never delete schema history topics"
-3. Monitor topic existence and configuration in production
-4. Backup schema history topic periodically (export to S3/GCS)
-5. Use connector config property naming post-v2: `schema.history.internal.kafka.topic` (NOT old v1.9 `database.history.internal.kafka.topic`)
+3. **Increase background blur:** Higher blur values (10px+) reduce background interference for complex backdrops
+4. **Use contrast checkers:** WebAIM Contrast Checker, Colour Contrast Analyser (CCA), or Chrome WCAG extension
+5. **Dark mode specific rules:** For dark themes, use `text-white` or `text-gray-100` exclusively—never dark text on dark glass
 
 **Detection:**
-- Connector fails with "schema history topic missing"
-- Schema history topic shows `retention.ms > -1` in Kafka topic config
-- Topic has been recreated (check creation timestamp)
+- Run automated accessibility audits (axe DevTools, WAVE, Lighthouse)
+- Manually test with contrast ratio tools at 4.5:1 minimum for body text
+- Screenshot in different contexts and check if code blocks remain readable
+- Ask: "Can I read this table against this background?"
 
-**MySQL vs PostgreSQL:**
-PostgreSQL connector has same issue. Not MySQL-specific, but critical for both.
-
-**Lesson to address:** "Schema History Topic Configuration" (setup), "Disaster Recovery: Schema History Rebuilding" (operational runbook)
+**Phase implications:**
+- **Phase 1 (Foundation):** Establish contrast testing protocol and minimum blur values
+- **Phase 2 (Implementation):** Apply overlays and test all content types (text, code, tables)
+- **Phase 3 (Validation):** Comprehensive accessibility audit before launch
 
 ---
 
-#### CRITICAL: Aurora MySQL Global Read Lock Prohibition
+### Pitfall 2: Dark Mode Invisibility
 
-**What goes wrong:**
-Aurora MySQL (and RDS MySQL) prohibit `FLUSH TABLES WITH READ LOCK` (global read lock). Debezium's default snapshot strategy uses global read lock for consistency. Connector fails with permission denied error during initial snapshot.
-
-**Why it happens:**
-AWS restricts global read locks in managed MySQL to prevent multi-tenant impact. Developers copy-paste standard MySQL connector config without adjusting for Aurora.
-
-**Consequences:**
-- Snapshot fails immediately on Aurora/RDS
-- Connector cannot complete initial sync
-- Production deployment blocked
-
-**Prevention:**
-1. Use `snapshot.locking.mode=minimal` or `snapshot.locking.mode=none` for Aurora
-   - `minimal`: Locks only during schema read, uses REPEATABLE READ transaction for data
-   - `none`: No locks at all (requires quiesced database or acceptance of inconsistency)
-2. Grant `LOCK TABLES` privilege (required for table-level locks when global lock unavailable)
-3. Use read-only incremental snapshots (doesn't require RELOAD permission or global lock)
-4. Consider taking snapshot from read replica instead of primary
-
-**Detection:**
-- Snapshot fails with "Access denied; you need (at least one of) the RELOAD privilege(s)"
-- Error occurs immediately when connector starts snapshot phase
-- Works on self-hosted MySQL, fails on Aurora/RDS
-
-**MySQL vs PostgreSQL:**
-Aurora PostgreSQL doesn't have this limitation. MySQL-specific due to FLUSH TABLES requirement.
-
-**Lesson to address:** "Aurora MySQL Snapshot Strategies" (setup), "Snapshot Locking Modes Explained" (configuration deep-dive)
-
----
-
-#### CRITICAL: Server ID Conflicts with Multiple Connectors
-
-**What goes wrong:**
-Each Debezium MySQL connector joins the MySQL cluster as a binlog replica with a unique `database.server.id`. If two connectors use the same server ID, the second one fails with: "A slave with the same server_uuid/server_id as this slave has connected to the master."
+**What goes wrong:** Glassmorphic elements that look crisp in light mode become nearly invisible in dark mode. Translucent layers fade into dark backgrounds, panels pick up unwanted glows from blurred dark content, and the entire effect collapses into murky illegibility.
 
 **Why it happens:**
-- Copy-pasting connector configuration for multi-tenant setups
-- Running multiple connectors against same MySQL instance (different databases)
-- Connector recreation uses same ID after deletion
-- Documentation examples use `database.server.id=223344` and developers don't change it
+- Glass needs contrast with background to be visible—solid black provides none
+- Blur effects in dark mode can create glowing halos instead of subtle transparency
+- Designers use identical opacity/blur values for both light and dark modes
 
 **Consequences:**
-- Second connector fails after initial connection
-- Intermittent failures if connectors restart (race condition for ID)
-- Data missing from one database while other works
+- Navigation elements disappear against dark backgrounds
+- Users cannot distinguish card boundaries or interactive regions
+- "Frosted elegance" becomes "invisible muddle"
+- Site feels broken or incomplete in user's preferred theme
 
 **Prevention:**
-1. Document server ID registry for your organization (spreadsheet/wiki)
-2. Use systematic ID assignment:
-   - Connector 1: `database.server.id=10001`
-   - Connector 2: `database.server.id=10002`
-   - etc.
-3. Validate uniqueness in connector deployment automation
-4. Each connector MUST also have unique `database.server.name` (topic prefix)
-5. Check existing IDs: `SHOW SLAVE HOSTS;` on MySQL primary
-
-**Detection:**
-- Error: "slave with the same server_uuid/server_id"
-- First connector works fine, second connector fails
-- Works in testing (single connector), fails in production (multiple connectors)
-
-**MySQL vs PostgreSQL:**
-PostgreSQL has no server ID concept. MySQL-specific.
-
-**Lesson to address:** "Multi-Connector Deployments" (architecture), "Server ID Registry Best Practices" (operational)
-
----
-
-#### MODERATE: Insufficient MySQL Permissions
-
-**What goes wrong:**
-Cloud MySQL (Aurora, RDS, GCP CloudSQL) and self-hosted MySQL require different permission sets. Connectors fail with cryptic permission errors during snapshot or binlog reading. Common missing permissions: `LOCK TABLES`, `RELOAD`, `REPLICATION CLIENT`, `REPLICATION SLAVE`.
-
-**Why it happens:**
-- Documentation shows minimal permissions for self-hosted MySQL
-- Cloud providers restrict certain permissions (e.g., `RELOAD` not available on Aurora)
-- Permission requirements differ by snapshot mode and configuration
-- Tutorials use `root` user, production uses restricted accounts
-
-**Consequences:**
-- Snapshot fails mid-process after hours of running
-- Connector works in dev (root user), fails in production (restricted user)
-- Errors like "command denied to user" during snapshot locking
-
-**Prevention:**
-1. **Self-hosted MySQL baseline:**
-   ```sql
-   CREATE USER 'debezium'@'%' IDENTIFIED BY 'password';
-   GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
-   GRANT LOCK TABLES ON *.* TO 'debezium'@'%';  -- If using table-level locks
+1. **Require vibrant backgrounds:** Dark glassmorphism requires ambient gradients (deep purples, neon blues, hot pinks) floating behind UI—not solid black/gray
+   ```css
+   .dark-mode-background {
+     background: radial-gradient(
+       ellipse at 20% 50%,
+       rgba(120, 50, 255, 0.4),
+       transparent 50%
+     ),
+     radial-gradient(
+       ellipse at 80% 50%,
+       rgba(255, 50, 120, 0.3),
+       transparent 50%
+     ),
+     #0a0a0a;
+   }
    ```
+2. **Boost dark mode opacity:** Increase panel opacity for dark variants (15-25% vs 5-10% for light)
+3. **Add borders for definition:** Use subtle borders (1px, rgba(255,255,255,0.1)) to define edges
+4. **Theme-specific contrast ratios:** Enforce WCAG 4.5:1 per theme, not globally
+5. **Test side-by-side:** Always preview light and dark modes together during design
 
-2. **Aurora/RDS MySQL (no RELOAD available):**
-   ```sql
-   CREATE USER 'debezium'@'%' IDENTIFIED BY 'password';
-   GRANT SELECT, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debezium'@'%';
-   GRANT LOCK TABLES ON *.* TO 'debezium'@'%';
-   -- Use snapshot.locking.mode=minimal (doesn't require RELOAD)
+**Detection:**
+- Toggle dark mode and observe if elements "disappear"
+- Check if you can distinguish card boundaries without hovering
+- Screenshot and convert to grayscale—if elements vanish, contrast is too low
+- Ask: "Would I know this is clickable in dark mode?"
+
+**Phase implications:**
+- **Phase 1:** Define separate glass parameters for light/dark themes
+- **Phase 2:** Test all interactive elements in both modes before considering complete
+- **Phase 3:** User testing specifically for dark mode usability
+
+---
+
+### Pitfall 3: Backdrop-Filter Performance Catastrophe
+
+**What goes wrong:** Heavy `backdrop-filter: blur()` usage causes severe GPU performance degradation, video choppiness, laggy animations, and exponential slowdown with nested glass elements. Users on low-power devices or older GPUs experience stuttering interfaces.
+
+**Why it happens:**
+- `backdrop-filter` forces GPU to process everything behind the element continuously
+- Each filter layer doubles GPU draw work and memory usage
+- Nested glass elements (modal over card over sidebar) create exponential performance breakdown
+- Chromium browsers depend on GPU for 2D rendering—weak GPUs struggle
+
+**Consequences:**
+- Severe lag reported in production (Ant Design v6 modals, Tailwind Headless UI)
+- Interface becomes unusable on low-end laptops, tablets, mobile devices
+- Animations stutter, hover states delay 500ms+
+- Video content becomes choppy (reported in multiple 2026 sources)
+- GPU hangs on older hardware (Firefox bugs on Intel Ivybridge/Sandybridge)
+
+**Prevention:**
+1. **Limit blur radius:** Keep blur values ≤10px (4-6px recommended for performance). Higher values cost exponentially more.
+   ```css
+   /* GOOD: Lightweight blur */
+   .glass-card {
+     backdrop-filter: blur(6px);
+   }
+
+   /* BAD: Performance killer */
+   .glass-modal {
+     backdrop-filter: blur(40px); /* Avoid high values */
+   }
    ```
-
-3. **Incremental snapshots require:**
-   - Write access to signaling table (e.g., `GRANT INSERT, UPDATE, DELETE ON mydb.debezium_signal TO 'debezium'@'%';`)
-
-4. **Test permissions** before production deployment with validation script
+2. **Avoid nesting:** Never stack multiple backdrop-filter elements (modal inside drawer inside sidebar). Disable blur for nested layers.
+3. **Strategic application:** Apply glass to small, critical UI elements (navigation, cards), not full-screen overlays
+4. **Provide disable option:** Offer user preference to disable blur effects
+5. **Monitor GPU usage:** Test on low-end devices (integrated graphics) not just MacBook Pros
 
 **Detection:**
-- "Access denied; you need (at least one of) the RELOAD privilege(s)"
-- "LOCK TABLES command denied to user"
-- Snapshot starts but fails partway through
-- Different behavior between dev and prod environments
+- Open DevTools Performance panel and record while interacting with glass elements
+- Check GPU rasterization time (should be <16ms for 60fps)
+- Test on integrated graphics (Intel UHD, older AMD)
+- Watch for frame drops during animations or scrolling
+- User testing on various hardware tiers
 
-**MySQL vs PostgreSQL:**
-PostgreSQL uses `REPLICATION` attribute on role, simpler permission model. MySQL permission model is more granular and error-prone.
-
-**Lesson to address:** "MySQL Permissions by Environment" (setup), "Permission Validation Checklist" (operational)
+**Phase implications:**
+- **Phase 1:** Set maximum blur value (6-8px) and document "no nesting" rule
+- **Phase 2:** Performance budget testing on low-end device (required gate)
+- **Phase 3:** Add `prefers-reduced-motion` support to disable blur
 
 ---
 
-#### MODERATE: Snapshot Timeout on Large Tables
+## Moderate Pitfalls
 
-**What goes wrong:**
-During initial snapshot of large tables (hundreds of millions of rows), MySQL connection times out. Default MySQL `interactive_timeout` and `wait_timeout` are often 8 hours, but snapshots can exceed this. Connector fails with "Connection timed out (Write failed)" after hours of snapshotting.
+Mistakes that cause delays, technical debt, or user frustration.
+
+### Pitfall 4: Browser Compatibility Assumptions
+
+**What goes wrong:** Developers assume `backdrop-filter` works everywhere since it achieved "Baseline 2024" status. They ship glassmorphic designs without fallbacks, breaking experiences in older browsers, corporate environments stuck on legacy versions, or users who've disabled GPU acceleration.
 
 **Why it happens:**
-- MySQL JDBC driver default behavior loads full result set into memory (triggers timeout)
-- Large tables take longer than connection timeout to snapshot
-- After timeout failure, Debezium restarts snapshot from scratch (repeated failures)
+- "Baseline 2024" means modern browsers only (September 2024+)
+- Internet Explorer never supported it (still used in some enterprises)
+- Safari required `-webkit-` prefix until recently
+- Some corporate IT policies disable GPU-accelerated CSS
 
 **Consequences:**
-- Snapshot never completes (timeout, restart, timeout loop)
-- Wasted database resources and network bandwidth
-- Initial sync takes days or never finishes
-- Frustration and potential project abandonment
+- Text floats on transparent backgrounds with no blur, becoming illegible
+- Navigation elements are invisible (transparent with no glass effect)
+- Zero graceful degradation—site looks broken
 
 **Prevention:**
-1. Increase MySQL timeouts in connector config:
-   ```json
-   "database.initial.statements": "SET SESSION wait_timeout=172800;SET SESSION interactive_timeout=172800;SET SESSION net_write_timeout=7200"
+1. **Always use fallback backgrounds:** Provide opaque background as fallback
+   ```css
+   .glass-card {
+     /* Fallback for unsupported browsers */
+     background: rgba(20, 20, 20, 0.85);
+
+     /* Modern browsers */
+     background: rgba(20, 20, 20, 0.1);
+     backdrop-filter: blur(10px);
+
+     /* Safari */
+     -webkit-backdrop-filter: blur(10px);
+   }
    ```
-   (172800 seconds = 48 hours)
+2. **Feature detection:** Use `@supports` to progressively enhance
+   ```css
+   .glass-card {
+     background: rgba(0, 0, 0, 0.9); /* Solid fallback */
+   }
 
-2. Enable result set streaming (default in modern Debezium):
-   ```json
-   "snapshot.fetch.size": "-2147483648"  // Integer.MIN_VALUE = stream mode
+   @supports (backdrop-filter: blur(10px)) {
+     .glass-card {
+       background: rgba(0, 0, 0, 0.1);
+       backdrop-filter: blur(10px);
+     }
+   }
    ```
-
-3. For extremely large tables, use incremental snapshots:
-   - Start connector with small tables first
-   - Once streaming, add large tables to `table.include.list`
-   - Trigger incremental snapshot via signaling table
-
-4. Consider snapshot from read replica to avoid production primary load
+3. **Test in Firefox with GPU disabled:** Simulates non-supporting environments
+4. **Cross-browser testing:** Verify on Chrome, Firefox, Safari, Edge
 
 **Detection:**
-- Connector logs show "Connection timed out" or "Communications link failure"
-- Snapshot restarts from beginning after 8+ hours
-- MySQL processlist shows long-running SELECT queries that eventually disconnect
+- Test with `backdrop-filter` disabled in DevTools
+- Check site in Firefox with `layout.css.backdrop-filter.enabled = false`
+- Use BrowserStack/LambdaTest for older browser versions
+- Verify Safari requires `-webkit-` prefix for your target versions
 
-**MySQL vs PostgreSQL:**
-PostgreSQL uses COPY protocol with better default streaming. MySQL JDBC driver quirk.
-
-**Lesson to address:** "Large Table Snapshot Strategies" (performance tuning), "Incremental Snapshots for Massive Tables" (advanced patterns)
+**Phase implications:**
+- **Phase 1:** Define fallback strategy and document browser support matrix
+- **Phase 2:** Implement `@supports` progressive enhancement
+- **Phase 3:** Cross-browser testing across minimum 3 browsers
 
 ---
 
-#### MODERATE: DDL Tool Integration (gh-ost, pt-online-schema-change)
+### Pitfall 5: Poor Background Selection (The Invisible Glass Problem)
 
-**What goes wrong:**
-Online schema change tools (gh-ost, pt-online-schema-change) create temporary helper tables during migrations. If Debezium's `table.include.list` doesn't cover these helper tables, the connector can crash with "exception thrown from value converters" when schema changes complete.
+**What goes wrong:** Developers apply glassmorphism to interfaces with flat, single-color backgrounds. Without layered, vibrant content behind the glass, the effect collapses into "just a semi-transparent box"—no frosted elegance, no depth, no visual interest.
 
 **Why it happens:**
-- gh-ost creates tables like `_tablename_gho`, `_tablename_ghc`, `_tablename_del`
-- pt-osc creates `_tablename_new`, `_tablename_old`
-- Debezium sees DDL events for these tables but cannot access schema (not in include list)
-- After migration completes, connector fails on next event from migrated table
+- Designers see glassmorphism examples with elaborate gradient backdrops but implement on plain white/black backgrounds
+- Misunderstanding the fundamental principle: **glass needs something to distort**
 
 **Consequences:**
-- Connector crashes mid-schema-migration
-- Requires connector restart and potential re-snapshot
-- Production migrations blocked by CDC concerns
-- Schema changes become high-risk operations
+- Effect is barely visible or looks "washed out"
+- Users don't perceive depth or layering
+- Design falls flat, literally
+- Looks like low-quality CSS from 2010
 
 **Prevention:**
-1. **Include helper table patterns in connector config:**
-   ```json
-   "table.include.list": "mydb.users,mydb._.*_gho,mydb._.*_ghc,mydb._.*_del,mydb._.*_new,mydb._.*_old"
+1. **Require layered backgrounds:** Use gradient meshes, subtle patterns, or content layers
+   ```css
+   .page-background {
+     background:
+       radial-gradient(circle at 20% 80%, rgba(120, 50, 255, 0.2), transparent 40%),
+       radial-gradient(circle at 80% 20%, rgba(50, 120, 255, 0.2), transparent 40%),
+       #1a1a1a;
+   }
    ```
-
-2. **Coordinate with DBAs** on schema change schedule:
-   - Pause Debezium connector during migration window (if acceptable data delay)
-   - Or ensure helper tables are whitelisted before migration starts
-
-3. **Use Debezium-aware migration tools:**
-   - Some versions of gh-ost can coordinate with replication tools
-   - Document standard procedures for your organization
-
-4. **Test schema changes** in staging with Debezium running before production
+2. **Test the "squint test":** Squint at your design—if you can't tell glass elements apart, background is too plain
+3. **Use alpha-channel gradients:** Not `opacity: 0.5` on solid gray—use `rgba()` with gradient overlays
+4. **Ensure visual depth:** Glass should sit "in front of" background content, not blend into it
 
 **Detection:**
-- Connector crashes during or after DDL migration
-- Error: "exception thrown from value converters"
-- Correlation with gh-ost/pt-osc execution in MySQL audit logs
+- Remove `backdrop-filter` temporarily—if design still looks good, you don't need glass
+- Screenshot and ask: "Does this look frosted or just faded?"
+- Compare against known good examples (Apple design, Microsoft Fluent)
 
-**MySQL vs PostgreSQL:**
-PostgreSQL migrations typically use different patterns (logical replication-aware tools). MySQL-specific due to prevalence of gh-ost/pt-osc.
-
-**Lesson to address:** "Safe Schema Changes with gh-ost/pt-osc" (operational patterns), "DDL Management Strategies" (architecture)
+**Phase implications:**
+- **Phase 1:** Design background layer first (gradients, patterns) before adding glass
+- **Phase 2:** Test glass effect visibility in multiple contexts
 
 ---
 
-#### MODERATE: Configuration Property Version Mismatch
+### Pitfall 6: Overuse Throughout Interface (Visual Chaos)
 
-**What goes wrong:**
-Debezium configuration property names changed between versions (v1.9, v2.0). Old properties are silently ignored, causing connectors to fail with mysterious errors or use wrong defaults.
+**What goes wrong:** Designers apply glassmorphism to every UI element—navigation, cards, modals, buttons, sidebars, footers. The result is a chaotic, disorienting experience where nothing feels grounded and users struggle to establish visual hierarchy.
 
 **Why it happens:**
-- Copy-pasting old blog posts or Stack Overflow answers
-- Upgrading Debezium version without reviewing breaking changes
-- Documentation search results mix v1 and v2 examples
+- Excitement over new design trend
+- Misunderstanding that glass is an accent, not a foundation
+- Lack of visual design hierarchy principles
 
 **Consequences:**
-- Connector ignores intended configuration
-- Schema history topic not found (wrong topic name)
-- Timezone conversions incorrect
-- Silent failures (config ignored but connector starts)
+- Eye strain from excessive translucency
+- Inability to distinguish primary from secondary elements
+- Slower task completion (users can't find what they need)
+- Accessibility complaints about "busy" interface
 
 **Prevention:**
-1. **Know the breaking changes (v1.9, v2.0+):**
-   - OLD: `database.history.internal.kafka.topic`
-   - NEW: `schema.history.internal.kafka.topic`
-
-   - OLD: `database.serverTimezone="UTC"`
-   - NEW: `database.connectionTimeZone="UTC"`
-
-2. **Validate connector config** against current version documentation
-3. Check Debezium version in production: connector logs show version on startup
-4. Use JSON schema validation in deployment pipelines
-5. Review release notes for every Debezium upgrade
+1. **Strategic application only:** Reserve glass for 1-3 key UI elements (e.g., navigation header, modal overlays)
+2. **Hierarchy rule:** Primary interactive elements should be solid, secondary can be glass
+3. **Limit glass percentage:** No more than 20-30% of viewport should use glassmorphism
+4. **User testing:** Ask users to identify "most important element"—if they struggle, reduce glass usage
 
 **Detection:**
-- Connector works in dev (older version), fails in prod (newer version)
-- Schema history topic not found despite being created
-- Timezone-related data inconsistencies
-- Check logs for "unknown property" warnings
+- Count glass elements on a single screen—if >4, reduce
+- Ask: "What should users focus on first?" If answer is unclear, too much glass
+- User testing: Track time-to-completion for common tasks
 
-**MySQL vs PostgreSQL:**
-Affects both connectors equally. Not MySQL-specific but critical for MySQL users.
-
-**Lesson to address:** "Debezium Version Migration Guide" (upgrade procedures), "Configuration Validation" (operational)
+**Phase implications:**
+- **Phase 1:** Define which components get glass treatment (navigation only? modals only?)
+- **Phase 2:** A/B test glass vs solid for secondary elements
+- **Phase 3:** User testing to validate hierarchy is clear
 
 ---
 
-#### MODERATE: Timezone Handling with DATETIME vs TIMESTAMP
+### Pitfall 7: Ignoring User Accessibility Preferences
 
-**What goes wrong:**
-MySQL has two temporal types with different timezone behaviors:
-- `DATETIME`: No timezone, stored as-is
-- `TIMESTAMP`: Converted to UTC on write, converted to session timezone on read
-
-Debezium emits both as UTC in Kafka, but the semantics differ. Applications consuming events may misinterpret timestamps, leading to off-by-hours errors in dashboards, reports, or downstream processing.
+**What goes wrong:** Developers ship glassmorphic designs without respecting OS-level accessibility preferences like `prefers-reduced-transparency`, `prefers-reduced-motion`, or high-contrast mode. Users who've explicitly disabled transparency get blurry, translucent interfaces anyway.
 
 **Why it happens:**
-- DBAs use DATETIME and TIMESTAMP interchangeably without understanding timezone implications
-- Applications assume all timestamps are in local timezone
-- MySQL session timezone differs from application timezone
-- Debezium's UTC normalization hides the original semantics
+- Unawareness that these media queries exist
+- Assumption that "design should look the same for everyone"
+- Lack of accessibility testing in development workflow
 
 **Consequences:**
-- Event timestamps off by timezone offset (e.g., 8 hours for Asia/Shanghai)
-- Reports show wrong dates for events
-- Time-based aggregations incorrect
-- Debugging requires checking both table schema and MySQL session timezone
+- Users with vestibular disorders experience motion sickness from blur effects
+- Users who disabled transparency for cognitive/visual reasons get overridden
+- Failure to meet WCAG 2.2 Level AAA guidelines
+- Poor experience for users who explicitly requested accommodations
 
 **Prevention:**
-1. **Standardize on TIMESTAMP for timezone-aware columns:**
-   - Use TIMESTAMP for "when did this happen" (created_at, updated_at)
-   - Use DATETIME only for "human selected a time" (appointment_time, scheduled_for)
+1. **Implement `prefers-reduced-transparency`:**
+   ```css
+   .glass-card {
+     background: rgba(0, 0, 0, 0.1);
+     backdrop-filter: blur(10px);
+   }
 
-2. **Configure MySQL session timezone explicitly:**
-   ```json
-   "database.connectionTimeZone": "UTC"
+   @media (prefers-reduced-transparency: reduce) {
+     .glass-card {
+       background: rgba(0, 0, 0, 0.9); /* Solid fallback */
+       backdrop-filter: none;
+     }
+   }
    ```
-
-3. **Document timezone semantics** in schema registry or data catalog
-
-4. **Use Debezium Timezone Converter SMT** if you need to preserve original timezone:
-   ```json
-   "transforms": "convertTimezone",
-   "transforms.convertTimezone.type": "io.debezium.transforms.TimezoneConverter",
-   "transforms.convertTimezone.converted.timezone": "America/New_York"
+2. **Respect `prefers-reduced-motion`:**
+   ```css
+   @media (prefers-reduced-motion: reduce) {
+     * {
+       backdrop-filter: none !important; /* Remove blur animations */
+     }
+   }
    ```
-
-5. **Validate timestamps** in end-to-end tests with known timezone test data
+3. **High-contrast mode:** Ensure text remains readable when Windows High Contrast Mode is enabled
+4. **Test with assistive tech:** VoiceOver, NVDA, screen magnifiers
 
 **Detection:**
-- Event timestamps don't match database query results
-- Timestamps off by consistent offset (e.g., always 5 hours)
-- Works in dev (localhost timezone) but wrong in prod (different timezone)
+- Enable "Reduce Transparency" in macOS/Windows settings and test site
+- Enable "Reduce Motion" and verify blur effects disable
+- Use browser DevTools to emulate `prefers-reduced-transparency: reduce`
 
-**MySQL vs PostgreSQL:**
-PostgreSQL has clearer timezone semantics (TIMESTAMP vs TIMESTAMPTZ). MySQL's dual behavior is more confusing.
-
-**Lesson to address:** "MySQL Timezone Deep Dive" (data modeling), "Timezone Conversion Strategies" (event processing)
+**Phase implications:**
+- **Phase 1:** Add media query support for all glass components
+- **Phase 2:** Test with accessibility preferences enabled
+- **Phase 3:** Document accessibility compliance
 
 ---
 
-#### MODERATE: MySQL CASCADE DELETE Not in Binlog
+## Minor Pitfalls
 
-**What goes wrong:**
-Rows deleted via CASCADE DELETE don't appear in binlog, causing Debezium to miss these deletes and downstream systems to have orphaned records.
+Mistakes that cause annoyance or suboptimal UX but are easily fixable.
 
-**Why it happens:**
-- MySQL doesn't log CASCADE DELETE to binlog
-- Foreign key cascades handled internally
-- Binlog only shows triggering DELETE
+### Pitfall 8: Code Block Readability Sacrifice
 
-**Consequences:**
-- Orphaned child records in target systems
-- Data inconsistency between source and target
-- Referential integrity violations
-
-**Prevention:**
-1. **Avoid CASCADE DELETE in source:** Use application-level cascading
-2. **Rebuild child records periodically:** Full snapshot to detect orphans
-3. **Document known limitation:** Ensure downstream teams aware
-4. **Consider triggers:** Log cascade deletes via triggers (performance impact)
-
-**Detection:**
-- Child records exist in target but not source
-- Referential integrity checks fail
-- Snapshot reconciliation shows discrepancies
-
-**Course Phase Mapping:**
-- **Phase 1 (Aurora Connector):** Document CASCADE DELETE limitation, demonstrate issue
-
----
-
-#### LOW: Topic Naming Conflicts from Special Characters
-
-**What goes wrong:**
-MySQL allows special characters in database/table names (hyphens, dots, non-Latin characters). Debezium converts non-alphanumeric characters to underscores in Kafka topic names. This can cause collisions: `my-db.my-table` and `my_db.my_table` both become `myserver.my_db.my_table`.
+**What goes wrong:** Technical documentation places code examples inside glassmorphic cards, making syntax highlighting difficult to read as background colors bleed through. Monospace text at small sizes becomes illegible against busy, translucent backgrounds.
 
 **Why it happens:**
-- DBAs use naming conventions with hyphens or dots
-- Multi-tenant databases with client IDs in names (e.g., `client-123.orders`)
-- Legacy schemas with special characters
+- Applying consistent card styling to all content types without considering code blocks
+- Assuming syntax highlighting will "just work" on any background
 
 **Consequences:**
-- Two tables write to same Kafka topic (data mixed)
-- Schema registry conflicts
-- Data loss or corruption from interleaved events
+- Developers can't read code examples (primary content of technical courses)
+- Copy-paste errors from misread characters
+- User frustration and bounce rate
 
 **Prevention:**
-1. Use alphanumeric + underscores only in MySQL names
-2. Document naming conventions for CDC-monitored databases
-3. Test topic name generation: `{database.server.name}.{database}.{table}`
-4. Use `table.include.list` carefully to avoid ambiguous mappings
-5. Consider custom topic routing SMT if migrations from legacy schemas are needed
-
-**Detection:**
-- Kafka topic has events from multiple tables
-- Schema registry errors about incompatible schemas
-- Event counts don't match database row counts
-
-**Lesson to address:** "Database Naming Conventions for CDC" (best practices)
-
----
-
-#### LOW: Incremental Snapshot Signaling Table Misconfiguration
-
-**What goes wrong:**
-Incremental snapshots require a signaling table in the source database for trigger/control. If this table isn't created, or lacks proper permissions, or has wrong schema, incremental snapshots silently fail or never start.
-
-**Why it happens:**
-- Documentation assumes manual table creation
-- DBAs unfamiliar with Debezium requirements
-- Permission granted for data tables but not signaling table
-
-**Consequences:**
-- Incremental snapshot doesn't start (no error, just doesn't happen)
-- Large table additions never complete
-- Confusion about why snapshot isn't progressing
-
-**Prevention:**
-1. **Create signaling table explicitly:**
-   ```sql
-   CREATE TABLE mydb.debezium_signal (
-     id VARCHAR(64) PRIMARY KEY,
-     type VARCHAR(32) NOT NULL,
-     data TEXT
-   );
+1. **Solid backgrounds for code:** Exempt code blocks from glass treatment
+   ```css
+   .glass-card pre,
+   .glass-card code {
+     background: rgba(0, 0, 0, 0.95); /* Nearly solid for readability */
+     backdrop-filter: none;
+   }
    ```
+2. **Increase code block opacity:** If code must be on glass, use 90%+ opacity
+3. **Test syntax highlighting:** Verify all token colors meet 4.5:1 contrast
+4. **User testing:** Have developers read and copy code examples
 
-2. **Grant permissions:**
-   ```sql
-   GRANT INSERT, UPDATE, DELETE ON mydb.debezium_signal TO 'debezium'@'%';
+**Detection:**
+- Try to read code examples at arm's length—if you can't, contrast is too low
+- Test with syntax highlighting themes (light and dark)
+
+**Phase implications:**
+- **Phase 2:** Special handling for code blocks established early
+
+---
+
+### Pitfall 9: Comparison Table Confusion
+
+**What goes wrong:** Data tables with glassmorphic styling lose grid lines, row boundaries blur together, and users struggle to track across rows (especially in wide tables).
+
+**Why it happens:**
+- Translucent table borders fade into backgrounds
+- Cell backgrounds don't provide enough separation
+
+**Consequences:**
+- Data misreading (wrong row correlation)
+- Slow task completion for comparison tasks
+
+**Prevention:**
+1. **Solid table borders:** Use opaque borders for tables
+2. **Alternating row backgrounds:** Zebra striping with higher opacity
+3. **Hover states:** Clear, solid highlight on row hover
+4. **Consider exempting tables:** Tables may not benefit from glass treatment
+
+**Detection:**
+- Try to track across a 5-column table—if you lose your place, borders are too faint
+
+**Phase implications:**
+- **Phase 2:** Test all content types (text, code, tables) for readability
+
+---
+
+### Pitfall 10: Animation Blur Flicker
+
+**What goes wrong:** Animating elements with `backdrop-filter` causes visual flicker, rendering artifacts, or frame drops as the GPU struggles to recalculate blur on every frame.
+
+**Why it happens:**
+- `backdrop-filter` is expensive to recalculate during animation
+- Browser rendering engines aren't optimized for animated blur
+
+**Consequences:**
+- Janky, unprofessional animations
+- Performance degradation
+- User perception of low quality
+
+**Prevention:**
+1. **Avoid animating backdrop-filter:** Animate opacity or transform instead
+2. **Use `will-change`:** Hint browser to optimize, but use sparingly
+   ```css
+   .animating-glass {
+     will-change: transform, opacity;
+     /* DON'T: will-change: backdrop-filter; */
+   }
    ```
-
-3. **Configure in connector:**
-   ```json
-   "signal.data.collection": "mydb.debezium_signal"
-   ```
-
-4. **Test with sample signal:**
-   ```sql
-   INSERT INTO mydb.debezium_signal VALUES ('ad-hoc-1', 'execute-snapshot', '{"data-collections": ["mydb.large_table"]}');
-   ```
-
-5. **Monitor signaling table** for processed vs pending signals
+3. **Prefer static blur:** Let blur be constant, animate the element's position
 
 **Detection:**
-- Incremental snapshot never starts
-- No errors in connector logs
-- Signaling table rows remain unprocessed
-
-**Lesson to address:** "Incremental Snapshots Setup" (configuration), "Signaling Table Management" (operational)
-
----
-
-#### LOW: Binlog Format Not ROW-Based
-
-**What goes wrong:**
-Debezium requires `binlog_format=ROW`. If MySQL is configured with `STATEMENT` or `MIXED` format, Debezium cannot capture all changes. Connector fails with error: "binlog_format must be ROW."
-
-**Why it happens:**
-- Default MySQL installation uses `MIXED` or `STATEMENT` in some versions
-- DBAs optimize for replication performance without considering CDC
-- Inherited configuration from pre-CDC era
-
-**Consequences:**
-- Connector refuses to start
-- Partial data capture if format changes mid-stream
-
-**Prevention:**
-1. **Set globally in MySQL config:**
-   ```ini
-   [mysqld]
-   binlog_format = ROW
-   ```
-
-2. **Verify before deploying Debezium:**
-   ```sql
-   SHOW VARIABLES LIKE 'binlog_format';
-   ```
-
-3. **Set dynamically (self-hosted MySQL):**
-   ```sql
-   SET GLOBAL binlog_format = 'ROW';
-   ```
-
-4. **Aurora/RDS:** Modify parameter group, set `binlog_format=ROW`, reboot instance
-
-**Detection:**
-- Connector error: "binlog_format must be ROW"
-- Fails immediately on startup
-- Works after changing format to ROW
-
-**Lesson to address:** "MySQL Binlog Prerequisites" (setup)
-
----
-
-### 1.3 GCP Integration Pitfalls
-
-#### MODERATE: Workload Identity Configuration (GKE + Pub/Sub)
-
-**What goes wrong:**
-Debezium Server deployed on GKE fails to publish to Pub/Sub with permission errors.
-
-**Why it happens:**
-- Workload Identity not properly configured
-- Service account missing Pub/Sub publisher role
-- Incorrect annotation on Kubernetes service account
-
-**Consequences:**
-- Events cannot be published to Pub/Sub
-- Connector fails with authentication errors
-- No data reaches downstream consumers
-
-**Prevention:**
-1. **Configure Workload Identity binding:** Link Kubernetes SA to Google SA
-2. **Grant Pub/Sub permissions:** `roles/pubsub.publisher` on Google service account
-3. **Annotate Kubernetes SA:** `iam.gke.io/gcp-service-account=[GSA]@[PROJECT].iam.gserviceaccount.com`
-4. **Test permissions before deployment:** Use `gcloud pubsub topics publish` from pod
-
-**Detection:**
-- Logs show "403 Forbidden" or "Permission denied"
-- Events not appearing in Pub/Sub topics
-- `gcloud pubsub subscriptions pull` returns empty
-
-**Course Phase Mapping:**
-- **Phase 3 (Cloud Integrations - GCP):** Configure Workload Identity, demonstrate IAM setup
-
----
-
-#### LOW: Cloud SQL Logical Decoding Configuration
-
-**What goes wrong:**
-Cloud SQL for PostgreSQL doesn't have logical decoding enabled, blocking Debezium.
-
-**Why it happens:**
-- Logical decoding disabled by default on Cloud SQL
-- Wrong replication plugin selected
-
-**Consequences:**
-- Connector fails to create replication slot
-- No CDC events captured
-
-**Prevention:**
-1. **Enable logical decoding flag:** Set `cloudsql.logical_decoding=on` in Cloud SQL
-2. **Use pgoutput plugin:** Simplest option, built-in to PostgreSQL
-3. **Restart database instance:** Flag change requires restart
-4. **Verify with query:** `SHOW wal_level` should return `logical`
-
-**Detection:**
-- Connector fails with "logical decoding not enabled"
-- `SELECT * FROM pg_replication_slots` fails to create slot
-
-**Course Phase Mapping:**
-- **Phase 3 (Cloud Integrations - GCP):** Enable and verify logical decoding
-
----
-
-### 1.4 Kafka Connect Configuration Pitfalls
-
-#### CRITICAL: Producer Max Request Size (Large Transactions)
-
-**What goes wrong:**
-Large transactions generate messages exceeding Kafka's default maximum message size (1 MB), causing "RecordTooLargeException" and connector failure.
-
-**Why it happens:**
-- Single database transaction with many rows becomes one Kafka message
-- JSONB columns with 1-1.5 MB payloads
-- Before/after images double message size for updates
-- Default `producer.max.request.size` too small
-
-**Consequences:**
-- Connector stops processing
-- Data pipeline halts
-- Backpressure on database replication logs
-
-**Prevention:**
-1. **Increase producer.max.request.size:** Set in Kafka Connect worker config (`connect-distributed.properties`)
-2. **Match Kafka broker config:** Also increase `message.max.bytes` on brokers and `replica.fetch.max.bytes`
-3. **Use message filtering SMT:** Produce only changed fields instead of full before/after
-4. **Monitor message sizes:** Alert on messages approaching limit
-5. **Consider chunking large transactions:** Split at application level if possible
-
-**Detection:**
-- Logs show "RecordTooLargeException"
-- Connector status FAILED
-- Kafka producer metrics show rejected records
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Configure message size limits
-- **Phase 6 (Operations):** Monitor message size metrics
-- **Phase 7 (Troubleshooting):** Diagnose and fix RecordTooLargeException
-
----
-
-#### CRITICAL: Offset Flush Timeout
-
-**What goes wrong:**
-Connector logs "Failed to flush, timed out while waiting for producer" errors, causing offset commit failures and potential duplicate events.
-
-**Why it happens:**
-- Slow Kafka replicas delay offset commits
-- High record generation rate overwhelms offset topic
-- Default timeout too short for cluster latency
-
-**Consequences:**
-- Offsets not committed reliably
-- Duplicate events on connector restart
-- Connector instability
-
-**Prevention:**
-1. **Tune offset.flush.interval.ms:** Increase interval between flush attempts
-2. **Tune offset.flush.timeout.ms:** Increase timeout for flush completion
-3. **Monitor Kafka cluster health:** Ensure offset topic has healthy replicas
-4. **Increase offset topic replication:** Ensure `replication.factor >= 3`
-5. **Consider dedicated Kafka cluster:** Separate offset storage from data topics
-
-**Detection:**
-- Logs show "Failed to flush, timed out"
-- Offset lag increases over time
-- Duplicate events observed in consumers
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Configure offset flush settings
-- **Phase 6 (Operations):** Monitor offset commit metrics
-
----
-
-#### MODERATE: Distributed Mode Cluster Coordination Failures
-
-**What goes wrong:**
-Workers in Kafka Connect distributed mode fail to coordinate, causing task rebalancing storms, split-brain scenarios, or tasks not being assigned.
-
-**Why it happens:**
-- `group.id` mismatch between workers
-- `rest.advertised.host.name` set to `localhost` prevents inter-worker communication
-- Shared storage topics (offsets, configs, status) misconfigured
-- Network partitions between workers
-
-**Consequences:**
-- Tasks repeatedly rebalance between workers
-- Connectors fail to start
-- Split-brain: multiple workers think they own the same task
-- Data duplication or loss
-
-**Prevention:**
-1. **Same group.id across workers:** All workers in cluster must share identical `group.id`
-2. **Configure rest.advertised.host.name properly:** Use resolvable hostname/IP, NOT `localhost`
-3. **Unique topic set per cluster:** Each Kafka Connect cluster needs unique `config.storage.topic`, `offset.storage.topic`, `status.storage.topic`
-4. **Monitor rebalance frequency:** Alert on excessive rebalances
-5. **Network stability:** Ensure stable connectivity between workers
-
-**Detection:**
-- Frequent task rebalances in logs
-- REST API shows workers unable to contact each other
-- Tasks remain UNASSIGNED
-- Multiple workers claim same task ID
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Configure distributed mode properly
-- **Phase 7 (Troubleshooting):** Diagnose coordination failures
-
----
-
-#### MODERATE: Internal Topic Deletion (Catastrophic Data Loss)
-
-**What goes wrong:**
-Deleting Kafka Connect internal topics (`connect-offsets`, `connect-configs`, `connect-status`) or Debezium schema history topic causes offset desynchronization, lost connector configuration, and inability to restart.
-
-**Why it happens:**
-- Misunderstanding of Kafka topic retention
-- Accidental deletion during cleanup
-- Automated topic deletion policies
-
-**Consequences:**
-- Connector cannot resume from correct position
-- Must re-snapshot entire database
-- Configuration lost, connectors disappear
-- Replication slot/binlog position mismatch
-
-**Prevention:**
-1. **Protect internal topics:** Set retention to `infinite` or very long period
-2. **Document internal topics clearly:** Tag with naming convention
-3. **Restrict delete permissions:** Kafka ACLs prevent accidental deletion
-4. **Backup configurations:** Export connector configs regularly via REST API
-5. **Monitor topic existence:** Alert if internal topics disappear
-
-**Detection:**
-- Connectors fail to start after restart
-- Empty connector list from REST API
-- Logs show "offset topic does not exist"
-- Replication slot position doesn't match offset
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Configure internal topics with infinite retention
-- **Phase 6 (Operations):** Backup and recovery procedures
-- **Phase 7 (Troubleshooting):** Recovery from internal topic loss
-
----
-
-### 1.5 Schema Evolution Pitfalls
-
-#### CRITICAL: Schema Registry Version Mismatch
-
-**What goes wrong:**
-Debezium provides hardcoded schema version of 1, while Schema Registry increments versions. Connect record schema version shows constant value of 1 even after schema changes, causing confusion and preventing proper version tracking.
-
-**Why it happens:**
-- Debezium hardcodes schema version to 1
-- Schema Registry creates new versions on logical changes
-- Two different versioning systems conflict
-
-**Consequences:**
-- Cannot track schema evolution via Connect schema version
-- Must rely solely on Schema Registry version
-- Confusion about "current" schema version
-- Debugging difficulties
-
-**Prevention:**
-1. **Rely on Schema Registry version only:** Ignore Debezium's hardcoded version 1
-2. **Monitor Schema Registry directly:** Query registry for actual version numbers
-3. **Document this quirk:** Ensure team understands dual versioning
-4. **Use schema ID in monitoring:** Track schema ID instead of version number
-
-**Detection:**
-- Connect schema version always shows 1
-- Schema Registry version increments normally
-- Discrepancy between two version numbers
-
-**Course Phase Mapping:**
-- **Phase 8 (Schema Management):** Explain dual versioning, demonstrate Schema Registry queries
-
----
-
-#### CRITICAL: Column Swap Not Detected
-
-**What goes wrong:**
-Two columns swapped in a way that leaves table schema logically unchanged (same types, same names after swap) doesn't create new schema version in Schema Registry, causing silent data corruption.
-
-**Why it happens:**
-- Schema Registry creates new version only on logical schema changes
-- Column order swap with rename back has same logical schema
-- No semantic understanding of column meaning
-
-**Consequences:**
-- Data mapped to wrong columns
-- Silent data corruption
-- Consumers process incorrect data
-- Very difficult to detect and debug
-
-**Prevention:**
-1. **Avoid column swaps entirely:** Add new columns, migrate data, drop old columns
-2. **Version schemas manually:** Force new schema version on semantic changes
-3. **Add schema comments/metadata:** Document column meanings
-4. **Validate data semantically:** Downstream validation catches mismatched data
-5. **Test schema changes in staging:** Verify end-to-end data flow
-
-**Detection:**
-- Data anomalies in downstream systems
-- Values in wrong semantic context
-- No schema registry version change despite DDL
-- Manual schema inspection reveals swap
-
-**Course Phase Mapping:**
-- **Phase 8 (Schema Management):** Demonstrate column swap scenario, safe migration patterns
-
----
-
-#### MODERATE: KSQL Schema Update Issues
-
-**What goes wrong:**
-KSQL tables cannot perform in-place schema updates for Debezium's schema evolution when using Avro payloads with Schema Registry. Neither auto-update nor `CREATE OR REPLACE` adopts new schema versions.
-
-**Why it happens:**
-- KSQL doesn't auto-detect schema evolution
-- `CREATE OR REPLACE` doesn't refresh schema from registry
-- Must manually drop and recreate KSQL table
-
-**Consequences:**
-- Schema evolution breaks KSQL queries
-- Must drop and recreate tables, losing downstream state
-- Downtime during schema migration
-
-**Prevention:**
-1. **Plan for KSQL table recreation:** Design for ephemeral KSQL tables
-2. **Use ksqlDB instead of KSQL:** Newer version has better schema support
-3. **Minimize schema changes:** Additive changes only (new columns)
-4. **Backward/forward compatible schemas:** Avoid breaking changes
-5. **Automate table recreation:** Script the drop/recreate process
-
-**Detection:**
-- KSQL queries fail after schema change
-- Error messages about schema mismatch
-- Schema version in registry doesn't match KSQL table
-
-**Course Phase Mapping:**
-- **Phase 8 (Schema Management):** Demonstrate KSQL limitation, recreation procedure
-
----
-
-#### MODERATE: Confluent Schema Registry Removed (Debezium 2.x)
-
-**What goes wrong:**
-Debezium 2.0+ removes native Confluent Schema Registry support, requiring manual build of Debezium Connect images with Confluent converters.
-
-**Why it happens:**
-- Debezium project removed Confluent dependency
-- Users must integrate converters themselves
-
-**Consequences:**
-- Default Debezium images don't work with Confluent Schema Registry
-- Must build custom images
-- Increased complexity for Confluent users
-
-**Prevention:**
-1. **Use Apicurio Registry:** Debezium's recommended alternative
-2. **Build custom images:** Include Confluent converters in Dockerfile
-3. **Use pre-built images:** Community or Confluent provides compatible images
-4. **Document build process:** Maintain custom image build pipeline
-
-**Detection:**
-- Connector fails with "converter class not found"
-- Confluent converters missing from classpath
-
-**Course Phase Mapping:**
-- **Phase 8 (Schema Management):** Compare Apicurio vs Confluent, build custom image
-
----
-
-### 1.6 Snapshot and Initial Load Pitfalls
-
-#### MODERATE: Snapshot Mode Misconfiguration
-
-**What goes wrong:**
-Wrong `snapshot.mode` setting causes unexpected behavior: missing historical data, unnecessary re-snapshots, or connector failures.
-
-**Why it happens:**
-- Misunderstanding of snapshot mode options
-- Default mode not appropriate for use case
-- Copy-paste configuration without review
-
-**Consequences:**
-- `initial`: Re-snapshots on every connector restart
-- `schema_only`: Missing historical data if expected
-- `never`: Fails if offset doesn't exist
-- Unexpected behavior confuses operations team
-
-**Prevention:**
-1. **Understand snapshot modes thoroughly:**
-   - `initial`: Snapshot if no offset exists (default)
-   - `always`: Snapshot on every start (testing only)
-   - `never`: Fail if no offset (requires external snapshot)
-   - `schema_only`: Metadata only, no data
-   - `when_needed`: Auto-detect need for snapshot
-2. **Choose mode explicitly:** Don't rely on defaults
-3. **Document choice in config:** Comment explaining why mode chosen
-4. **Test in non-production first:** Verify behavior before production
-
-**Detection:**
-- Unexpected snapshot behavior
-- Missing data or duplicate data
-- Connector failures on restart
-
-**Course Phase Mapping:**
-- **Phase 5 (Snapshots):** Compare all snapshot modes with hands-on examples
-
----
-
-### 1.7 Monitoring and Observability Pitfalls
-
-#### CRITICAL: Missing JMX Monitoring
-
-**What goes wrong:**
-Production Debezium deployment lacks monitoring, making it impossible to detect lag, resource exhaustion, or failures before customer impact.
-
-**Why it happens:**
-- JMX monitoring not configured by default
-- Prometheus/Grafana setup skipped as "nice to have"
-- Metrics collection adds complexity
-
-**Consequences:**
-- No visibility into connector health
-- Lag discovered only when customers report stale data
-- Resource exhaustion causes unexpected failures
-- No data for capacity planning
-
-**Prevention:**
-1. **Enable JMX from day one:** Configure JMX exporter in Kafka Connect deployment
-2. **Deploy Prometheus + Grafana:** Standard monitoring stack for Debezium
-3. **Use pre-built dashboards:** Debezium community provides Grafana dashboards
-4. **Alert on key metrics:**
-   - `debezium.metrics:type=connector-metrics,context=snapshot,name=MilliSecondsSinceLastEvent` (lag)
-   - `debezium.metrics:type=connector-metrics,context=streaming,name=MilliSecondsBehindSource` (replication lag)
-   - Queue usage between components
-5. **Monitor JVM metrics:** Heap usage, GC pauses
-
-**Detection:**
-- No metrics dashboard exists
-- No alerts firing despite known issues
-- Operations team "flying blind"
-
-**Course Phase Mapping:**
-- **Phase 6 (Operations):** Configure JMX, deploy Prometheus/Grafana, create alerts
-
----
-
-#### MODERATE: Insufficient Alerting
-
-**What goes wrong:**
-Monitoring exists but alerts not configured, so metrics collected but nobody notified of issues.
-
-**Why it happens:**
-- Metrics collection treated as sufficient
-- Alert threshold tuning postponed
-- Notification channels not configured
-
-**Consequences:**
-- Metrics show problem history but team unaware in real-time
-- Same impact as no monitoring for incident response
-
-**Prevention:**
-1. **Define SLOs first:** What lag is acceptable? What uptime target?
-2. **Configure alerts for SLO violations:**
-   - Lag > 60 seconds (warning)
-   - Lag > 300 seconds (critical)
-   - Connector status != RUNNING (critical)
-   - Offset flush failures (warning)
-3. **Test alert delivery:** Verify PagerDuty/Slack/email actually arrives
-4. **Runbook for each alert:** Link to resolution steps
-
-**Detection:**
-- Dashboard exists but no alert history
-- Problems discovered by humans checking dashboard
-- No on-call process for Debezium
-
-**Course Phase Mapping:**
-- **Phase 6 (Operations):** Configure alerts with thresholds, test delivery
-
----
-
-### 1.8 Transformation (SMT) Pitfalls
-
-#### MODERATE: Applying SMTs to Wrong Message Types
-
-**What goes wrong:**
-SMT designed for DML events (with `op` field) fails when applied to heartbeat messages, tombstone messages, or schema change events that lack this field.
-
-**Why it happens:**
-- SMT configuration doesn't use predicates to filter message types
-- Assumption that all messages have same structure
-- Heartbeat/tombstone messages have different schemas
-
-**Consequences:**
-- Transformation fails with null pointer exception
-- Connector stops processing
-- Data pipeline halts
-
-**Prevention:**
-1. **Use SMT predicates:** Selectively apply transformations only to appropriate events
-2. **Example predicate:**
-   ```
-   transforms.filterOp.predicate=HasOp
-   predicates.HasOp.type=org.apache.kafka.connect.transforms.predicates.HasHeaderKey
-   predicates.HasOp.name=op
-   ```
-3. **Test with all message types:** Include heartbeat, tombstone in testing
-4. **Handle null values gracefully:** SMT code should check for null
-
-**Detection:**
-- Logs show NullPointerException in SMT
-- Connector FAILED after heartbeat message
-- Missing expected field errors
-
-**Course Phase Mapping:**
-- **Phase 9 (Message Transformations):** Demonstrate predicates, test with heartbeat/tombstone
-
----
-
-#### LOW: SMT Security with Scripting Expressions
-
-**What goes wrong:**
-Once scripting SMT deployed, any user with connector creation permission can execute arbitrary scripts in Kafka Connect JVM.
-
-**Why it happens:**
-- Scripting SMT allows JavaScript/Groovy execution
-- Kafka Connect permission model doesn't isolate connectors
-
-**Consequences:**
-- Potential code injection
-- Unauthorized access to Kafka Connect internals
-- Security vulnerability
-
-**Prevention:**
-1. **Secure Kafka Connect REST API:** Authentication and authorization
-2. **Restrict connector creation permissions:** Only trusted users
-3. **Prefer non-scripting SMTs:** Use built-in transformations when possible
-4. **Code review SMT scripts:** Treat as application code
-5. **Run Kafka Connect in isolated environment:** Limit blast radius
-
-**Detection:**
-- Unauthorized connectors appear
-- Unexpected JVM behavior in Kafka Connect workers
-
-**Course Phase Mapping:**
-- **Phase 9 (Message Transformations):** Discuss security implications, recommend non-scripting alternatives
-
----
-
-### 1.9 Operational Complexity Pitfalls
-
-#### CRITICAL: Infrastructure Burden (Kafka Ecosystem)
-
-**What goes wrong:**
-Organizations not using Kafka must stand up entire Kafka ecosystem (Kafka, ZooKeeper/KRaft, Schema Registry, Connect) just to use Debezium, creating massive operational overhead.
-
-**Why it happens:**
-- Debezium originally designed for Kafka-centric architectures
-- No lightweight deployment option in classic Debezium
-
-**Consequences:**
-- 3-6 month project to deploy Kafka before CDC can begin
-- Ongoing operational burden: upgrades, scaling, monitoring
-- High cost for small CDC use cases
-- Requires Kafka expertise on team
-
-**Prevention/Mitigation:**
-1. **Use Debezium Server:** Standalone mode supports Pub/Sub, Kinesis, HTTP without Kafka
-2. **Managed Kafka services:** AWS MSK, Confluent Cloud reduce operational burden
-3. **Evaluate CDC-as-a-Service:** Estuary Flow, Airbyte for simpler deployment
-4. **Build business case for Kafka:** If only need is CDC, consider alternatives
-
-**Detection:**
-- 6+ month timeline for "simple" CDC project
-- Team lacks Kafka expertise
-- Infrastructure costs exceed CDC value
-
-**Course Phase Mapping:**
-- **Phase 3 (Cloud Integrations - GCP):** Demonstrate Debezium Server with Pub/Sub (Kafka-less)
-- **Phase 10 (Alternative Architectures):** Compare Kafka vs Kafka-less deployments
-
----
-
-#### MODERATE: Duplicate Events (At-Least-Once Semantics)
-
-**What goes wrong:**
-Systems receive duplicate events during network failures, crashes, or rebalances, but consumers aren't idempotent, causing data corruption.
-
-**Why it happens:**
-- Debezium provides at-least-once delivery (not exactly-once)
-- Offset commits can fail while events succeed
-- Network retries resend messages
-
-**Consequences:**
-- Duplicate records in target database
-- Incorrect aggregations (double-counting)
-- Idempotency assumption violated
-
-**Prevention:**
-1. **Design idempotent consumers:** Use upsert instead of insert, deduplicate on unique key
-2. **Use transaction markers:** Debezium can emit transaction boundaries
-3. **Implement deduplication layer:** Track processed event IDs in cache/database
-4. **Document at-least-once guarantee:** Ensure downstream teams understand
-5. **Test with duplicate injection:** Chaos engineering validates idempotency
-
-**Detection:**
-- Duplicate primary key violations in target
-- Aggregation counts don't match source
-- Same event ID appears multiple times in logs
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Explain at-least-once semantics
-- **Phase 11 (Consumers):** Implement idempotent consumer patterns
-
----
-
-#### MODERATE: Message Ordering Per Table, Not Database
-
-**What goes wrong:**
-Assuming global ordering across all tables, but Debezium only guarantees ordering per table (per partition key).
-
-**Why it happens:**
-- Kafka partitioning by table and primary key
-- No global sequence number across tables
-- Misunderstanding of CDC guarantees
-
-**Consequences:**
-- Cross-table transaction integrity lost
-- Read-your-writes consistency violated
-- Temporal queries show inconsistent snapshots
-
-**Prevention:**
-1. **Understand ordering guarantees:** Per table per PK only
-2. **Use transaction markers:** Debezium can group events by transaction ID
-3. **Design for eventual consistency:** Don't assume cross-table ordering
-4. **Single partition for strict ordering:** Route all events to one partition (performance tradeoff)
-5. **Application-level sequencing:** Add sequence numbers in source database
-
-**Detection:**
-- Cross-table invariants violated
-- Events from Transaction A and B interleaved incorrectly
-- Temporal queries show inconsistent state
-
-**Course Phase Mapping:**
-- **Phase 4 (Production Deployment):** Explain ordering guarantees, transaction markers
-- **Phase 11 (Consumers):** Handle out-of-order events
-
----
-
-### 1.10 Recovery and Failure Scenarios
-
-#### CRITICAL: Offset Desynchronization After Failure
-
-**What goes wrong:**
-After crash or network failure, Debezium offset (last processed position) doesn't match database replication slot LSN, causing gap in data or reprocessing.
-
-**Why it happens:**
-- Offset commit fails while event processing succeeds
-- Internal Kafka topics deleted
-- Manual offset manipulation errors
-
-**Consequences:**
-- Data loss if offset ahead of slot
-- Duplicate events if offset behind slot
-- Difficult to diagnose and correct
-
-**Prevention:**
-1. **Never delete internal Kafka topics:** Protect offset storage
-2. **Configure offset.mismatch.strategy:** PostgreSQL connector new option (TRUST_SLOT)
-3. **Backup offsets regularly:** Export via Kafka Connect REST API
-4. **Monitor offset vs slot position:** Alert on divergence
-5. **Test recovery procedures:** Regularly validate disaster recovery
-
-**Detection:**
-- Connector logs show offset vs LSN mismatch
-- Gap in event sequence numbers
-- Duplicate events after restart
-
-**Course Phase Mapping:**
-- **Phase 7 (Troubleshooting):** Diagnose and fix offset desynchronization
-- **Phase 6 (Operations):** Backup and restore offsets
-
----
-
-#### MODERATE: Task Failure vs Worker Failure
-
-**What goes wrong:**
-Task failure doesn't trigger rebalance (must manually restart via API), but worker failure triggers automatic rebalance. Teams treat both failures the same way.
-
-**Why it happens:**
-- Kafka Connect treats task failure as exceptional case
-- Worker failure triggers cluster coordination
-- Different failure domains
-
-**Consequences:**
-- Failed tasks sit idle until manually restarted
-- Assuming automatic recovery when manual action required
-- Delayed detection and resolution
-
-**Prevention:**
-1. **Monitor task status separately:** Alert on task FAILED status
-2. **Automate task restart:** Script to restart failed tasks via REST API
-3. **Understand failure types:**
-   - Task failure: Manual restart required
-   - Worker failure: Automatic rebalance
-4. **Document runbook:** Clear procedures for each failure type
-
-**Detection:**
-- Connector shows RUNNING but no events
-- Task status shows FAILED
-- Worker count matches expected but tasks unassigned
-
-**Course Phase Mapping:**
-- **Phase 7 (Troubleshooting):** Differentiate task vs worker failures, restart procedures
-
----
-
-#### MODERATE: Database Timezone Configuration
-
-**What goes wrong:**
-TIMESTAMP values fail to normalize to UTC if database timezone isn't explicitly specified via `database.connectionTimeZone`, causing incorrect timestamps in events.
-
-**Why it happens:**
-- Default timezone handling varies by connector
-- Database timezone != JVM timezone
-- Implicit timezone conversion errors
-
-**Consequences:**
-- Timestamps off by hours (timezone offset)
-- Temporal queries return wrong results
-- Data appears in wrong time buckets
-
-**Prevention:**
-1. **Always set database.connectionTimeZone explicitly:** Don't rely on defaults
-2. **Standardize on UTC everywhere:** Database, Debezium, consumers
-3. **Test with timezone edge cases:** DST transitions, leap seconds
-4. **Validate timestamp accuracy:** Compare source vs target timestamps
-
-**Detection:**
-- Timestamps consistently off by fixed offset
-- Events appear to occur in future or past
-- Timezone math errors in queries
-
-**Course Phase Mapping:**
-- **Phase 2 (PostgreSQL Connector) / Phase 1 (Aurora Connector):** Configure connectionTimeZone
-
----
-
-## MySQL vs PostgreSQL Comparison Summary
-
-| Issue | MySQL | PostgreSQL | Notes |
-|-------|-------|------------|-------|
-| **WAL/Binlog Retention** | Time-based purging (risk of position loss) | Replication slots prevent deletion (risk of unbounded growth) | Different failure modes, both need monitoring |
-| **Snapshot Locking** | Global read lock or table-level locks, Aurora prohibits global | Lower-impact MVCC snapshots | MySQL more complex, especially on Aurora |
-| **GTID Mode** | Optional, adds complexity and failure modes | N/A | MySQL-specific complication |
-| **Permissions** | Granular (SELECT, RELOAD, LOCK TABLES, REPLICATION *) | Simple (REPLICATION role) | MySQL more error-prone |
-| **Server ID** | Required, must be unique across all connectors | N/A (publication/slot name uniqueness) | MySQL-specific multi-connector issue |
-| **Timezone Handling** | DATETIME vs TIMESTAMP confusion | TIMESTAMP vs TIMESTAMPTZ (clearer) | MySQL more prone to timezone bugs |
-| **DDL Tools** | gh-ost, pt-osc create helper tables | Native logical replication-aware migrations | MySQL requires extra table whitelisting |
-| **Schema History** | Same (Kafka topic with infinite retention) | Same | Both connectors share this issue |
-| **Failover** | Aurora: binlog position/GTID may change after failover | Aurora: replication slot recreation required | Both have failover challenges, different mechanisms |
-| **CASCADE DELETE** | Not logged to binlog | Logged to WAL | MySQL-specific limitation |
+- Record animation in DevTools Performance panel
+- Watch for dropped frames during blur animations
+
+**Phase implications:**
+- **Phase 2:** Animation guidelines prohibit animating backdrop-filter
 
 ---
 
@@ -1430,663 +453,78 @@ TIMESTAMP values fail to normalize to UTC if database timezone isn't explicitly 
 
 | Phase Topic | Likely Pitfall | Mitigation |
 |-------------|---------------|------------|
-| Initial MySQL Setup | Binlog format not ROW, binlog disabled | Add pre-flight validation script that checks MySQL config before connector deployment |
-| Aurora MySQL Introduction | Global read lock prohibition | Cover snapshot.locking.mode options, demonstrate minimal vs none, recommend incremental snapshots |
-| Schema Changes | gh-ost/pt-osc helper tables not whitelisted | Provide table.include.list pattern examples, coordinate with DBA procedures |
-| Production Deployment | Insufficient binlog retention | Calculate retention based on max acceptable downtime + buffer, set up binlog lag monitoring |
-| Multi-Database Setup | Server ID conflicts | Require server ID registry in deployment docs, validate uniqueness in CI/CD |
-| Disaster Recovery | Schema history topic corruption | Document recovery snapshot procedure, backup schema history topic to S3/GCS |
-| Performance Tuning | Large table snapshot timeouts | Cover incremental snapshots, timeout configuration, read replica snapshots |
-| Monitoring | Binlog purging before connector catches up | Implement binlog delay alerts with escalation before retention threshold |
+| Foundation (Phase 1) | Setting blur too high (>10px) for performance | Establish blur budget: max 8px, 6px recommended |
+| Foundation (Phase 1) | No contrast testing protocol | Document required tools and 4.5:1 minimum |
+| Foundation (Phase 1) | Identical values for light/dark modes | Define separate parameters per theme |
+| Implementation (Phase 2) | Applying glass to all components | Limit to navigation + modals only |
+| Implementation (Phase 2) | Code blocks become illegible | Exempt code/tables from glass treatment |
+| Implementation (Phase 2) | Nesting glass elements | Enforce "no backdrop-filter nesting" rule |
+| Validation (Phase 3) | Shipping without fallbacks | Require `@supports` progressive enhancement |
+| Validation (Phase 3) | Ignoring accessibility preferences | Test with `prefers-reduced-transparency` |
+| Validation (Phase 3) | No low-end device testing | Performance budget on integrated GPU required |
 
 ---
 
-## Part 2: Course Creation Pitfalls
-
-[Previous course creation content remains the same...]
-
-### 2.1 Content Relevance Pitfalls
-
-#### CRITICAL: Outdated Examples and Technologies
-
-**What goes wrong:**
-Course content becomes outdated in 18 months or less, teaching deprecated approaches, old library versions, or obsolete patterns. Students learn skills already irrelevant to 2026 job market.
-
-**Why it happens:**
-- Tech ecosystem evolves rapidly (Debezium 3.x released Dec 2025)
-- Course creators don't update content post-launch
-- Examples use older Kafka versions, deprecated connectors
-- Copy-paste from 2022-2023 blog posts
-
-**Consequences:**
-- Students learn wrong patterns (e.g., ZooKeeper instead of KRaft)
-- Examples don't run on current versions
-- Frustration when official docs contradict course
-- Negative reviews and refund requests
-- Students unprepared for actual job requirements
-
-**Prevention:**
-1. **Version-pin with intention:** Specify exact versions, document why
-2. **Update cadence:** Review and update every 6 months minimum
-3. **Use current versions:** Debezium 3.4+ (as of Dec 2025), Kafka 3.x+ with KRaft
-4. **Flag version-specific content:** "As of Debezium 3.4, ..."
-5. **Monitor release notes:** Subscribe to Debezium blog, Kafka release announcements
-6. **Test examples on launch day:** Verify all code runs on current versions
-
-**Detection (Warning Signs):**
-- Examples reference ZooKeeper (deprecated in Kafka 3.x)
-- Debezium 1.x or 2.x used (3.x current as of Dec 2025)
-- Confluent Schema Registry examples for Debezium 2.x+ (native support removed)
-- Screenshots show old UI versions
-- Comments ask "this doesn't work on version X"
-
-**Course Phase Mapping:**
-- **All phases:** Use Debezium 3.4+, Kafka with KRaft, current cloud provider UIs
-- **Phase 8 (Schema Management):** Use Apicurio Registry (recommended) or show manual Confluent integration
-
----
-
-#### CRITICAL: Missing Hands-On Practice
-
-**What goes wrong:**
-Course is too theoretical, explaining concepts without practical application. Students can explain CDC but can't actually configure a Debezium connector.
-
-**Why it happens:**
-- Easier to create slide-based content than labs
-- Underestimating importance of muscle memory
-- Assuming students will practice independently
-- Lack of infrastructure for hands-on environments
-
-**Consequences:**
-- Knowledge doesn't translate to skills
-- Students fail technical interviews (can't do live coding)
-- Low job placement rate
-- Poor course reviews: "too theoretical, not practical"
-- Students can't apply knowledge to real projects
-
-**Prevention:**
-1. **80/20 rule:** 80% hands-on, 20% theory
-2. **Every concept = one exercise:** Immediate practice after explanation
-3. **Provide runnable environments:**
-   - Docker Compose for local development
-   - Terraform/CloudFormation for cloud environments
-   - GitHub Codespaces for browser-based labs
-4. **Progressive complexity:** Start simple, add constraints incrementally
-5. **Real-world scenarios:** Not toy examples, actual use cases
-6. **Debugging exercises:** Introduce intentional errors to fix
-
-**Detection:**
-- Student feedback: "too much lecture, not enough doing"
-- Code-along sections < 50% of content
-- No downloadable lab environments
-- Exercises are optional, not mandatory
-
-**Course Phase Mapping:**
-- **Every phase:** Include hands-on lab with starter code, broken scenarios to debug
-- **Phase 5 (Snapshots):** Lab: Configure incremental snapshot, compare to conventional
-- **Phase 7 (Troubleshooting):** Lab: Fix replication slot growth, recover from offset desync
-
----
-
-### 2.2 Curriculum Design Pitfalls
-
-#### CRITICAL: Poor Prerequisite Management
-
-**What goes wrong:**
-Course assumes too much or too little prior knowledge, causing frustration for both beginners (lost) and experienced engineers (bored).
-
-**Why it happens:**
-- Unclear target audience definition
-- No prerequisite screening
-- Mixing fundamentals with advanced topics
-- Assuming "data engineer" means same thing to everyone
-
-**Consequences:**
-- Beginners drop out (too hard)
-- Experts request refunds (too basic)
-- Pacing too fast for some, too slow for others
-- Negative reviews from both ends of spectrum
-
-**Prevention:**
-1. **Define target audience precisely:**
-   - "Middle+ data engineers with 2+ years experience"
-   - "Familiar with SQL, Python, basic Kafka concepts"
-   - "No prior CDC experience required"
-2. **List explicit prerequisites:**
-   - SQL: JOINs, indexes, transactions
-   - Kafka: topics, partitions, consumer groups (conceptually)
-   - Docker: run containers, docker-compose
-   - Python or Java: basic scripting
-   - Cloud: one provider (AWS/GCP/Azure) at 101 level
-3. **Provide prerequisite assessment:** Quiz before enrollment
-4. **Include prerequisite refresher:** Optional "review" module
-5. **Separate beginner and advanced tracks:** Different courses for different levels
-
-**Detection:**
-- Reviews say "too hard" and "too easy" simultaneously
-- High dropout rate in early modules
-- Questions about basic Kafka concepts in Debezium sections
-- Complaints about repetitive content
-
-**Course Phase Mapping:**
-- **Prerequisites Module (Phase 0):** Kafka 101 refresher (15 min), Docker basics (10 min)
-- **Each phase:** "You should know X before starting" callout
-
----
-
-#### MODERATE: Poor Progression and Pacing
-
-**What goes wrong:**
-Course jumps from basic to advanced too quickly, or spends too long on simple topics. No logical build-up of complexity.
-
-**Why it happens:**
-- Creator already expert, doesn't remember learning curve
-- Copying outline from other courses without adaptation
-- Adding topics without restructuring existing flow
-
-**Consequences:**
-- Students lost at critical transition points
-- Frustration and dropout
-- Core concepts glossed over, edge cases over-explained
-- Completion rate < 30%
-
-**Prevention:**
-1. **Crawl, Walk, Run progression:**
-   - Crawl: Single table, local Docker, happy path
-   - Walk: Multiple tables, cloud deployment, error handling
-   - Run: Production scenarios, multi-region, complex transformations
-2. **Spiral learning:** Revisit concepts with increasing depth
-3. **Capstone project:** Integrate all learnings in final phase
-4. **Beta test with target audience:** Watch learners go through content
-5. **Measure time per section:** Ensure realistic pacing (15-20 min chunks)
-
-**Detection:**
-- Analytics show dropout at specific module
-- Comments: "module X was too sudden"
-- Completion rate drops sharply at certain phase
-- Students skip ahead then get stuck
-
-**Course Phase Mapping:**
-**Progression Strategy:**
-1. **Phase 1 (Aurora/MySQL):** Single table, local Docker, INSERT events only
-2. **Phase 2 (PostgreSQL):** Multiple tables, UPDATE/DELETE, replication slots
-3. **Phase 3 (Cloud - GCP):** Cloud SQL, Pub/Sub, IAM complexity
-4. **Phase 4 (Production):** Distributed mode, monitoring, backpressure
-5. **Phase 5-8:** Specialized topics (snapshots, operations, troubleshooting, schema)
-6. **Phase 9-11:** Advanced (transformations, consumers, architectures)
-7. **Phase 12 (Capstone):** Build end-to-end multi-source CDC pipeline
-
----
-
-#### MODERATE: Feature Creep (Too Comprehensive)
-
-**What goes wrong:**
-Course tries to cover everything about Debezium, becoming 40+ hours long, overwhelming learners, and delaying launch.
-
-**Why it happens:**
-- Fear of leaving something out
-- "Comprehensive" marketed as value
-- No clear scope boundaries
-- Perfectionism
-
-**Consequences:**
-- Course never launches (analysis paralysis)
-- 40 hour course has low completion rate
-- Maintenance burden too high (must update everything)
-- Learners unsure what's essential vs optional
-
-**Prevention:**
-1. **Define MVP scope:** What 80% of users need
-2. **Mark advanced sections clearly:** "Optional: Advanced Topic"
-3. **Modular design:** Core path + optional branches
-4. **Target 10-15 hours for core content:** Beyond this, completion drops
-5. **Plan follow-up courses:** "Advanced Debezium" separate from "Debezium Fundamentals"
-6. **Defer niche topics:** MongoDB, Cassandra connectors for specialized course
-
-**Detection:**
-- Course outline exceeds 20 modules
-- Estimated time > 20 hours
-- Struggling to decide what to cut
-- Multiple "and also you should know..." sections
-
-**Course Phase Mapping:**
-**Core Path (12-15 hours):**
-- Phases 1-8: Essential production Debezium
-**Optional Extensions (5-10 hours):**
-- Phase 9 (SMTs): Optional for simple pipelines
-- Phase 10 (Alternative Architectures): Optional depth
-- Phase 11 (Consumer Patterns): Optional, depends on tech stack
-
----
-
-### 2.3 Technical Quality Pitfalls
-
-#### MODERATE: Ignoring Technical Issues
-
-**What goes wrong:**
-Inconsistent audio levels, poor lighting, confusing slide design, or technical glitches interrupt learning flow and frustrate students.
-
-**Why it happens:**
-- Prioritizing content over production quality
-- Recording in suboptimal environment
-- Not testing playback experience
-- Using low-quality screen recording tools
-
-**Consequences:**
-- Students distracted by technical issues
-- Negative reviews focus on production quality
-- Content quality overlooked due to poor delivery
-- Professional credibility damaged
-
-**Prevention:**
-1. **Audio quality first priority:**
-   - Use decent microphone (USB condenser minimum)
-   - Consistent volume levels (-14 to -16 LUFS)
-   - Remove background noise (RTX Voice, Krisp)
-2. **Screen recording best practices:**
-   - High resolution (1920x1080 minimum)
-   - Zoom in on relevant UI areas
-   - Highlight cursor, clicks
-   - 30 FPS minimum
-3. **Slide design:**
-   - High contrast (dark background, light text or vice versa)
-   - Large fonts (24pt minimum for code, 36pt for headings)
-   - One concept per slide
-   - Code syntax highlighting
-4. **Test on multiple devices:** Laptop, phone, tablet
-5. **Peer review:** Have someone watch before publishing
-
-**Detection:**
-- Audio levels fluctuate wildly
-- Hard to read text on screen
-- Cursor invisible in recordings
-- Student reviews mention "hard to hear" or "can't see code"
-
-**Course Phase Mapping:**
-- **All phases:** Consistent production quality standards
-- **Code walkthroughs:** Zoom to 150%, highlight cursor, slow down
-
----
-
-#### LOW: Lack of Interactivity
-
-**What goes wrong:**
-Passive video watching without quizzes, exercises, or interaction leads to low retention and boredom.
-
-**Why it happens:**
-- Video-only format easier to produce
-- Underestimating value of active learning
-- Platform limitations (basic video hosting)
-
-**Consequences:**
-- Knowledge retention < 20%
-- Students zone out during long videos
-- Can't self-assess understanding
-- Low engagement metrics
-
-**Prevention:**
-1. **Knowledge checks every 10-15 minutes:** 3-5 question quizzes
-2. **Interactive elements:**
-   - Code challenges (submit code, auto-graded)
-   - "Pause and predict" prompts
-   - Discussion questions
-   - Debugging challenges
-3. **Feedback loops:** Students know if they understood before proceeding
-4. **Leaderboards/gamification:** Optional for competitive learners
-5. **Platform choice:** Use LMS with interactive features (Teachable, Thinkific, custom)
-
-**Detection:**
-- Videos > 20 minutes with no breaks
-- No quizzes or assessments
-- Linear video-only content
-- Students ask basic questions covered in previous modules (didn't retain)
-
-**Course Phase Mapping:**
-- **Every phase:** 2-3 knowledge check quizzes
-- **Every hands-on lab:** Auto-graded code submission or manual checklist
-- **End of each phase:** Cumulative quiz (10 questions)
-
----
-
-### 2.4 Validation and Launch Pitfalls
-
-#### CRITICAL: Creating Without Validation
-
-**What goes wrong:**
-Building entire course before validating demand, resulting in product nobody wants or pays for.
-
-**Why it happens:**
-- Falling in love with idea before customer validation
-- Assumption that "if I build it, they will come"
-- Fear of sharing idea before perfection
-
-**Consequences:**
-- 6 months of work, zero sales
-- Misaligned with market needs
-- Wasted effort on wrong topics
-- Emotional and financial loss
-
-**Prevention:**
-1. **Validate before building:**
-   - Survey target audience (what problems do you face with CDC?)
-   - Pre-sell course (landing page, take deposits)
-   - MVP: 3 modules, then validate
-2. **Build in public:** Share progress, get feedback
-3. **Beta cohort:** First 10-20 students at discount for feedback
-4. **Iterate based on feedback:** Don't launch and forget
-5. **Market research:**
-   - Existing Debezium courses? What do they lack?
-   - Job postings mentioning Debezium?
-   - Community pain points (GitHub issues, Stack Overflow)
-
-**Detection:**
-- Building alone without audience feedback
-- No pre-launch interest (email signups, survey responses)
-- Launching to silence (no sales week 1)
-
-**Course Phase Mapping:**
-- **Pre-build:** Survey 50+ data engineers on CDC pain points
-- **MVP (Phases 1-3):** Launch to beta cohort, iterate based on feedback
-- **Full launch (Phases 4-12):** After validation and iteration
-
----
-
-#### MODERATE: Waiting for Perfection
-
-**What goes wrong:**
-Course never launches because "it's not ready yet," indefinitely polishing without shipping.
-
-**Why it happens:**
-- Perfectionism
-- Fear of criticism
-- Comparing to established courses (unfair comparison)
-- Imposter syndrome
-
-**Consequences:**
-- Opportunity cost (could be earning and learning from real students)
-- Market changes while you perfect (competitors launch first)
-- Overthinking leads to feature creep
-- Burnout without reward
-
-**Prevention:**
-1. **Set launch deadline:** Non-negotiable date
-2. **MVP mindset:** What's minimum viable to deliver value?
-3. **"Done is better than perfect":** 80% quality, launch, iterate
-4. **Commit publicly:** Announce launch date, accountability
-5. **Version 1.0 mentality:** Plan for v1.1, v1.2 updates
-6. **Early access program:** Launch "beta" to friendly audience first
-
-**Detection:**
-- Course 90% complete for 3+ months
-- Constantly finding "one more thing" to add
-- No launch date set
-- Paralyzed by "what if X isn't good enough"
-
-**Course Phase Mapping:**
-- **V1.0 Scope:** Phases 1-8 (core production Debezium)
-- **V1.1 Update:** Add Phases 9-10 based on student requests
-- **V1.2 Update:** Add Phase 11-12, update for Debezium 3.5+
-
----
-
-### 2.5 Debezium-Specific Course Pitfalls
-
-#### MODERATE: Ignoring Cloud-Specific Gotchas
-
-**What goes wrong:**
-Course focuses on local Docker setup, glossing over GCP Cloud SQL, AWS RDS, Azure-specific issues that students encounter in real jobs.
-
-**Why it happens:**
-- Local Docker easier to set up and demo
-- Cloud environments cost money
-- Assuming students can "figure out" cloud differences
-- Lack of multi-cloud expertise
-
-**Consequences:**
-- Students hit RDS privilege limitations in production (FLUSH TABLES WITH READ LOCK)
-- Cloud SQL logical decoding not enabled
-- Workload Identity misconfigurations on GKE
-- Course not applicable to real-world scenarios
-
-**Prevention:**
-1. **Dedicated cloud integration modules:**
-   - Phase 1: Aurora/RDS MySQL specifics
-   - Phase 2: Cloud SQL PostgreSQL specifics
-   - Phase 3: GCP Pub/Sub integration
-2. **Cloud-specific labs:** Actual cloud deployments, not just Docker
-3. **Provider credits:** AWS/GCP credits for students
-4. **Cover at least 2 cloud providers:** AWS + GCP minimum
-5. **Document cloud differences:** Comparison table (Aurora vs Cloud SQL vs on-prem)
-
-**Detection:**
-- Course only shows Docker Desktop deployments
-- No mention of RDS, Cloud SQL, Azure Database
-- Students ask "how do I do this on AWS?" in every module
-
-**Course Phase Mapping:**
-- **Phase 1:** Aurora DB specific issues (binlog retention, RDS privileges)
-- **Phase 2:** Cloud SQL PostgreSQL (logical decoding, replication slots)
-- **Phase 3:** GCP integration deep dive (Pub/Sub, Workload Identity, Dataflow)
-
----
-
-#### MODERATE: Snapshot Strategy Oversimplified
-
-**What goes wrong:**
-Course shows only default snapshot mode, ignoring incremental snapshots, large database scenarios, and production snapshot strategies.
-
-**Why it happens:**
-- Default mode "just works" for small demos
-- Incremental snapshots more complex to explain
-- Demo databases have 100 rows, not 100M rows
-
-**Consequences:**
-- Students try conventional snapshot on TB database, wait days
-- Production databases locked during snapshot
-- Snapshot failures require full restart
-- No understanding of snapshot mode options
-
-**Prevention:**
-1. **Dedicated snapshot module (Phase 5):**
-   - Compare all snapshot modes (initial, always, never, schema_only, when_needed)
-   - Demonstrate incremental snapshot feature
-   - Show large database strategy (batching, off-peak scheduling)
-2. **Production scenarios:**
-   - "Your DB has 500M rows. What do you do?"
-   - Snapshot failure recovery
-   - Binlog position loss scenarios
-3. **Hands-on with large dataset:** Simulate 10M+ rows, demonstrate performance differences
-
-**Detection:**
-- Course only mentions `snapshot.mode=initial`
-- No discussion of incremental snapshots
-- Demo databases have < 1000 rows
-- Students ask "how to handle large databases?"
-
-**Course Phase Mapping:**
-- **Phase 5 (Snapshots):** Comprehensive coverage - all modes, incremental snapshots, production strategies
-
----
-
-#### MODERATE: Missing Real-World Troubleshooting
-
-**What goes wrong:**
-Course shows happy path only, no error handling, debugging, or recovery scenarios. Students helpless when things break.
-
-**Why it happens:**
-- Happy path easier to demo
-- Troubleshooting messy and unpredictable
-- Time pressure to cover features, not failures
-- Difficulty simulating real production issues
-
-**Consequences:**
-- Students can set up Debezium but can't fix issues
-- Production incidents require external help
-- Frustration when encountering common problems
-- Job performance suffers (can't debug independently)
-
-**Prevention:**
-1. **Dedicated troubleshooting module (Phase 7):**
-   - Replication slot growth diagnosis and fix
-   - Offset desynchronization recovery
-   - Connector failure triage (task vs worker)
-   - Large message size errors
-2. **Chaos engineering labs:** Introduce failures intentionally
-   - Kill connector mid-snapshot
-   - Fill disk to trigger WAL issues
-   - Delete internal Kafka topic (then restore)
-3. **Debugging exercises:** Provide broken configurations to fix
-4. **Real-world scenarios:** Based on Stack Overflow, GitHub issues
-
-**Detection:**
-- No module dedicated to troubleshooting
-- Labs only show successful outcomes
-- No exercises with intentional errors
-- Student questions dominated by "what do I do when X fails?"
-
-**Course Phase Mapping:**
-- **Phase 7 (Troubleshooting):** Entire module dedicated to common failures and recovery
-- **Every phase:** Include "Common Mistakes" section with debugging
-
----
-
-## Confidence Assessment
-
-| Domain | Confidence | Reason |
-|--------|------------|--------|
-| PostgreSQL Pitfalls | HIGH | Multiple authoritative sources (official docs, Red Hat documentation, recent 2025-2026 content) |
-| MySQL/Aurora Pitfalls | MEDIUM-HIGH | Official Debezium docs verified via WebFetch, community reports, multiple corroborating sources |
-| GCP Integration | MEDIUM | Found integration guides but fewer problem reports (possibly less common or newer) |
-| Kafka Connect Pitfalls | HIGH | Official Confluent docs, common mistakes documented extensively |
-| Schema Evolution | MEDIUM-HIGH | Well-documented issues, some recent GitHub issues from 2025 |
-| Course Creation | MEDIUM-HIGH | General course creation pitfalls well-documented, Debezium-specific extrapolated from production pitfalls |
+## Testing Checklist
+
+Before launching glassmorphism implementation, verify:
+
+**Accessibility:**
+- [ ] All text meets 4.5:1 contrast (4.5:1 normal, 3:1 large)
+- [ ] Tested with WebAIM Contrast Checker in all contexts
+- [ ] Dark mode elements are visible (not invisible against black)
+- [ ] Code blocks readable against backgrounds
+- [ ] Tables have clear row/column separation
+- [ ] `prefers-reduced-transparency` support implemented
+- [ ] `prefers-reduced-motion` support implemented
+- [ ] Screen reader testing completed (VoiceOver/NVDA)
+
+**Performance:**
+- [ ] Blur values ≤8px (6px recommended)
+- [ ] No nested backdrop-filter elements
+- [ ] GPU rasterization <16ms per frame
+- [ ] Tested on integrated graphics (Intel UHD or equivalent)
+- [ ] No janky animations involving blur
+- [ ] Performance budget met on low-end device
+
+**Browser Compatibility:**
+- [ ] Solid fallback backgrounds defined
+- [ ] `@supports` progressive enhancement used
+- [ ] `-webkit-backdrop-filter` prefix included
+- [ ] Tested in Chrome, Firefox, Safari, Edge
+- [ ] Verified with backdrop-filter disabled
+
+**Design Quality:**
+- [ ] Vibrant gradient backgrounds (not solid black/white)
+- [ ] Glass limited to <30% of viewport
+- [ ] Clear visual hierarchy (primary elements solid)
+- [ ] "Squint test" passed (glass visible when squinting)
+- [ ] User testing confirms readability
 
 ---
 
 ## Sources
 
-### MySQL/Aurora MySQL Specific Sources
+**Authoritative (HIGH confidence):**
+- [backdrop-filter - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) - Official CSS specification, performance warnings
+- [Glassmorphism: Definition and Best Practices - Nielsen Norman Group](https://www.nngroup.com/articles/glassmorphism/) - UX research on common mistakes
+- [Glassmorphism Meets Accessibility - Axess Lab](https://axesslab.com/glassmorphism-meets-accessibility-can-frosted-glass-be-inclusive/) - WCAG compliance guidance
 
-**Official Documentation:**
-- [Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html) (verified via WebFetch 2026-02-01)
-- [Debezium FAQ](https://debezium.io/documentation/faq/)
-- [Debezium Timezone Converter SMT](https://debezium.io/documentation/reference/stable/transformations/timezone-converter.html)
-- [Red Hat Debezium User Guide - MySQL](https://docs.redhat.com/en/documentation/red_hat_build_of_debezium/1.9.7/html/debezium_user_guide/debezium-connector-for-mysql)
-- [MySQL Binlog Configuration - Boltic](https://www.boltic.io/blog/mysql-binlog)
+**Production Issues (MEDIUM confidence):**
+- [CSS Backdrop filter causing performance issues - shadcn/ui](https://github.com/shadcn-ui/ui/issues/327)
+- [Severe performance issue: AntD v6 Modal lag - ant-design](https://github.com/ant-design/ant-design/issues/56707)
+- [backdrop-filter: blur is laggy - Mozilla Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1718471)
 
-**Community Resources (Verified):**
-- [Troubleshoot Debezium MySQL Connector Errors - Sylhare's Blog](https://sylhare.github.io/2023/11/07/Debezium-configuration.html)
-- [MySQL CDC with Debezium in Production - Materialize](https://materialize.com/guides/mysql-cdc/)
-- [Binlog Retention in MySQL - Upsolver](https://docs.upsolver.com/upsolver-1/connecting-data-sources/cdc-data-sources-debezium/mysql-cdc-data-source/binlog-retention-in-mysql)
+**Best Practices (MEDIUM confidence):**
+- [Glassmorphism: What It Is and How to Use It in 2026 - Inverness Design Studio](https://invernessdesignstudio.com/glassmorphism-what-it-is-and-how-to-use-it-in-2026)
+- [Dark Glassmorphism: The Aesthetic That Will Define UI in 2026 - Medium](https://medium.com/@developer_89726/dark-glassmorphism-the-aesthetic-that-will-define-ui-in-2026-93aa4153088f)
+- [Glassmorphism with Website Accessibility in Mind - New Target](https://www.newtarget.com/web-insights-blog/glassmorphism/)
 
-**Technical Issues (Recent 2026):**
-- [Flink CDC MySQL TLS 1.3 Deadlock Issue](http://www.mail-archive.com/dev@flink.apache.org/msg84554.html) (January 2026)
-- [MySQL CDC Binlog Issues - Apache Flink](https://nightlies.apache.org/flink/flink-cdc-docs-master/docs/connectors/flink-sources/mysql-cdc/)
-- [Debezium MySQL Connector Common Mistakes Google Groups](https://groups.google.com/g/debezium/)
+**Browser Compatibility:**
+- [CSS Backdrop Filter - Can I Use](https://caniuse.com/css-backdrop-filter)
+- [Cross Browser Compatibility Score - LambdaTest](https://www.lambdatest.com/web-technologies/css-backdrop-filter)
 
-**GTID Mode Issues:**
-- [MySQL GTID Mode Debezium Problems](https://groups.google.com/g/debezium/c/pMgC9mlPYVA)
-- [Debezium MySQL Snapshot From Read Replica With GTID](https://thedataguy.in/debezium-mysql-snapshot-from-read-replica-with-gtid/)
-
-**Aurora/RDS Specific:**
-- [AWS RDS Binary Log Configuration](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html)
-- [Aurora MySQL Replication](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.html)
-- [Debezium Aurora MySQL Connector Issues](https://groups.google.com/g/debezium/c/Ygr8yZ6zDhk)
-
-**Snapshot and Performance:**
-- [MySQL CDC Connector Snapshot Fetch Size](https://github.com/ververica/flink-cdc-connectors/issues/98)
-- [Connection Timeout During MySQL Snapshot](https://groups.google.com/g/debezium/c/FT5aCUjqz8o)
-- [MySQL Interactive Timeout CDC Issues](https://github.com/airbytehq/airbyte/issues/3775)
-
-**Schema History and Recovery:**
-- [Debezium Schema History Topic Configuration](https://forum.confluent.io/t/debezium-the-db-history-topic-or-its-content-is-fully-or-partially-missing-please-check-database-history-topic-configuration-and-re-execute-the-snapshot/4614)
-- [A Note On Database History Topic Configuration](https://debezium.io/blog/2018/03/16/note-on-database-history-topic-configuration/)
-- [Schema Only Recovery Issues](https://groups.google.com/g/debezium/c/lmkODp1TQsE)
-
-**Server ID and Multi-Connector:**
-- [Multiple Debezium MySQL Connectors Server ID Conflicts](https://groups.google.com/g/debezium/c/atRs7pQFfKA)
-- [Multiple Connectors on One Server](https://groups.google.com/g/debezium/c/Xx_w1mZvuT8)
-
-**Timezone and Data Type Handling:**
-- [Debezium MySQL Timezone Issues](https://groups.google.com/g/debezium/c/5VYe0UQJVdI)
-- [MySQL Connector Timezone Configuration](https://groups.google.com/g/debezium/c/5cNsbI3foHE)
-- [GitHub Debezium DateTime Converter](https://github.com/holmofy/debezium-datetime-converter)
-
-**DDL Tools:**
-- [GitHub gh-ost](https://github.com/github/gh-ost)
-- [Online Schema Change Tools Comparison - PlanetScale](https://planetscale.com/docs/learn/online-schema-change-tools-comparison)
-- [gh-ost vs pt-online-schema-change](https://severalnines.com/blog/online-schema-change-mysql-mariadb-comparing-github-s-gh-ost-vs-pt-online-schema-change/)
-
-### PostgreSQL Sources (from existing research)
-
-**General Debezium Pitfalls:**
-- [Debezium for CDC in Production: Pain Points and Limitations](https://estuary.dev/blog/debezium-cdc-pain-points/)
-- [Debezium FAQ](https://debezium.io/documentation/faq/)
-- [Running CDC in Production: Fixing Debezium & MongoDB Pitfalls](https://aabir-hassan.medium.com/cdc-in-production-breaking-bad-and-fixing-it-bdf49317cafa)
-- [Unlocking the Power of Debezium (PayU Engineering)](https://medium.com/payu-engineering/unlocking-the-power-of-debezium-69ce9170f101)
-
-**PostgreSQL Replication Slot Issues:**
-- [Debezium PostgreSQL connector fails to start replication stream due to stale active replication slot PID](https://access.redhat.com/solutions/7134051)
-- [PostgreSQL replication slots grow indefinitely](https://issues.redhat.com/browse/DBZ-926)
-- [Handle PostgreSQL node replacements when using Debezium](https://aiven.io/docs/products/kafka/kafka-connect/howto/debezium-source-connector-pg-node-replacement)
-- [Postgres replication lag using debezium connector](https://medium.com/@pawanpg0963/postgres-replication-lag-using-debezium-connector-4ba50e330cd6)
-
-**Aurora/RDS Issues:**
-- [Lessons Learned from Running Debezium with PostgreSQL on Amazon RDS](https://debezium.io/blog/2020/02/25/lessons-learned-running-debezium-with-postgresql-on-rds/)
-- [Debezium RDS tag](https://debezium.io/tag/rds/)
-
-**GCP Integration:**
-- [Change Data Capture with Debezium Server on GKE from CloudSQL for PostgreSQL to Pub/Sub](https://medium.com/google-cloud/change-data-capture-with-debezium-server-on-gke-from-cloudsql-for-postgresql-to-pub-sub-d1c0b92baa98)
-- [Postgres CDC Solution with Debezium & Google Pub/Sub](https://infinitelambda.com/postgres-cdc-debezium-google-pubsub/)
-- [Debezium Server to Cloud PubSub: A Kafka-less way](https://medium.com/nerd-for-tech/debezium-server-to-cloud-pubsub-a-kafka-less-way-to-stream-changes-from-databases-1d6edc97da40)
-
-**Kafka Connect Configuration:**
-- [Checklist to Troubleshoot Kafka Connect Issues Using Debezium](https://medium.com/@a.tambakouzadeh/checklist-to-troubleshoot-kafka-connect-issues-using-debezium-platform-for-cdc-and-mysql-data-b4d517d152a4)
-- [Common mistakes made when configuring multiple Kafka Connect workers](https://rmoff.net/2019/11/22/common-mistakes-made-when-configuring-multiple-kafka-connect-workers/)
-- [Kafka Connect Clusters: Structure, Scaling, and Task Management](https://axual.com/blog/kafka-connect-clusters-structure-scaling-and-task-management)
-
-**Schema Evolution:**
-- [KSQL table is not able to support in-place schema update for Debezium's Schema evolution](https://github.com/confluentinc/ksql/issues/8148)
-- [Schema Evolution in Change Data Capture Pipelines](https://www.decodable.co/blog/schema-evolution-in-change-data-capture-pipelines)
-- [Making Debezium 2.x Support Confluent Schema Registry](https://dev.to/lazypro/making-debezium-2x-support-confluent-schema-registry-3mf2)
-
-**Snapshots:**
-- [Incremental Snapshots in Debezium](https://debezium.io/blog/2021/10/07/incremental-snapshots/)
-- [Debezium Production Deployment Preparation](https://suchit-g.medium.com/debezium-production-deployment-preparation-b12c5b9de767)
-
-**Monitoring:**
-- [Monitoring Debezium Documentation](https://debezium.io/documentation/reference/stable/operations/monitoring.html)
-- [Monitor Debezium MySQL Connector With Prometheus And Grafana](https://thedataguy.in/monitor-debezium-mysql-connector-with-prometheus-and-grafana/)
-- [Monitoring Debezium (SPOUD blog)](https://spoud-io.medium.com/monitoring-debezium-91a24be8a3d4)
-
-**Offset Management and Recovery:**
-- [Handling Database Failures and Recoveries with Debezium](https://binaryscripts.com/debezium/2025/04/27/handling-database-failures-and-recoveries-with-debezium-ensuring-reliable-cdc.html)
-- [Introduce flexible recovery from LSN desynchronisation](https://github.com/debezium/dbz/issues/1146)
-
-**Transformations (SMT):**
-- [Debezium with Single Message Transformation (SMT)](https://medium.com/trendyol-tech/debezium-with-simple-message-transformation-smt-4f5a80c85358)
-- [Content-based routing - Debezium Documentation](https://debezium.io/documentation/reference/stable/transformations/content-based-routing.html)
-
-**CDC Ordering and Guarantees:**
-- [Configuring Change Data Capture (CDC) Mode - DataHub](https://docs.datahub.com/docs/how/configure-cdc)
-- [A Gentle Introduction to Event-driven Change Data Capture](https://medium.com/event-driven-utopia/a-gentle-introduction-to-event-driven-change-data-capture-683297625f9b)
-
-### Course Creation Sources
-
-**Course Creation Mistakes:**
-- [Course Creation Pitfalls: Avoid the 5 Most Common Errors](https://www.amyporterfield.com/2023/08/601/)
-- [Learn from My Mistakes: 7 Digital Course Pitfalls to Skip](https://blog.hubspot.com/marketing/digital-course-pitfalls)
-- [The 7 Most Common Mistakes New Course Creators Make](https://medium.com/swlh/the-7-most-common-mistakes-new-course-creators-make-and-how-to-avoid-them-0debd19d4226)
-- [Top 8 Common Mistakes in Online Course Creation](https://raccoongang.com/blog/common-mistakes-online-course-creation/)
-- [The Most Common Mistakes in Online Course Creation](https://bluecarrot.io/blog/the-most-common-mistakes-in-online-course-creation-and-how-to-dodge-them/)
-
-**Data Engineering Course Design:**
-- [Top Data Engineering Mistakes and How to Prevent Them](https://dataengineeracademy.com/blog/top-data-engineering-mistakes-and-how-to-prevent-them/)
-- [Learn Data Engineering From Scratch in 2026](https://www.datacamp.com/blog/how-to-learn-data-engineering)
-
-**Outdated Content Problem:**
-- [10 Common Pitfalls to Avoid When Purchasing Online Courses](https://dev.to/digitalpollution/10-common-pitfalls-to-avoid-when-purchasing-online-courses-36b7)
-- [Don't Waste Your Time on These Technologies in 2026](https://medium.com/the-software-journal/dont-waste-your-time-on-these-technologies-in-2026-and-what-to-learn-instead-812c79646050)
-
-**Learning and Development:**
-- [Learning and Development Mistakes to Avoid in 2026](https://www.airmeet.com/hub/blog/learning-and-development-mistakes-to-avoid-in-2026-dos-donts-checklist/)
+**Accessibility Tools:**
+- [WebAIM: Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- [Colour Contrast Analyser (CCA) - Vispero](https://vispero.com/color-contrast-checker/)
+- [The 15 Best Online Contrast Checker Tools in 2026 - accessiBe](https://accessibe.com/blog/knowledgebase/color-contrast-checker-tools)

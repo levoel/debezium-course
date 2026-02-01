@@ -1,359 +1,346 @@
-# MySQL/Aurora MySQL CDC Module Research Summary
+# Project Research Summary
 
-**Project:** Debezium Course - MySQL/Aurora MySQL Module (v1.1)
-**Domain:** Change Data Capture / Technical Education
+**Project:** Debezium Course Website - v1.3 UX/Design Refresh
+**Domain:** UI/UX Design - Liquid Glass (Glassmorphism)
 **Researched:** 2026-02-01
 **Confidence:** HIGH
 
 ## Executive Summary
 
-Adding MySQL/Aurora MySQL CDC content as Module 8 to the existing Debezium course requires minimal infrastructure changes but significant depth in MySQL-specific concepts. The course will use **MySQL 8.0.40** in Docker for hands-on labs, maintaining compatibility with existing Debezium 2.5.4 infrastructure, while covering Aurora MySQL specifics through documentation and configuration examples.
+Implementing liquid glass (glassmorphism) design for the Debezium course website requires a carefully orchestrated approach that balances visual elegance with accessibility, performance, and code maintainability. The good news: Tailwind CSS 4 provides **native, production-ready utilities** for glassmorphism without requiring plugins or third-party dependencies. The existing Astro 5 + Tailwind 4 stack is perfectly suited for this refresh.
 
-The recommended approach extends the existing Docker Compose environment with a MySQL service, allowing students to experience multi-database CDC patterns in a single infrastructure. This mirrors production reality where one Kafka cluster serves multiple heterogeneous database sources. The module structure follows the established PostgreSQL pattern (Module 2) but delivers "even more depth" through extensive binlog internals coverage, production failure scenarios, Aurora-specific optimizations, and operational runbooks.
+The recommended approach uses a **three-tier CSS organization strategy**: (1) global CSS variables for glass design tokens, (2) shared Tailwind custom utilities for reusable glass patterns, and (3) component-scoped styles for one-off refinements. This architecture leverages Tailwind 4's CSS-first configuration and Astro's scoped-by-default styling model while avoiding the #1 performance pitfall—excessive `backdrop-filter` usage that causes GPU overload.
 
-**Critical success factors:** (1) Emphasize MySQL binlog vs PostgreSQL WAL architectural differences throughout, (2) dedicate significant content to schema history topic management (the #1 production pitfall for MySQL connectors), (3) cover Aurora MySQL limitations explicitly (global read lock prohibition, 7-day binlog retention), and (4) provide hands-on recovery scenarios for common failures (binlog purged, GTID issues, slot conflicts).
+**Critical success factors:** (1) Maintain WCAG 4.5:1 contrast for all text (the biggest accessibility pitfall for glassmorphism), (2) limit blur values to 8-12px and restrict glass effects to 2-3 elements per viewport (performance constraint), (3) implement responsive blur reduction on mobile (6-8px vs desktop 12px) to maintain 60fps, (4) respect user preferences via `prefers-reduced-transparency` media query (accessibility requirement), and (5) design vibrant gradient backgrounds—glass needs something colorful to refract or it becomes invisible on dark themes.
+
+**Key risks and mitigation:** Performance degradation from `backdrop-filter` is the primary technical risk; mitigate by establishing a "blur budget" (max 12px, mobile 8px) and enforcing a "no nesting" rule for glass elements. Accessibility violations from poor contrast are the primary legal/UX risk; mitigate by testing all text with WebAIM Contrast Checker and adding semi-opaque overlays behind text where needed. Dark mode invisibility is the primary design risk; mitigate by requiring vibrant radial gradient backgrounds (deep purples, neon blues) instead of solid black.
 
 ## Key Findings
 
 ### Recommended Stack
 
-**Minimal stack changes required.** The existing Docker Compose infrastructure (Debezium 2.5.4, Kafka 7.8.1 KRaft) supports MySQL CDC with only the addition of a MySQL container. The Debezium 2.5.4 connector image already includes the MySQL connector alongside PostgreSQL.
+**Zero new dependencies required.** Tailwind CSS 4 provides native utilities for glassmorphism via `backdrop-blur-*` classes and OKLCH color system with opacity modifiers (`bg-white/20`). The existing Astro 5.17.1 + Tailwind 4.1.18 + React 19.2.4 stack supports liquid glass implementation without plugins, additional libraries, or version upgrades.
 
 **Core technologies:**
-- **MySQL 8.0.40** (official Docker image): Source database with native ARM64 support, full Debezium 2.5.4 compatibility
-- **Debezium MySQL Connector** (included in 2.5.4): Binlog-based CDC without requiring additional plugins
-- **Existing Kafka/Connect infrastructure** (from v1.0): Reused without version changes
-- **Schema history Kafka topic**: MySQL-specific requirement for DDL tracking (PostgreSQL doesn't need this)
+- **Tailwind 4 `backdrop-blur-*` utilities**: Native blur effects (8px, 12px, 16px values) — no third-party glassmorphism plugins needed
+- **Tailwind 4 OKLCH colors with `/opacity` modifiers**: Modern color system (`bg-gray-900/30`) for semi-transparent backgrounds — better color accuracy than RGB
+- **Astro 5 scoped styles**: Component-specific glass refinements via `<style>` tags — leverage framework's scoping for overrides
+- **CSS custom properties in `@theme`**: Global glass design tokens (blur values, opacity levels) — single source of truth for theming
+- **`@utility` directive (Tailwind 4)**: Custom glass utilities (`glass-panel`, `glass-panel-elevated`) — reusable patterns without JS config
 
-**Why MySQL 8.0 over 8.4 LTS:** Debezium 2.5.4 officially supports MySQL 8.0/8.2 but not 8.4 (requires Debezium 3.0+). Using 8.0.40 avoids requiring a full stack upgrade. MySQL 8.0 EOL in April 2026 is acceptable for course material published Q1 2026.
+**Why Tailwind 4 over plugins:** Tailwind 4 upgraded to CSS-first configuration with native backdrop-filter support, eliminating need for `@casoon/tailwindcss-glass` or similar plugins. Built-in utilities are optimized, tree-shakeable, and supported long-term. Third-party plugins add maintenance burden and may lag behind Tailwind 4's new architecture.
 
-**Aurora MySQL simulation:** Full local simulation not possible (Aurora has fundamentally different storage architecture). Labs use standard MySQL 8.0 in Docker; Aurora-specific content covered through parameter group documentation, RDS procedure examples, and architectural diagrams.
+**Browser support:** Tailwind 4 requires Safari 16.4+, Chrome 111+, Firefox 128+ (due to `@property` and `color-mix()` dependencies). This exceeds `backdrop-filter` support thresholds (88%+ browsers), so **no fallback needed** for this project—users on unsupported browsers can't run Tailwind 4 CSS anyway.
+
+**Performance considerations documented:** Research established blur value limits (desktop 12px, mobile 8px), GPU optimization strategies (no nested glass, max 2-3 elements per viewport), and mobile-specific responsive utilities to maintain 60fps on low-end devices.
 
 ### Expected Features
 
-**Table stakes (users expect):**
-- MySQL binlog architecture fundamentals (ROW format, event types, rotation)
-- GTID (Global Transaction Identifiers) vs position-based tracking
-- Binlog retention management and monitoring
-- Initial snapshot modes (initial, schema_only, never, when_needed)
-- Schema history topic configuration and recovery
-- DDL schema evolution handling
-- Data type mapping (TINYINT(1) → Boolean, JSON, TIMESTAMP vs DATETIME)
-- Aurora MySQL parameter group configuration
-- Binlog lag monitoring
+**Must have (table stakes):**
+- **Background blur (8-12px)**: Core glass effect via `backdrop-blur-md` (12px) for cards/callouts, `backdrop-blur-lg` (16px) for sidebar
+- **Semi-transparent backgrounds**: 20-30% opacity (`bg-white/20` or `bg-gray-900/30`) for translucency
+- **Subtle borders**: 1px borders with 20-30% opacity (`border-white/20`) for glass edge definition
+- **Border radius**: 12-16px rounded corners (`rounded-lg`) for modern aesthetic
+- **Soft shadows**: Multi-layer shadows (`shadow-lg`) for floating depth perception
+- **WCAG contrast compliance**: 4.5:1 for body text, 3:1 for large UI elements—non-negotiable accessibility requirement
+- **Responsive blur reduction**: Mobile uses `backdrop-blur-sm` (8px), desktop uses `backdrop-blur-md/lg` (12-16px)
 
-**Differentiators (high value, not universally covered):**
-- Incremental snapshots with signal table operations
-- Aurora MySQL Enhanced Binlog architecture (50% → 13% overhead reduction)
-- GTID-based automatic failover deep dive
-- Schema history topic reconstruction procedures
-- MySQL vs PostgreSQL CDC architectural comparison throughout
-- Production failure scenarios and recovery runbooks
-- Parallel snapshot chunking strategies
-- Heartbeat events for binlog retention protection
+**Should have (differentiators):**
+- **Vibrant gradient backgrounds**: Multi-layer radial gradients (deep purples, neon blues, hot pinks) behind glass—not solid black
+- **Multi-layer shadow depth**: 2-3 shadow layers with different blur/spread for premium feel
+- **Hover/interaction states**: Opacity increase (0.05-0.1) and shadow lift on hover with smooth transitions
+- **Saturation boost**: `backdrop-filter: blur(10px) saturate(180%)` for more vibrant colors (Apple's approach)
+- **Accessibility preferences**: `prefers-reduced-transparency` and `prefers-reduced-motion` media queries for inclusive design
+- **Subtle noise texture**: 2-3% monochromatic noise overlay to prevent "too smooth" plastic look (advanced)
+- **Component-specific glass intensities**: Cards use strong glass (12-16px blur), tables use light glass (8-10px blur) for readability hierarchy
 
-**Defer to future versions:**
-- Multi-master/Group Replication CDC (medium confidence, less production usage)
-- Aurora Global Database binlog propagation (complex, niche use case)
-- Maxwell's Daemon comparison (different tool ecosystem)
+**Defer (v2+):**
+- **Animated gradients**: Subtle background animation on hover (performance overhead, questionable UX value)
+- **Advanced inner glow effects**: Multiple inset shadows for internal luminosity (design polish, not essential)
+- **Gradient borders**: Complex border-image gradients (browser quirks, Tailwind arbitrary value complexity)
 
 **Anti-features (explicitly avoid):**
-- Statement-based or mixed binlog formats (deprecated, unreliable for CDC)
-- Binlog filtering on source database (limits recovery options)
-- Trigger-based or query-based CDC (legacy approaches)
-- Aurora Backtrack + Enhanced Binlog (mutually exclusive features)
+- **Glass everywhere**: Applying to every element kills performance and visual hierarchy—limit to 2-3 elements per viewport
+- **Excessive blur (>16px)**: Becomes opaque, loses transparency, triggers performance issues and vestibular problems
+- **Dark glass on solid black**: Effect becomes invisible without vibrant background gradients
+- **Animating blur values**: Severe GPU performance degradation—animate opacity/transform instead, never backdrop-filter
+- **Insufficient contrast**: Text under 4.5:1 ratio fails WCAG, creates legal liability and poor UX
+- **No fallback for unsupported browsers**: Not needed for this project (Tailwind 4 requirements exceed backdrop-filter support)
+- **Thick borders (>2px)**: Looks cheap and dated—1px maximum for premium aesthetic
+- **High-frequency noise backgrounds**: Busy patterns behind glass create visual artifacts and illegibility
 
 ### Architecture Approach
 
-**Add MySQL as Module 8** (standalone specialization after existing 7 modules), not inserted between PostgreSQL modules. This preserves existing course flow, allows optional PostgreSQL-only path (modules 1-7), and teaches multi-database CDC patterns.
+**Three-tier CSS organization for Astro 5 + Tailwind 4:** Global design tokens (CSS variables) provide single source of truth for glass parameters, shared Tailwind utilities enable reusable patterns, and component-scoped styles handle one-off refinements. This approach leverages Astro's scoped-by-default model and Tailwind 4's CSS-first configuration.
 
-**Extend existing Docker Compose with MySQL service** rather than creating separate lab environment. This demonstrates production pattern: single Kafka cluster serving multiple database sources.
+**Major components (implementation order):**
 
-**Major components:**
-1. **MySQL Container** (port 3307) — Source database with binlog configuration
-2. **Debezium MySQL Connector** (deployed to existing Connect cluster) — Binlog reader, schema history manager
-3. **Schema History Kafka Topic** — Persistent DDL event storage (MySQL-specific requirement)
-4. **Existing Kafka/Connect Infrastructure** — Unchanged from PostgreSQL module
-5. **Aurora MySQL Documentation Layer** — Parameter groups, RDS procedures (non-lab content)
+1. **Global CSS Variables Layer** (`src/styles/global.css`) — CSS custom properties for glass design tokens (`--glass-bg`, `--glass-blur`, `--glass-border`) with responsive and accessibility overrides. Defined once, used everywhere.
 
-**Module 8 lesson structure (5-6 lessons):**
-1. Binlog Deep Dive (25 min) — Architecture, formats, GTID vs position
-2. MySQL vs PostgreSQL CDC (20 min) — Architectural comparison, when to choose each
-3. Aurora MySQL Binlog Configuration (30 min) — Parameter groups, retention, RDS procedures
-4. MySQL Connector Setup Lab (35 min) — Hands-on deployment, snapshot modes
-5. Schema History Topic Management (25 min) — Configuration, corruption recovery
-6. MySQL Capstone Extension (30 min, optional) — Multi-database CDC pipeline
+2. **Tailwind Custom Utilities Layer** (`@utility` in `global.css`) — Reusable glass classes (`glass-panel`, `glass-panel-elevated`) composed from CSS variables. Handles 80% of use cases without repetition.
 
-**Content pattern:** Russian explanatory text + English code/configuration (following existing modules 1-7 convention).
+3. **Component-Scoped Refinements Layer** (`<style>` tags in `.astro` files) — Component-specific glass variations (sidebar saturation boost, callout gradient borders) that don't warrant global utilities. Leverages Astro's highest-precedence scoped styles.
+
+4. **Sidebar Navigation** (`BaseLayout.astro`) — Persistent glass element with elevated opacity (`glass-panel-elevated`), 16px blur on desktop reduced to 8px mobile, subtle border for definition.
+
+5. **Homepage Module Cards** (`index.astro`) — Primary navigation with strong glass effect (12-16px blur), hover lift animation, multi-layer shadows for premium feel.
+
+6. **MDX Content Tables** (prose styling in `global.css`) — Light glass effect (8-10px blur) with solid borders between rows for data readability. Header has higher opacity than rows for visual hierarchy.
+
+7. **Callout Components** (`Callout.tsx` React) — Type-specific colored glass (blue/green/yellow/red tints) with left border accent, lighter blur (8px) to keep focus on content.
+
+8. **Vibrant Background Layer** (`global.css` body) — Multi-layer radial gradients (purple, blue, pink orbs) on dark base (#0a0a0a) floating behind all glass elements. Essential for glass visibility in dark theme.
+
+**Implementation pattern for each component:** Start with global `glass-panel` or `glass-panel-elevated` utility, add Tailwind layout utilities (`p-6`, `rounded-lg`), then layer component-scoped styles for unique refinements. This hybrid composition prevents both utility bloat and CSS repetition.
+
+**Mobile performance strategy:** All glass utilities use responsive variants (`backdrop-blur-sm md:backdrop-blur-lg`) to reduce blur from desktop 12-16px to mobile 8px. Prevents GPU overload on low-end devices. Performance budget gate: test on iPhone 12 or equivalent before considering phase complete.
+
+**Accessibility integration:** Global CSS variables respect `prefers-reduced-motion` (sets blur to 0px) and `prefers-reduced-transparency` (increases opacity to 95%, disables blur) via media queries. One-time implementation covers all components.
 
 ### Critical Pitfalls
 
-**1. Schema History Topic Corruption/Deletion (MySQL-specific)**
-- **Risk:** Schema history topic deleted or has retention < infinite; connector cannot restart
-- **Prevention:** Create topic with `retention.ms=-1`, document "never delete", backup to S3/GCS
-- **Course coverage:** Dedicated lesson on schema history topic management, recovery procedures
-- **Phase mapping:** Phase 2 (setup), Phase 5 (advanced recovery)
+**1. WCAG Contrast Violations (Accessibility)**
+- **What goes wrong:** Text on semi-transparent glass fails 4.5:1 contrast minimum. Translucent panels over variable backgrounds cause unpredictable contrast ratios. Dark mode exacerbates—translucent panels fade into dark backgrounds.
+- **How to avoid:** Test contrast dynamically with all background variations (not static mockups). Add semi-opaque overlays (10-30% opacity) behind text to separate from background. Increase blur to 10px+ to reduce background interference. Use white/light gray text exclusively on dark glass—never dark text on dark surfaces. Run automated audits (axe DevTools, WAVE, Lighthouse) and manual checks (WebAIM Contrast Checker at 4.5:1 minimum).
+- **Phase mapping:** Phase 1 establishes contrast testing protocol. Phase 2 applies overlays and tests all content types. Phase 3 runs comprehensive accessibility audit before launch.
 
-**2. Binlog Position Loss Due to Purging (MySQL/Aurora)**
-- **Risk:** Binlog retention expires while connector offline; forces full re-snapshot on restart
-- **Prevention:** Set retention > max downtime (AWS RDS max 168 hours), monitor binlog lag with alerts
-- **MySQL vs PostgreSQL:** PostgreSQL slots prevent WAL deletion; MySQL purges by time regardless
-- **Course coverage:** Binlog retention configuration lesson, monitoring lab
-- **Phase mapping:** Phase 1 (binlog fundamentals), Phase 4 (monitoring)
+**2. Backdrop-Filter Performance Catastrophe (GPU Overload)**
+- **What goes wrong:** Heavy `backdrop-filter: blur()` causes severe GPU degradation, laggy animations, video choppiness. Nested glass elements (modal over card over sidebar) create exponential performance breakdown. Low-power devices experience stuttering interfaces.
+- **How to avoid:** Limit blur radius to 10px max (4-6px recommended for performance). Never nest backdrop-filter elements—disable blur for nested layers. Apply glass to small, critical UI elements (navigation, cards), not full-screen overlays. Monitor GPU usage via DevTools Performance panel (target <16ms for 60fps). Test on integrated graphics (Intel UHD), not just MacBook Pros. Provide user preference to disable blur via `prefers-reduced-motion`.
+- **Phase mapping:** Phase 1 sets maximum blur value (12px) and documents "no nesting" rule. Phase 2 requires performance budget testing on low-end device as gate. Phase 3 adds accessibility media query support.
 
-**3. Aurora MySQL Global Read Lock Prohibition**
-- **Risk:** Default snapshot strategy uses `FLUSH TABLES WITH READ LOCK`; Aurora prohibits this
-- **Prevention:** Use `snapshot.locking.mode=minimal` or incremental snapshots for Aurora/RDS
-- **Course coverage:** Aurora-specific snapshot strategies lesson
-- **Phase mapping:** Phase 3 (Aurora configuration)
+**3. Dark Mode Invisibility (Design Failure)**
+- **What goes wrong:** Glass elements that look crisp in light mode become nearly invisible in dark mode. Translucent layers fade into solid black backgrounds. Blur effects create unwanted glows instead of subtle transparency. Navigation elements disappear, users can't distinguish card boundaries.
+- **How to avoid:** Require vibrant background gradients (deep purples, neon blues, hot pinks) floating behind UI—not solid black. Boost dark mode opacity to 15-25% vs 5-10% for light mode. Add subtle borders (1px, rgba(255,255,255,0.1)) to define edges. Enforce WCAG 4.5:1 per theme, not globally. Test side-by-side in both modes during design. Screenshot and convert to grayscale—if elements vanish, contrast too low.
+- **Phase mapping:** Phase 1 defines separate glass parameters for light/dark themes (this project is dark-only). Phase 2 tests all interactive elements in dark mode before considering complete.
 
-**4. GTID Mode Purging Issues**
-- **Risk:** GTID set contains purged transactions; connector refuses to start
-- **Prevention:** For simple deployments, avoid GTID mode unless needed for HA failover; if using GTID, increase binlog retention 2-3x
-- **Course coverage:** GTID considerations lesson, when to use GTID vs position-based
-- **Phase mapping:** Phase 1 (GTID fundamentals), Phase 4 (failover patterns)
+**4. Poor Background Selection (Invisible Glass Problem)**
+- **What goes wrong:** Developers apply glassmorphism to flat, single-color backgrounds. Without layered, vibrant content behind glass, effect collapses into "just a semi-transparent box"—no frosted elegance, no depth.
+- **How to avoid:** Use gradient meshes, subtle patterns, or content layers. Test "squint test"—squint at design, if you can't tell glass elements apart, background too plain. Use alpha-channel gradients, not `opacity: 0.5` on solid gray. Remove `backdrop-filter` temporarily—if design still looks good, you don't need glass. Compare against known good examples (Apple, Microsoft Fluent).
+- **Phase mapping:** Phase 1 designs background layer first (gradients, patterns) before adding glass. Phase 2 tests glass effect visibility in multiple contexts.
 
-**5. Server ID Conflicts with Multiple Connectors**
-- **Risk:** Two connectors with same `database.server.id` cause "slave with same server_id" error
-- **Prevention:** Document server ID registry, use systematic assignment (10001, 10002, etc.)
-- **Course coverage:** Multi-connector configuration patterns
-- **Phase mapping:** Phase 2 (connector setup)
-
-**6. PostgreSQL Replication Slot Growth (not MySQL, but course context)**
-- **Risk:** WAL accumulation when slot not consumed; disk space exhaustion
-- **Prevention:** Monitor slot lag, configure heartbeat intervals, TCP keepalive settings
-- **Course coverage:** Already in Module 2; reference for comparison with MySQL binlog retention
-- **Phase mapping:** Module 2 existing content
+**5. Code Block Readability Sacrifice (Technical Content)**
+- **What goes wrong:** Code examples inside glassmorphic cards become illegible as background colors bleed through. Monospace text at small sizes fails against busy, translucent backgrounds. Syntax highlighting difficult to read.
+- **How to avoid:** Exempt code blocks from glass treatment—use solid backgrounds (rgba(0,0,0,0.95)) with no backdrop-filter. If code must be on glass, use 90%+ opacity. Test syntax highlighting token colors meet 4.5:1 contrast. User testing: have developers read and copy code examples.
+- **Phase mapping:** Phase 2 establishes special handling for code blocks early. Phase 3 validates with actual lesson content.
 
 ## Implications for Roadmap
 
-Based on research, suggested phase structure for Module 8:
+Based on research, suggested phase structure for v1.3 UX/Design Refresh:
 
-### Phase 1: MySQL Binlog Fundamentals
-**Rationale:** Foundation must come first; binlog is architecturally different from PostgreSQL WAL and requires dedicated conceptual coverage before hands-on work.
+### Phase 1: Foundation (CSS Variables and Utilities)
+**Rationale:** Design system must be established before component work. CSS variables provide single source of truth; Tailwind utilities enable consistent application. Foundation phase validates architecture before visible changes.
 
 **Delivers:**
-- Lesson 01: Binlog Deep Dive
-- Understanding of ROW/STATEMENT/MIXED formats
-- GTID vs position-based tracking concepts
-- Binlog rotation and retention mechanisms
+- CSS custom properties in `src/styles/global.css` (blur values, opacity levels, shadows)
+- Tailwind `@utility` directives for `glass-panel` and `glass-panel-elevated`
+- Vibrant gradient background layer (radial gradients on dark base)
+- Responsive media queries for mobile blur reduction
+- Accessibility media queries (`prefers-reduced-transparency`, `prefers-reduced-motion`)
 
 **Addresses features:**
-- MySQL binlog architecture (table stakes)
-- Binlog format configuration (table stakes)
-- GTID fundamentals (table stakes)
+- Background blur (table stakes)
+- Semi-transparent backgrounds (table stakes)
+- Responsive blur reduction (table stakes)
+- Accessibility preferences (differentiator)
+- Vibrant gradient backgrounds (differentiator)
 
 **Avoids pitfalls:**
-- Binlog position loss (by teaching retention requirements upfront)
-- GTID purging issues (by explaining when to use GTID vs position)
+- Dark mode invisibility (gradient background designed upfront)
+- Poor background selection (vibrant gradients required before glass)
+- Performance catastrophe (blur budget established: max 12px desktop, 8px mobile)
 
-**Research flag:** Standard patterns, low research risk. Official MySQL docs comprehensive.
+**Research flag:** Standard patterns, low research risk. Tailwind 4 CSS-first configuration well-documented.
 
 ---
 
-### Phase 2: Comparative Architecture & Connector Setup
-**Rationale:** Leverage existing PostgreSQL knowledge (Module 2) through explicit comparison, then hands-on MySQL connector deployment in Docker lab.
+### Phase 2: Core UI (Sidebar + Header)
+**Rationale:** High-visibility layout components validate architecture and establish visual language. Sidebar is persistent element (always visible), header is sticky. Success here de-risks remaining phases.
 
 **Delivers:**
-- Lesson 02: MySQL vs PostgreSQL CDC
-- Lesson 04: MySQL Connector Setup Lab
-- Extended docker-compose.yml with MySQL service
-- Working MySQL connector capturing events to Kafka
+- Sidebar navigation with `glass-panel-elevated` styling
+- Sticky header with `glass-panel` styling
+- Scoped styles for sidebar hover effects and saturation boost
+- Mobile sidebar slide animation testing (verify no conflict with backdrop-filter)
+- Performance validation on low-end device (iPhone 12 equivalent)
 
 **Addresses features:**
-- Initial snapshot modes (table stakes)
-- Schema history topic configuration (table stakes)
-- Connector offset management (table stakes)
-- Table/database filtering (table stakes)
+- Subtle borders (table stakes)
+- Border radius (table stakes)
+- Soft shadows (table stakes)
+- Hover/interaction states (differentiator)
+- Saturation boost (differentiator)
 
 **Avoids pitfalls:**
-- Server ID conflicts (teach systematic ID assignment in lab)
-- Schema history topic corruption (configure correctly from start)
+- WCAG contrast violations (test sidebar text at 4.5:1 minimum)
+- Performance catastrophe (validate 60fps on mobile with blur)
+- Animation blur flicker (sidebar transform animates, blur stays static)
 
-**Research flag:** Standard patterns. Debezium MySQL connector well-documented.
+**Research flag:** Standard patterns. Astro scoped styles + Tailwind utilities well-understood.
 
 ---
 
-### Phase 3: Aurora MySQL Specifics
-**Rationale:** Cloud-managed MySQL has critical differences from self-hosted; must be covered explicitly to prevent production failures. Deferred to Phase 3 so local Docker labs work first.
+### Phase 3: Content Components (Cards + Callouts)
+**Rationale:** Homepage cards are primary navigation (high value). Callouts are semantic content elements. Both benefit from Phase 2 learnings. Lower risk than structural components.
 
 **Delivers:**
-- Lesson 03: Aurora MySQL Binlog Configuration
-- RDS parameter group examples
-- Binlog retention procedure documentation
-- Aurora limitations reference (read replicas, global read lock)
+- Homepage module cards with strong glass effect and hover lift
+- Callout React component with type-specific colored glass variants
+- Gradient border pseudo-elements for premium feel
+- Multi-layer shadow depth for cards
+- Content padding and whitespace optimization
 
 **Addresses features:**
-- Aurora MySQL parameter group configuration (table stakes)
-- Aurora Enhanced Binlog architecture (differentiator)
-- Binlog retention management for RDS/Aurora (table stakes)
+- Multi-layer shadow depth (differentiator)
+- Component-specific glass intensities (differentiator)
+- Hover/interaction states (already addressed in Phase 2, refined here)
 
 **Avoids pitfalls:**
-- Aurora global read lock prohibition (teach snapshot.locking.mode=minimal)
-- Binlog retention limits (document RDS-specific procedures)
+- WCAG contrast violations (test callout text against colored tints)
+- Overuse throughout interface (cards limited, not every element gets glass)
+- Cheap opacity-only approach (backdrop-filter always combined with opacity)
 
-**Research flag:** Moderate research risk. Aurora-specific patterns need AWS console screenshots, CloudFormation examples. May need `/gsd:research-phase` for Enhanced Binlog internals if going deep.
+**Research flag:** Low research risk. React component styling in Astro islands documented. Callout variants straightforward.
 
 ---
 
-### Phase 4: Production Operations & Monitoring
-**Rationale:** Students need operational skills for production deployments. Builds on Phases 1-3 working knowledge.
+### Phase 4: MDX Styling (Tables)
+**Rationale:** Tables require special handling for data readability. Light glass (8-10px blur) with solid borders between rows. Depends on understanding glass performance from earlier phases.
 
 **Delivers:**
-- Binlog lag monitoring lesson
-- Heartbeat event configuration
-- Recovery scenario runbooks
-- GTID-based failover procedures (optional/advanced)
+- Prose table styles in `global.css` with light glass effect
+- Solid borders between rows for data tracking
+- Header row with elevated opacity for hierarchy
+- Hover state for row highlighting
+- Zebra striping (optional) for readability
 
 **Addresses features:**
-- Binlog lag monitoring (table stakes)
-- Heartbeat events (differentiator)
-- GTID failover deep dive (differentiator)
+- Component-specific glass intensities (table stakes—tables need lighter glass)
+- Border radius (table stakes)
+- Soft shadows (table stakes)
 
 **Avoids pitfalls:**
-- Binlog position loss (proactive monitoring prevents)
-- GTID purging issues (failover procedures handle)
+- Code block readability sacrifice (tables use minimal blur, code blocks exempt from glass)
+- Comparison table confusion (solid borders and hover states prevent row tracking loss)
 
-**Research flag:** Standard monitoring patterns (JMX metrics same as PostgreSQL). Low research risk.
+**Research flag:** Standard patterns. Tailwind Typography prose integration well-documented in Astro docs.
 
 ---
 
-### Phase 5: Advanced Topics & Recovery
-**Rationale:** Deep dive into schema history topic management and advanced snapshot strategies. Delivers "even more depth than PostgreSQL."
+### Phase 5: Polish + Performance
+**Rationale:** Holistic validation requires all components implemented. Accessibility audit, performance testing, user preference testing. Final gate before launch.
 
 **Delivers:**
-- Lesson 05: Schema History Topic Management
-- Schema history corruption recovery procedures
-- Incremental snapshot configuration (optional/advanced)
-- Signal table operations (optional/advanced)
+- Accessibility audit with automated tools (axe DevTools, WAVE, Lighthouse)
+- Manual contrast testing for all text (WebAIM Contrast Checker)
+- Performance testing on low-end device (GPU rasterization <16ms)
+- `prefers-reduced-transparency` and `prefers-reduced-motion` validation
+- Cross-browser testing (Chrome, Firefox, Safari, Edge)
+- Blur value optimization if performance issues detected
 
 **Addresses features:**
-- Schema history topic (table stakes, deep coverage)
-- DDL schema evolution (table stakes)
-- Incremental snapshots (differentiator)
-- Signal table operations (differentiator)
+- WCAG contrast compliance (table stakes)
+- Accessibility preferences (differentiator—final validation)
 
 **Avoids pitfalls:**
-- Schema history topic corruption (recovery procedures documented)
+- WCAG contrast violations (comprehensive audit)
+- Backdrop-filter performance catastrophe (low-end device testing)
+- Ignoring user accessibility preferences (media query validation)
 
-**Research flag:** Moderate research risk. Incremental snapshots and signal table operations are advanced Debezium features needing deep dive into Debezium 2.5+ documentation.
-
----
-
-### Phase 6: Multi-Database Capstone Extension (Optional)
-**Rationale:** Ties MySQL module back to existing Module 7 Capstone. Demonstrates real-world multi-database CDC pattern.
-
-**Delivers:**
-- Lesson 06: MySQL Capstone Extension
-- PyFlink job consuming both PostgreSQL and MySQL topics
-- Multi-database CDC architecture patterns
-- When to use Outbox (PostgreSQL) vs direct CDC (MySQL)
-
-**Addresses features:**
-- Multi-database CDC patterns (differentiator)
-- MySQL vs PostgreSQL comparison (differentiator)
-
-**Avoids pitfalls:**
-- None specific; integrative lesson
-
-**Research flag:** Low risk. Extends existing Module 7 patterns. PyFlink CDC connector supports both sources identically.
+**Research flag:** Standard testing patterns. Accessibility tools and performance metrics established in research.
 
 ---
 
 ### Phase Ordering Rationale
 
 **Dependencies:**
-- Phase 1 (binlog concepts) → Phase 2 (hands-on lab) → Phase 3 (Aurora specifics) is natural learning progression
-- Phase 4 (monitoring) requires working connector from Phase 2
-- Phase 5 (advanced topics) builds on Phases 2-3 operational knowledge
-- Phase 6 (capstone) requires Module 7 completion
+- Phase 1 (foundation) → Phase 2 (core UI) → Phase 3 (content) is natural learning progression
+- Phase 4 (tables) requires understanding glass performance from Phases 2-3
+- Phase 5 (polish) requires all components implemented for holistic testing
 
 **Groupings:**
-- Phases 1-2: Core MySQL CDC fundamentals (parallel to Module 2 for PostgreSQL)
-- Phase 3: Cloud-specific content (parallel to Module 6 GCP patterns)
-- Phases 4-5: Production operations (parallel to Module 3 for PostgreSQL)
-- Phase 6: Integration/capstone (extends Module 7)
+- Phases 1-2: Design system + structural components (establish patterns)
+- Phases 3-4: Content components (apply patterns to specific use cases)
+- Phase 5: Validation and optimization (ensure quality gates met)
 
 **Pitfall avoidance:**
-- Early coverage of binlog retention (Phase 1) prevents production outages
-- Dedicated schema history topic lesson (Phase 5) addresses #1 MySQL connector production issue
-- Aurora-specific phase (Phase 3) prevents copy-paste config failures
+- Early gradient background (Phase 1) prevents dark mode invisibility
+- Blur budget established upfront (Phase 1) prevents performance catastrophe
+- Contrast testing throughout (Phases 2-5) prevents accessibility violations
+- Code block exemption (Phase 4) prevents technical content illegibility
 
 ### Research Flags
 
 **Needs deeper research during planning:**
-- **Phase 3 (Aurora MySQL):** Aurora Enhanced Binlog internals, CloudFormation examples, RDS console screenshots
-- **Phase 5 (Incremental Snapshots):** Debezium 2.5+ signaling table mechanics, chunk size tuning patterns
+- None. All phases use standard patterns with well-documented tools.
 
 **Standard patterns (skip additional research):**
-- **Phase 1 (Binlog Fundamentals):** Well-documented in MySQL official docs
-- **Phase 2 (Connector Setup):** Standard Debezium MySQL connector deployment
-- **Phase 4 (Monitoring):** JMX metrics identical to PostgreSQL module patterns
-- **Phase 6 (Capstone):** Extends existing Module 7; no new research needed
+- **Phase 1:** Tailwind 4 CSS-first configuration documented in official release notes
+- **Phase 2:** Astro 5 scoped styles standard pattern from official docs
+- **Phase 3:** React component styling in Astro islands well-understood
+- **Phase 4:** Tailwind Typography prose integration documented in Astro recipes
+- **Phase 5:** Accessibility testing tools (axe, WAVE, Lighthouse) mainstream with guides
+
+**Low-risk implementation:** All recommended approaches verified against official documentation (Tailwind CSS, Astro, MDN). No experimental features, no bleeding-edge patterns.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | MySQL 8.0 ARM64 support verified from Docker Hub. Debezium 2.5.4 MySQL 8.0/8.2 compatibility confirmed from official release notes. No stack upgrades required. |
-| Features | HIGH | Table stakes features verified from official Debezium MySQL connector docs. Differentiators (incremental snapshots, Enhanced Binlog) verified from Debezium blog posts and AWS official documentation. |
-| Architecture | HIGH | Module 8 placement rationale strong (preserves existing course flow). Docker Compose integration pattern verified from multiple CDC integration guides. Lesson structure parallels Module 2 successfully. |
-| Pitfalls | HIGH | Critical pitfalls (schema history topic, binlog purging, Aurora global read lock) verified from community production reports, Debezium issue tracker, and AWS knowledge base articles. |
+| Stack | HIGH | Tailwind 4 native utilities verified from official docs. OKLCH color system and `@utility` directive confirmed in v4.0 release. Astro 5 scoped styles and CSS integration verified from official guides. Zero new dependencies required. |
+| Features | HIGH | Table stakes features (blur, opacity, borders) verified from MDN and W3C specs. Differentiators (saturation, multi-layer shadows) verified from Nielsen Norman Group, Axess Lab, and multiple design resources. Accessibility requirements (WCAG 4.5:1, media queries) are official standards. |
+| Architecture | HIGH | Three-tier CSS organization pattern verified from Tailwind 4 docs (CSS-first config) and Astro docs (scoped styles precedence). Component implementation order based on dependency analysis and visual hierarchy principles. Mobile performance strategy confirmed from GPU optimization research. |
+| Pitfalls | HIGH | Critical pitfalls (contrast violations, performance, dark mode invisibility) verified from authoritative sources (MDN, NN/G, Axess Lab) and production issue reports (shadcn/ui, Ant Design). Browser support data from Can I Use (88%+ support). Testing protocols from WCAG 2.2 guidelines. |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-**Aurora MySQL Enhanced Binlog internals:** Research found AWS blog posts announcing feature and performance benefits (50% → 13% overhead), but detailed architecture diagrams and internal mechanics are sparse. If "even more depth" requires Enhanced Binlog internals deep dive, may need `/gsd:research-phase` during Phase 3 planning to find engineering blog posts or re:Invent talks.
+**Exact blur values for each component:** Research provides ranges (8-16px) but not pixel-perfect specifications. **Handle during Phase 2-4:** Test visually on actual components, adjust based on readability and performance. Start with research recommendations (sidebar 16px, cards 12px, tables 8px), refine iteratively.
 
-**Multi-master/Group Replication CDC patterns:** Medium confidence on this topic. MySQL Group Replication official docs are thorough, but CDC-specific patterns with Debezium are less documented. Currently deferred to "future versions" but if student demand is high, would need deeper research into production case studies.
+**Gradient background color palette:** Research establishes "vibrant radial gradients" requirement but doesn't specify exact OKLCH values for brand consistency. **Handle during Phase 1:** Design gradient background layer with course brand colors (blues, purples if available), test against glass panels, adjust saturation/lightness for optimal visibility.
 
-**MySQL 8.4 LTS migration path:** Currently using MySQL 8.0.40. If course needs future-proofing for MySQL 8.4 LTS, would require Debezium 3.0 upgrade and stack-wide testing. Gap: migration path not researched. Handle by: documenting MySQL 8.0 EOL (April 2026) and noting 8.4 requires future milestone.
+**Table-specific border opacity:** Research recommends "subtle borders" (1px, 20-30% opacity) but tables need higher opacity for cell separation. **Handle during Phase 4:** Test table borders at 10-15% opacity between rows, potentially 20% for outer border, validate with data-heavy example tables from lesson content.
 
-**Aurora Global Database binlog propagation:** Research found Aurora Global Database uses physical replication (not binlog-based), which complicates CDC for secondary regions. Gap: Cross-region CDC patterns not fully researched. Handle by: marking as "advanced/out-of-scope for v1.1" unless explicit requirement emerges.
+**Callout gradient border implementation:** Research mentions gradient borders as "differentiator" but notes "browser quirks, Tailwind arbitrary value complexity" as defer reason. **Handle during Phase 3:** Test feasibility with pseudo-element approach (::before with gradient background + mask-composite). If complex, use solid colored borders instead—still achieves differentiation.
+
+**Cross-browser backdrop-filter prefix requirements:** Research notes `-webkit-` prefix for Safari but Tailwind 4 may auto-prefix. **Handle during Phase 5:** Verify compiled CSS includes prefixes in cross-browser testing. If missing, add custom utility with explicit prefix.
 
 ## Sources
 
 ### Primary (HIGH confidence)
 
 **Official Documentation:**
-- [Debezium MySQL Connector Documentation](https://debezium.io/documentation/reference/stable/connectors/mysql.html) — Configuration requirements, snapshot modes, schema history topic
-- [MySQL Binary Log Documentation](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) — Binlog architecture, formats, rotation
-- [MySQL Replication Formats](https://dev.mysql.com/doc/refman/8.0/en/replication-formats.html) — ROW vs STATEMENT vs MIXED
-- [Red Hat Debezium 2.5.4 MySQL Connector](https://docs.redhat.com/en/documentation/red_hat_build_of_debezium/2.5.4/html/debezium_user_guide/debezium-connector-for-mysql) — Official requirements
-- [Confluent Debezium MySQL Connector](https://docs.confluent.io/kafka-connectors/debezium-mysql-source/current/overview.html) — Configuration reference
+- [Tailwind CSS - Backdrop Blur](https://tailwindcss.com/docs/backdrop-blur) — Native utilities, blur value specifications
+- [Tailwind CSS v4.0 Release](https://tailwindcss.com/blog/tailwindcss-v4) — CSS-first configuration, OKLCH color system
+- [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide) — Browser requirements, migration patterns
+- [Styles and CSS - Astro Docs](https://docs.astro.build/en/guides/styling/) — Scoped styles, global CSS, precedence rules
+- [Style rendered Markdown with Tailwind Typography](https://docs.astro.build/en/recipes/tailwind-rendered-markdown/) — Prose styling integration
 
-**AWS Aurora MySQL:**
-- [AWS Aurora MySQL Binlog Configuration](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html) — Parameter groups
-- [Aurora MySQL Enhanced Binlog](https://aws.amazon.com/blogs/database/introducing-amazon-aurora-mysql-enhanced-binary-log-binlog/) — Performance optimization architecture
-- [AWS Aurora MySQL Binlog Retention](https://repost.aws/knowledge-center/aurora-mysql-increase-binlog-retention) — Retention configuration
-- [Binary Logging Optimizations in Aurora MySQL](https://aws.amazon.com/blogs/database/binary-logging-optimizations-in-amazon-aurora-mysql-version-3/) — Enhanced binlog details
+**Web Standards:**
+- [backdrop-filter - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) — CSS specification, performance warnings
+- [WCAG 2.2 Contrast Guidelines](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) — 4.5:1 and 3:1 ratios
 
-**Docker & Infrastructure:**
-- [MySQL Official Docker Image](https://hub.docker.com/_/mysql) — ARM64 support verification, version availability
+### Secondary (MEDIUM-HIGH confidence)
 
-### Secondary (MEDIUM confidence)
+**UX Research & Best Practices:**
+- [Glassmorphism: Definition and Best Practices - Nielsen Norman Group](https://www.nngroup.com/articles/glassmorphism/) — UX research on common mistakes, visual hierarchy
+- [Glassmorphism Meets Accessibility - Axess Lab](https://axesslab.com/glassmorphism-meets-accessibility-can-frosted-glass-be-inclusive/) — WCAG compliance guidance, user preference media queries
+- [Glassmorphism: What It Is and How to Use It in 2026 - Inverness Design Studio](https://invernessdesignstudio.com/glassmorphism-what-it-is-and-how-to-use-it-in-2026) — 2026 design trends, performance considerations
 
-**Technical Guides:**
-- [Incremental Snapshots in Debezium](https://debezium.io/blog/2021/10/07/incremental-snapshots/) — Debezium blog, official source but less detailed than main docs
-- [Read-only Incremental Snapshots for MySQL](https://debezium.io/blog/2022/04/07/read-only-incremental-snapshots/) — Debezium blog
-- [MySQL CDC Complete Guide](https://datacater.io/blog/2021-08-25/mysql-cdc-complete-guide.html) — Community guide, multiple sources agree
-- [MySQL CDC with Debezium in Production](https://materialize.com/guides/mysql-cdc/) — Production patterns from Materialize
+**Technical Implementation:**
+- [CSS Backdrop-Filter Complete Guide - CodeLucky](https://codelucky.com/css-backdrop-filter/) — Performance optimization, browser support
+- [Creating Glassmorphism Effects with Tailwind CSS - Epic Web Dev](https://www.epicweb.dev/tips/creating-glassmorphism-effects-with-tailwind-css) — Tailwind utility patterns
+- [How To Easily Implement Liquid Glass Effects In Tailwind - FlyonUI](https://flyonui.com/blog/liquid-glass-effects-in-tailwind-css/) — Implementation examples
 
-**Aurora CDC Setup:**
-- [Aurora MySQL CDC Setup Guide - OLake](https://olake.io/docs/connectors/mysql/setup/aurora/) — Community documentation, verified against AWS official docs
-- [AWS Aurora MySQL CDC Setup - DBConvert](https://streams.dbconvert.com/docs/connections/aws-aurora-mysql) — Community guide
+**Production Issues:**
+- [CSS Backdrop filter causing performance issues - shadcn/ui GitHub](https://github.com/shadcn-ui/ui/issues/327) — Real-world performance problems
+- [Severe performance issue: AntD v6 Modal lag - ant-design GitHub](https://github.com/ant-design/ant-design/issues/56707) — GPU overload case study
+- [backdrop-filter: blur is laggy - Mozilla Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1718471) — Browser rendering issues
 
-**Comparison Analysis:**
-- [Understanding CDC: BinLog vs WAL](https://medium.com/data-science/understanding-change-data-capture-cdc-in-mysql-and-postgresql-binlog-vs-wal-logical-decoding-ac76adb0861f) — Medium article, good architectural summary
-- [Replicating MySQL: Binlog and GTIDs](https://airbyte.com/blog/replicating-mysql-a-look-at-the-binlog-and-gtids) — Airbyte blog
-
-### Tertiary (LOW confidence - needs validation)
-
-**Community Production Reports:**
-- Various Stack Overflow threads on schema history topic corruption (consistent patterns across multiple reports)
-- Reddit discussions on Aurora MySQL CDC limitations (anecdotal but aligns with AWS docs)
-- GitHub Debezium issue tracker for GTID purging errors (issue reports, not official guidance)
+**Accessibility Tools:**
+- [WebAIM: Contrast Checker](https://webaim.org/resources/contrastchecker/) — WCAG compliance testing
+- [Inclusive Colors - WCAG Accessible Tailwind Colors](https://www.inclusivecolors.com/) — Tailwind color palette contrast validation
 
 ---
 

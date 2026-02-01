@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 20 of 21 (Cross-Reference Updates)
-Plan: 1 of 1 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 20-01-PLAN.md
+Phase: 21 of 21 (Verification and QA)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 21-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [██████████░░░░░░░░░░] 50%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████████████████] 100% | v1.2 [███████████████░░░░░] 75%
 
 ## Performance Metrics
 
@@ -42,10 +42,11 @@ Progress: v1.0 [████████████████████] 10
 - Phase 18: 2/2 plans complete (phase complete)
 
 **v1.2 Metrics:**
-- Plans completed: 2
-- Average duration: 2 min
+- Plans completed: 3
+- Average duration: 5 min
 - Phase 19: 1/1 plans complete (phase complete)
 - Phase 20: 1/1 plans complete (phase complete)
+- Phase 21: 1/2 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -143,6 +144,10 @@ Recent decisions affecting current work:
 - [20-01]: sed replacement order matters - module-8 first to prevent circular mapping
 - [20-01]: Progress migration uses prefix matching (not full slug map) for maintainability
 - [20-01]: Migration flag (course-progress-v1.2-migrated) prevents re-running on every page load
+- [21-01]: Chromium-only Playwright install (sufficient for local verification, saves disk space)
+- [21-01]: Base path testing uses explicit constant (Playwright baseURL path component ignored for absolute paths)
+- [21-01]: Progress tests use native Playwright test (avoid false positives from intentional hydration mismatches)
+- [21-01]: Sample link testing (first lesson per module) for faster CI
 
 ### Pending Todos
 
@@ -163,9 +168,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 20-01-PLAN.md, Phase 20 complete
+Stopped at: Completed 21-01-PLAN.md
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Phase 20 complete, cross-references updated and progress migration implemented*
+*Last updated: 2026-02-01 — Phase 21 plan 1 complete, Playwright E2E tests for v1.2 verification*

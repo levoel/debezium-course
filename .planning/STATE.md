@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 8 of 11 (Module 4 Advanced Patterns)
-Plan: 3 of 4 in progress
-Status: In progress
-Last activity: 2026-02-01 — Completed 08-03-PLAN.md (Outbox Pattern)
+Plan: 4 of 4 complete
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 08-04-PLAN.md (Schema Registry and Evolution)
 
-Progress: [██████████████░░░░░░] 64% (7/11 phases complete)
+Progress: [███████████████░░░░░] 73% (8/11 phases complete)
 
 ## Performance Metrics
 
@@ -121,6 +121,10 @@ Recent decisions affecting current work:
 - tasks.max=1 for PostgreSQL connector is architectural constraint, not configurable (07-03)
 - REST API offset management (Kafka 3.6+) as primary method for production DR (07-03)
 - Quarterly DR drill schedule recommended (07-03)
+- Groovy for Filter SMT (most common in documentation examples) (08-01)
+- Standard SMT order: Filter → Unwrap → Route → Mask (08-01)
+- Predicates before Filter SMT for simple topic/tombstone filtering (08-01)
+- Always check value.after != null in Groovy for DELETE events (08-01)
 - Outbox Pattern taught as eventual consistency solution, NOT distributed transactions (08-03)
 - At-least-once delivery requires consumer idempotency (database-backed for production) (08-03)
 - DELETE-in-transaction cleanup recommended for course simplicity, external job for scale (08-03)

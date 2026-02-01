@@ -61,7 +61,7 @@ export function ProgressExport() {
   };
 
   return (
-    <div className="space-y-4 p-4 bg-gray-800 rounded-lg border border-gray-700">
+    <div className="space-y-4">
       <h3 className="text-sm font-semibold text-gray-300">Резервное копирование прогресса</h3>
 
       <div className="flex flex-wrap gap-3">

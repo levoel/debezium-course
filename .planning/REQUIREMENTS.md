@@ -23,9 +23,9 @@
 - [x] **MYSQL-09**: Ограничения Aurora MySQL для CDC (global read lock prohibition, snapshot modes) ✓
 
 **Production Operations:**
-- [ ] **MYSQL-10**: Мониторинг binlog lag (AuroraBinlogReplicaLag, JMX metrics)
-- [ ] **MYSQL-11**: Процедуры failover для MySQL/Aurora MySQL с GTID
-- [ ] **MYSQL-12**: Incremental snapshot конфигурация и signal table operations
+- [x] **MYSQL-10**: Мониторинг binlog lag (AuroraBinlogReplicaLag, JMX metrics) ✓
+- [x] **MYSQL-11**: Процедуры failover для MySQL/Aurora MySQL с GTID ✓
+- [x] **MYSQL-12**: Incremental snapshot конфигурация и signal table operations ✓
 
 **Advanced Topics:**
 - [ ] **MYSQL-13**: Recovery процедуры: binlog position loss, schema history topic corruption
@@ -85,9 +85,9 @@
 | MYSQL-07 | Phase 14 | Complete |
 | MYSQL-08 | Phase 14 | Complete |
 | MYSQL-09 | Phase 14 | Complete |
-| MYSQL-10 | Phase 15 | Pending |
-| MYSQL-11 | Phase 15 | Pending |
-| MYSQL-12 | Phase 15 | Pending |
+| MYSQL-10 | Phase 15 | Complete |
+| MYSQL-11 | Phase 15 | Complete |
+| MYSQL-12 | Phase 15 | Complete |
 | MYSQL-13 | Phase 16 | Pending |
 | MYSQL-14 | Phase 16 | Pending |
 | MYSQL-15 | Phase 16 | Pending |

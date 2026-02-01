@@ -44,7 +44,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 - [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
 - [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
 - [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations ✓
-- [ ] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots
+- [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots ✓
 - [ ] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools
 - [ ] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline
 - [ ] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD
@@ -112,9 +112,9 @@ Plans:
 **Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 15-01-PLAN.md — Binlog lag monitoring lesson (JMX, CloudWatch, Grafana dashboard)
-- [ ] 15-02-PLAN.md — GTID failover procedures lesson (runbook, validation)
-- [ ] 15-03-PLAN.md — Incremental snapshots lesson (signal table, read-only snapshots)
+- [x] 15-01-PLAN.md — Binlog lag monitoring lesson (JMX, CloudWatch, Grafana dashboard)
+- [x] 15-02-PLAN.md — GTID failover procedures lesson (runbook, validation)
+- [x] 15-03-PLAN.md — Incremental snapshots lesson (signal table, read-only snapshots)
 
 ### Phase 16: Advanced Topics + Recovery
 **Goal**: Course learner can handle advanced MySQL CDC scenarios and recover from failures
@@ -169,7 +169,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 15. Production Ops | v1.1 | 0/3 | Planned | - |
+| 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 16. Advanced + Recovery | v1.1 | 0/TBD | Not started | - |
 | 17. Multi-DB Capstone | v1.1 | 0/TBD | Not started | - |
 | 18. GitHub Deployment | v1.1 | 0/TBD | Not started | - |

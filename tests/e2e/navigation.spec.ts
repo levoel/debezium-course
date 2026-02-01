@@ -60,10 +60,22 @@ test.describe('Navigation verification', () => {
     // Go to any lesson page to see sidebar
     await page.goto(`${BASE}/course/01-module-1/01-cdc-fundamentals`);
 
-    // Check that all 8 module headers are present
-    for (let i = 1; i <= 8; i++) {
-      const moduleHeader = page.locator(`text=Module ${i.toString().padStart(2, '0')}`);
-      await expect(moduleHeader.or(page.locator(`text=Модуль ${i.toString().padStart(2, '0')}`))).toBeVisible();
+    // Module headers now use format "NN. Descriptive Name" (e.g., "01. Введение в CDC")
+    // Check for descriptive module names from moduleNames.ts
+    const moduleNames = [
+      '01. Введение в CDC',
+      '02. PostgreSQL и Aurora',
+      '03. MySQL и Aurora MySQL',
+      '04. Production Operations',
+      '05. SMT и Паттерны',
+      '06. Data Engineering',
+      '07. Cloud-Native GCP',
+      '08. Capstone Project',
+    ];
+
+    for (const name of moduleNames) {
+      const moduleHeader = page.locator(`button:has-text("${name}")`);
+      await expect(moduleHeader).toBeVisible();
     }
   });
 });

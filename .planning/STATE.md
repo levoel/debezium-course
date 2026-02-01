@@ -151,6 +151,11 @@ Recent decisions affecting current work:
 - Watermark allowed lateness 5-10 seconds for CDC workloads (balances completeness and latency) (09-02)
 - Teach all three window types (tumbling, sliding, session) for comprehensive analytics capabilities (09-02)
 - Temporal join (FOR SYSTEM_TIME AS OF) as correct pattern for versioned dimension enrichment (09-02)
+- 10-minute watermark as default for CDC aggregations balancing completeness vs latency (09-03)
+- ELT pattern (load raw, transform in warehouse) emphasized over traditional ETL for modern data engineering (09-03)
+- Delta Lake recommended for ACID upserts, Parquet for append-only CDC history (09-03)
+- PySpark at-least-once limitation for Kafka sink explicitly documented (vs PyFlink exactly-once) (09-03)
+- Standard metadata columns: _operation, _cdc_timestamp, _processed_at for CDC data lake (09-03)
 
 ### Pending Todos
 
@@ -170,10 +175,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01 07:13 UTC
+Last session: 2026-02-01
 Stopped at: Completed Phase 9 - Module 5 Data Engineering (all 4 plans, 7 lessons)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 07:13 UTC*
+*Last updated: 2026-02-01*

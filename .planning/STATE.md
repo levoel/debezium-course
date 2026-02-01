@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 15 of 18 (Production Operations)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 15-03-PLAN.md
+Phase: 16 of 18 (Advanced Topics + Recovery)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 16-03-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████████████░░░░░░░░] 57%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████████████░░░░░░░] 61%
 
 ## Performance Metrics
 
@@ -31,12 +31,13 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 12
+- Plans completed: 13
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
 - Phase 15: 3/3 plans complete (phase complete)
+- Phase 16: 1/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -96,6 +97,10 @@ Recent decisions affecting current work:
 - [15-03]: GTID prerequisites (replica_preserve_commit_order) required for read-only snapshots
 - [15-03]: 7-day binlog retention recommended for large table snapshots with safety margin
 - [15-03]: Chunk size default 2048 rows with tuning guidance based on row width
+- [16-03]: Filter SMT positioned as recommended approach for DDL tool helper table filtering
+- [16-03]: Helper table naming conventions (_gho, _ghc for gh-ost; _new, _old for pt-osc)
+- [16-03]: Broad capture pattern (mydb.*) with Filter SMT removes helper events before Kafka
+- [16-03]: gh-ost triggerless (doubles binlog read load, no FK support) vs pt-osc trigger-based (FK support, trigger overhead)
 
 ### Pending Todos
 
@@ -115,10 +120,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T13:15:00Z
-Stopped at: Completed Phase 15 (Production Operations - 3 plans, 4,057 lines)
+Last session: 2026-02-01T13:25:41Z
+Stopped at: Completed 16-03-PLAN.md (DDL Tools Integration - 1,222 lines)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed Phase 15 (Production Operations)*
+*Last updated: 2026-02-01 — Completed 16-03 (DDL Tools Integration)*

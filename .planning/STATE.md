@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 9 of 11 (Module 5 - Data Engineering)
-Plan: 4 of 4 complete
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 09-02-PLAN.md (PyFlink CDC & Stateful Processing)
+Phase: 10 of 11 (Module 6 - Cloud-Native GCP)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-02-01 — Completed 10-01-PLAN.md (Cloud SQL & Debezium Server Foundation)
 
-Progress: [█████████████████░░░] 82% (9/11 phases complete)
+Progress: [█████████████████░░░] 85% (27/32 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
-- Average duration: 4.0 minutes
-- Total execution time: 1.7 hours
+- Total plans completed: 27
+- Average duration: 3.9 minutes
+- Total execution time: 1.8 hours
 
 **By Phase:**
 
@@ -36,10 +36,11 @@ Progress: [█████████████████░░░] 82% (9/
 | 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
 | 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
 | 09 - Module 5 Data Engineering | 4/4 ✓ | 18.7m | 4.7m |
+| 10 - Module 6 Cloud-Native GCP | 1/3 | 3.5m | 3.5m |
 
 **Recent Trend:**
-- Last 5 plans: 09-04 (3.2m), 09-01 (4.5m), 09-03 (5m), 09-02 (6m)
-- Trend: Content creation averaging 4.7m/plan for deep technical content
+- Last 5 plans: 10-01 (3.5m), 09-04 (3.2m), 09-01 (4.5m), 09-03 (5m), 09-02 (6m)
+- Trend: Content creation consistently efficient at ~4m/plan
 
 *Updated after each plan completion*
 
@@ -156,6 +157,13 @@ Recent decisions affecting current work:
 - Delta Lake recommended for ACID upserts, Parquet for append-only CDC history (09-03)
 - PySpark at-least-once limitation for Kafka sink explicitly documented (vs PyFlink exactly-once) (09-03)
 - Standard metadata columns: _operation, _cdc_timestamp, _processed_at for CDC data lake (09-03)
+- cloudsql.logical_decoding flag for Cloud SQL instead of direct postgresql.conf (10-01)
+- pgoutput plugin standard for Cloud SQL CDC - built-in, no dependencies (10-01)
+- cloudsqlsuperuser role instead of full SUPERUSER for managed PostgreSQL (10-01)
+- Debezium Server Kafka-less architecture as GCP-native CDC pattern (10-01)
+- File-based offset storage with PersistentVolumeClaim for single-instance Debezium Server (10-01)
+- 10-second heartbeat interval mandatory for WAL bloat prevention (10-01)
+- Topic naming convention {prefix}.{schema}.{table} requires exact case-sensitive matching (10-01)
 
 ### Pending Todos
 
@@ -176,7 +184,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed Phase 9 - Module 5 Data Engineering (all 4 plans, 7 lessons)
+Stopped at: Completed 10-01-PLAN.md (Cloud SQL & Debezium Server Foundation)
 Resume file: None
 
 ---

@@ -3,7 +3,7 @@
 ## Milestones
 
 - [x] **v1.0 MVP** - Phases 1-11 (shipped 2026-02-01)
-- [ ] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (in progress)
+- [x] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (shipped 2026-02-01)
 
 ## Overview
 
@@ -47,7 +47,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 - [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots ✓
 - [x] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools ✓
 - [x] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline ✓
-- [ ] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD (in progress)
+- [x] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD (complete)
 
 ## Phase Details
 
@@ -161,7 +161,7 @@ Plans:
 
 Plans:
 - [x] 18-01-PLAN.md — Update workflow to use withastro/action + local verification
-- [ ] 18-02-PLAN.md — Push, configure GitHub Pages, verify live deployment
+- [x] 18-02-PLAN.md — Push, configure GitHub Pages, verify live deployment
 
 ## Progress
 
@@ -176,7 +176,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 | 15. Production Ops | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 16. Advanced + Recovery | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 17. Multi-DB Capstone | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 18. GitHub Deployment | v1.1 | 1/2 | In progress | - |
+| 18. GitHub Deployment | v1.1 | 2/2 | Complete | 2026-02-01 |
 
 ## Coverage
 

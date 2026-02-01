@@ -30,8 +30,10 @@
 /* Glass panel utilities */
 .glass-panel {
   background: rgba(255, 255, 255, var(--glass-bg-opacity));
+  /* Safari: hardcoded value (CSS variables don't work in webkit prefix) */
+  -webkit-backdrop-filter: blur(10px);
+  /* Modern browsers: uses CSS variable */
   backdrop-filter: blur(var(--glass-blur-md));
-  -webkit-backdrop-filter: blur(var(--glass-blur-md));
   border: 1px solid var(--glass-border-color);
   border-radius: var(--glass-border-radius);
   box-shadow: var(--glass-shadow);
@@ -39,8 +41,10 @@
 
 .glass-panel-elevated {
   background: rgba(255, 255, 255, var(--glass-bg-elevated-opacity));
+  /* Safari: hardcoded value (CSS variables don't work in webkit prefix) */
+  -webkit-backdrop-filter: blur(16px);
+  /* Modern browsers: uses CSS variable */
   backdrop-filter: blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
   border: 1px solid var(--glass-border-color);
   border-radius: var(--glass-border-radius);
   box-shadow: var(--glass-shadow-elevated);
@@ -49,16 +53,20 @@
 /* Sidebar glass - darker variant for navigation */
 .glass-sidebar {
   background: var(--sidebar-glass-bg);
+  /* Safari: hardcoded value (CSS variables don't work in webkit prefix) */
+  -webkit-backdrop-filter: blur(10px);
+  /* Modern browsers: uses CSS variable */
   backdrop-filter: blur(var(--sidebar-glass-blur));
-  -webkit-backdrop-filter: blur(var(--sidebar-glass-blur));
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Glass card for module cards - strong effect with hover lift */
 .glass-card {
   background: rgba(255, 255, 255, var(--glass-bg-opacity));
+  /* Safari: hardcoded value (CSS variables don't work in webkit prefix) */
+  -webkit-backdrop-filter: blur(16px);
+  /* Modern browsers: uses CSS variable */
   backdrop-filter: blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
   border: 1px solid var(--glass-border-color);
   border-radius: var(--glass-border-radius);
   box-shadow: var(--glass-shadow);
@@ -194,8 +202,10 @@ body {
 /* Glass tables with clear cell borders */
 .prose table {
   background: rgba(255, 255, 255, var(--glass-bg-content-opacity));
+  /* Safari: hardcoded value (CSS variables don't work in webkit prefix) */
+  -webkit-backdrop-filter: blur(8px);
+  /* Modern browsers: uses CSS variable */
   backdrop-filter: blur(var(--glass-blur-content));
-  -webkit-backdrop-filter: blur(var(--glass-blur-content));
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   border-collapse: separate;

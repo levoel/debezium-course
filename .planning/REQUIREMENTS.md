@@ -47,14 +47,14 @@
 
 ### Module 4: Advanced Patterns
 
-- [ ] **MOD4-01**: Single Message Transformations (SMTs) — обзор и применение
-- [ ] **MOD4-02**: Фильтрация событий с predicates
-- [ ] **MOD4-03**: Маскирование PII данных через SMT
-- [ ] **MOD4-04**: Content-based routing в разные топики
-- [ ] **MOD4-05**: Outbox pattern — теория и архитектура
-- [ ] **MOD4-06**: Практическая реализация outbox с Outbox Event Router SMT
-- [ ] **MOD4-07**: Schema Registry интеграция и Avro сериализация
-- [ ] **MOD4-08**: Schema evolution и backward/forward compatibility
+- [x] **MOD4-01**: Single Message Transformations (SMTs) — обзор и применение
+- [x] **MOD4-02**: Фильтрация событий с predicates
+- [x] **MOD4-03**: Маскирование PII данных через SMT
+- [x] **MOD4-04**: Content-based routing в разные топики
+- [x] **MOD4-05**: Outbox pattern — теория и архитектура
+- [x] **MOD4-06**: Практическая реализация outbox с Outbox Event Router SMT
+- [x] **MOD4-07**: Schema Registry интеграция и Avro сериализация
+- [x] **MOD4-08**: Schema evolution и backward/forward compatibility
 
 ### Module 5: Data Engineering
 
@@ -160,14 +160,14 @@
 | MOD3-05 | Phase 7 | ✓ Done |
 | MOD3-06 | Phase 7 | ✓ Done |
 | MOD3-07 | Phase 7 | ✓ Done |
-| MOD4-01 | Phase 8 | Pending |
-| MOD4-02 | Phase 8 | Pending |
-| MOD4-03 | Phase 8 | Pending |
-| MOD4-04 | Phase 8 | Pending |
-| MOD4-05 | Phase 8 | Pending |
-| MOD4-06 | Phase 8 | Pending |
-| MOD4-07 | Phase 8 | Pending |
-| MOD4-08 | Phase 8 | Pending |
+| MOD4-01 | Phase 8 | ✓ Done |
+| MOD4-02 | Phase 8 | ✓ Done |
+| MOD4-03 | Phase 8 | ✓ Done |
+| MOD4-04 | Phase 8 | ✓ Done |
+| MOD4-05 | Phase 8 | ✓ Done |
+| MOD4-06 | Phase 8 | ✓ Done |
+| MOD4-07 | Phase 8 | ✓ Done |
+| MOD4-08 | Phase 8 | ✓ Done |
 | MOD5-01 | Phase 9 | Pending |
 | MOD5-02 | Phase 9 | Pending |
 | MOD5-03 | Phase 9 | Pending |

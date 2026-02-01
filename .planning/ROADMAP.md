@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Module 1 - Foundations** - CDC fundamentals, Debezium architecture, first connector ✓
 - [x] **Phase 6: Module 2 - PostgreSQL & Aurora** - Logical decoding, replication slots, WAL, Aurora specifics ✓
 - [x] **Phase 7: Module 3 - Production Operations** - Monitoring, metrics, scaling, disaster recovery ✓
-- [ ] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration
+- [x] **Phase 8: Module 4 - Advanced Patterns** - SMTs, Outbox pattern, Schema Registry integration ✓
 - [ ] **Phase 9: Module 5 - Data Engineering** - Python consumers, PyFlink, PySpark, stream processing
 - [ ] **Phase 10: Module 6 - Cloud-Native GCP** - Cloud SQL, Pub/Sub, Dataflow, Cloud Run integration
 - [ ] **Phase 11: Capstone Project** - End-to-end production CDC pipeline integrating all learnings
@@ -170,10 +170,13 @@ Plans:
   6. Students can implement Outbox pattern using Outbox Event Router SMT
   7. Students can integrate Schema Registry with Avro serialization
   8. Students can handle schema evolution with backward/forward compatibility
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] (Plans will be created during phase planning)
+- [x] 08-01-PLAN.md — Create SMT foundation lessons (overview, predicates filtering)
+- [x] 08-02-PLAN.md — Create SMT application lessons (PII masking, content-based routing)
+- [x] 08-03-PLAN.md — Create Outbox pattern lessons (theory and implementation)
+- [x] 08-04-PLAN.md — Create Schema Registry lessons (Avro integration, schema evolution)
 
 ### Phase 9: Module 5 - Data Engineering
 **Goal**: Students can integrate CDC events into data engineering workflows with Python, Pandas, PyFlink, and PySpark
@@ -235,7 +238,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 5. Module 1 - Foundations | 3/3 | ✓ Complete | 2026-02-01 |
 | 6. Module 2 - PostgreSQL & Aurora | 3/3 | ✓ Complete | 2026-02-01 |
 | 7. Module 3 - Production Operations | 3/3 | ✓ Complete | 2026-02-01 |
-| 8. Module 4 - Advanced Patterns | 0/TBD | Not started | - |
+| 8. Module 4 - Advanced Patterns | 4/4 | ✓ Complete | 2026-02-01 |
 | 9. Module 5 - Data Engineering | 0/TBD | Not started | - |
 | 10. Module 6 - Cloud-Native GCP | 0/TBD | Not started | - |
 | 11. Capstone Project | 0/TBD | Not started | - |

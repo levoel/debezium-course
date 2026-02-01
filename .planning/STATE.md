@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 13 of 18 (Connector Setup + Comparison)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 13-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 13-03-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████░░░░░░░░░░░░░░░░] 21%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█████░░░░░░░░░░░░░░░] 24%
 
 ## Performance Metrics
 
@@ -31,10 +31,10 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 5
-- Average duration: 4 min
+- Plans completed: 6
+- Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
-- Phase 13: 2/3 plans complete (in progress)
+- Phase 13: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -65,6 +65,10 @@ Recent decisions affecting current work:
 - [13-02]: Schema history topic positioned as MySQL-only requirement (PostgreSQL embeds schema in WAL)
 - [13-02]: GTID mode mandatory for production failover (vs complex PostgreSQL slot migration)
 - [13-02]: Common misconceptions table addresses PostgreSQL-to-MySQL knowledge transfer issues
+- [13-03]: Schema history topic retention.ms=-1 positioned as critical requirement ("7-day bomb")
+- [13-03]: Recovery scenarios prioritized by frequency (normal restart → purged → corrupted → shared topic)
+- [13-03]: Backup procedures emphasized for fast recovery vs resnapshot (minutes vs hours)
+- [13-03]: Callout component created to support pedagogical callout pattern in course content
 
 ### Pending Todos
 
@@ -84,10 +88,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:55:51Z
-Stopped at: Completed 13-02-PLAN.md (Binlog vs WAL Comparison Lesson)
+Last session: 2026-02-01T12:57:25Z
+Stopped at: Completed 13-03-PLAN.md (Schema History Recovery Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 13-02-PLAN.md (Phase 13 in progress)*
+*Last updated: 2026-02-01 — Completed 13-03-PLAN.md (Phase 13 complete)*

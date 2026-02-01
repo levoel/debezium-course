@@ -29,18 +29,21 @@ v1.2 reorganizes the course structure by moving Module 8 (MySQL/Aurora MySQL) to
 **Plans**: 1 plan (Wave 1)
 
 Plans:
-- [ ] 19-01-PLAN.md — Directory renaming via two-stage git mv with build verification
+- [x] 19-01-PLAN.md — Directory renaming via two-stage git mv with build verification
 
 ### Phase 20: Cross-Reference Updates
 **Goal**: All internal links and UI components reflect new module order
 **Depends on**: Phase 19
-**Requirements**: STRUCT-01c, STRUCT-01d, STRUCT-01e
+**Requirements**: STRUCT-01c, STRUCT-01d (N/A - no component), STRUCT-01e
 **Success Criteria** (what must be TRUE):
   1. All inter-lesson links updated to new paths
-  2. Roadmap component displays correct module order
+  2. Roadmap component displays correct module order (N/A - no separate component exists, navigation auto-discovers)
   3. Progress tracking uses updated localStorage keys
   4. No broken internal links
-**Plans**: TBD
+**Plans**: 1 plan (Wave 1)
+
+Plans:
+- [ ] 20-01-PLAN.md — Fix cross-references and add progress migration
 
 ### Phase 21: Verification and QA
 **Goal**: All navigation works correctly and progress persists

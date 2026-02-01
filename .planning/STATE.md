@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 9 of 11 (Module 5 - Data Engineering)
-Plan: 2 of 4 complete
-Status: In progress
-Last activity: 2026-02-01 — Completed 09-01-PLAN.md (Python Consumers & Pandas Integration)
+Plan: 4 of 4 complete
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 09-02-PLAN.md (PyFlink CDC & Stateful Processing)
 
-Progress: [███████████████░░░░░] 73% (8/11 phases complete, 2/4 plans in phase 9)
+Progress: [█████████████████░░░] 82% (9/11 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
-- Average duration: 3.9 minutes
-- Total execution time: 1.5 hours
+- Total plans completed: 26
+- Average duration: 4.0 minutes
+- Total execution time: 1.7 hours
 
 **By Phase:**
 
@@ -35,11 +35,11 @@ Progress: [███████████████░░░░░] 73% (8/
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
 | 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
 | 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
-| 09 - Module 5 Data Engineering | 2/4 | 7.7m | 3.9m |
+| 09 - Module 5 Data Engineering | 4/4 ✓ | 18.7m | 4.7m |
 
 **Recent Trend:**
-- Last 5 plans: 08-03 (4m), 08-04 (4.7m), 09-04 (3.2m), 09-01 (4.5m)
-- Trend: Content creation averaging 4.1m/plan for deep technical content
+- Last 5 plans: 09-04 (3.2m), 09-01 (4.5m), 09-03 (5m), 09-02 (6m)
+- Trend: Content creation averaging 4.7m/plan for deep technical content
 
 *Updated after each plan completion*
 
@@ -147,6 +147,10 @@ Recent decisions affecting current work:
 - Dual write strategy: online store (Redis) + offline store (Parquet) for ML consistency (09-04)
 - 30-day window for customer behavior features, 7-day for product metrics (09-04)
 - Watermark 1 hour for late-arriving events in feature pipelines (09-04)
+- PyFlink Table API preferred over DataStream API for CDC (SQL DDL more accessible to data engineers) (09-02)
+- Watermark allowed lateness 5-10 seconds for CDC workloads (balances completeness and latency) (09-02)
+- Teach all three window types (tumbling, sliding, session) for comprehensive analytics capabilities (09-02)
+- Temporal join (FOR SYSTEM_TIME AS OF) as correct pattern for versioned dimension enrichment (09-02)
 
 ### Pending Todos
 
@@ -166,10 +170,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01 07:12 UTC
-Stopped at: Completed 09-01-PLAN.md (Python Consumers & Pandas Integration - Module 5 lessons 1-2)
+Last session: 2026-02-01 07:13 UTC
+Stopped at: Completed Phase 9 - Module 5 Data Engineering (all 4 plans, 7 lessons)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 07:12 UTC*
+*Last updated: 2026-02-01 07:13 UTC*

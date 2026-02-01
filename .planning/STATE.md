@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 13 of 18 (Connector Setup + Comparison)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 13-01-PLAN.md
+Last activity: 2026-02-01 — Completed 13-02-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [████░░░░░░░░░░░░░░░░] 20%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████░░░░░░░░░░░░░░░░] 21%
 
 ## Performance Metrics
 
@@ -31,10 +31,10 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 4
-- Average duration: 3 min
+- Plans completed: 5
+- Average duration: 4 min
 - Phase 12: 3/3 plans complete (phase complete)
-- Phase 13: 1/3 plans complete (in progress)
+- Phase 13: 2/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -61,6 +61,10 @@ Recent decisions affecting current work:
 - [13-01]: database.server.id range 184000-184999 for Debezium connectors (avoid MySQL cluster conflicts)
 - [13-01]: Single partition for schema history topic (preserves DDL ordering)
 - [13-01]: Heartbeat configuration as recommended (not optional) for production deployments
+- [13-02]: Position tracking as core architectural difference (PostgreSQL server-side slots vs MySQL client-side offsets)
+- [13-02]: Schema history topic positioned as MySQL-only requirement (PostgreSQL embeds schema in WAL)
+- [13-02]: GTID mode mandatory for production failover (vs complex PostgreSQL slot migration)
+- [13-02]: Common misconceptions table addresses PostgreSQL-to-MySQL knowledge transfer issues
 
 ### Pending Todos
 
@@ -80,10 +84,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T10:54:16Z
-Stopped at: Completed 13-01-PLAN.md (MySQL Connector Configuration Lesson)
+Last session: 2026-02-01T12:55:51Z
+Stopped at: Completed 13-02-PLAN.md (Binlog vs WAL Comparison Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 13-01-PLAN.md (Phase 13 in progress)*
+*Last updated: 2026-02-01 — Completed 13-02-PLAN.md (Phase 13 in progress)*

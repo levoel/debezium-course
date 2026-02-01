@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 9 of 11 (Module 5 - Data Engineering)
-Plan: 1 of 4 executing
+Plan: 2 of 4 complete
 Status: In progress
-Last activity: 2026-02-01 — Completed 09-04-PLAN.md (Real-time ML Feature Engineering)
+Last activity: 2026-02-01 — Completed 09-01-PLAN.md (Python Consumers & Pandas Integration)
 
-Progress: [███████████████░░░░░] 73% (8/11 phases complete, 1/4 plans in phase 9)
+Progress: [███████████████░░░░░] 73% (8/11 phases complete, 2/4 plans in phase 9)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
-- Average duration: 3.8 minutes
-- Total execution time: 1.4 hours
+- Total plans completed: 24
+- Average duration: 3.9 minutes
+- Total execution time: 1.5 hours
 
 **By Phase:**
 
@@ -35,11 +35,11 @@ Progress: [███████████████░░░░░] 73% (8/
 | 06 - Module 2 PostgreSQL/Aurora | 3/3 ✓ | 14.5m | 4.8m |
 | 07 - Module 3 Production Operations | 3/3 ✓ | 27m | 9m |
 | 08 - Module 4 Advanced Patterns | 4/4 ✓ | 16.7m | 4.2m |
-| 09 - Module 5 Data Engineering | 1/4 | 3.2m | 3.2m |
+| 09 - Module 5 Data Engineering | 2/4 | 7.7m | 3.9m |
 
 **Recent Trend:**
-- Last 5 plans: 07-03 (10m), 08-03 (4m), 08-04 (4.7m), 09-04 (3.2m)
-- Trend: Content creation averaging 6.5m/plan for deep technical content
+- Last 5 plans: 08-03 (4m), 08-04 (4.7m), 09-04 (3.2m), 09-01 (4.5m)
+- Trend: Content creation averaging 4.1m/plan for deep technical content
 
 *Updated after each plan completion*
 
@@ -136,6 +136,13 @@ Recent decisions affecting current work:
 - Type changes never safe - require ADD new column → backfill → DROP old workflow (08-04)
 - Compatibility testing API mandatory before production schema changes (08-04)
 - Nullable columns with defaults for BACKWARD-safe additions (08-04)
+- At-least-once as default teaching pattern, exactly-once as advanced (09-01)
+- Manual offset store pattern: enable.auto.offset.store=False + consumer.store_offsets() (09-01)
+- Transactional API for exactly-once: isolation.level=read_committed + send_offsets_to_transaction (09-01)
+- Fatal vs non-fatal error distinction using msg.error().fatal() (09-01)
+- Pandas 3.0 patterns only: str dtype, CoW with .loc[], microsecond datetime (09-01)
+- Manual CDC flattening as primary, json_normalize as alternative for complex schemas (09-01)
+- DELETE event handling: after=null, use before field for data extraction (09-01)
 - foreachBatch pattern for PySpark writes to external stores (no direct feature store connectors) (09-04)
 - Dual write strategy: online store (Redis) + offline store (Parquet) for ML consistency (09-04)
 - 30-day window for customer behavior features, 7-day for product metrics (09-04)
@@ -159,10 +166,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01 07:11 UTC
-Stopped at: Completed 09-04-PLAN.md (Real-time ML Feature Engineering - Module 5 lesson 7)
+Last session: 2026-02-01 07:12 UTC
+Stopped at: Completed 09-01-PLAN.md (Python Consumers & Pandas Integration - Module 5 lessons 1-2)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 07:11 UTC*
+*Last updated: 2026-02-01 07:12 UTC*

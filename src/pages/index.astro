@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { ProgressIndicator } from '../components/ProgressIndicator';
 import { ProgressExport } from '../components/ProgressExport';
+import { getModuleName, getModuleNumber } from '../utils/moduleNames';
 
 // Helper to clean entry.id to URL-friendly slug
 function cleanSlug(id: string): string {
@@ -17,6 +18,26 @@ const sortedLessons = courseEntries
 
 // Total lessons for progress indicator
 const totalLessons = sortedLessons.length;
+
+// Group lessons by module
+function groupByModule(lessons: typeof sortedLessons) {
+  const groups = new Map<string, typeof sortedLessons>();
+
+  for (const lesson of lessons) {
+    // Extract module ID from lesson slug (e.g., "01-module-1/01-cdc-fundamentals" -> "01-module-1")
+    const moduleId = cleanSlug(lesson.id).split('/')[0];
+
+    if (!groups.has(moduleId)) {
+      groups.set(moduleId, []);
+    }
+    groups.get(moduleId)!.push(lesson);
+  }
+
+  return groups;
+}
+
+const moduleGroups = groupByModule(sortedLessons);
+const moduleIds = Array.from(moduleGroups.keys()).sort();
 
 // Get difficulty badge color
 function getDifficultyColor(difficulty: string) {
@@ -83,50 +104,68 @@ function translateDifficulty(difficulty: string) {
       </div>
     </div>
 
-    <h2 class="text-2xl font-bold text-gray-100 mb-6">Уроки курса</h2>
+    <h2 class="text-2xl font-bold text-gray-100 mb-6">Модули курса</h2>
 
-    <div class="grid gap-6 not-prose">
-      {sortedLessons.map((lesson) => (
-        <a
-          href={`${import.meta.env.BASE_URL}/course/${cleanSlug(lesson.id)}`}
-          class="block bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors"
-        >
-          <div class="flex items-start justify-between mb-3">
-            <h3 class="text-xl font-semibold text-gray-100">
-              {lesson.data.order}. {lesson.data.title}
+    <div class="space-y-8 not-prose">
+      {moduleIds.map((moduleId) => {
+        const lessons = moduleGroups.get(moduleId)!;
+        const moduleNumber = getModuleNumber(moduleId);
+        const moduleName = getModuleName(moduleId);
+
+        return (
+          <section key={moduleId} class="space-y-4">
+            <h3 class="text-xl font-semibold text-gray-200 flex items-center gap-3">
+              <span class="text-blue-400 font-mono">{moduleNumber}</span>
+              <span>{moduleName}</span>
+              <span class="text-sm text-gray-500 font-normal">({lessons.length} уроков)</span>
             </h3>
-            <span class={`px-3 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(lesson.data.difficulty)}`}>
-              {translateDifficulty(lesson.data.difficulty)}
-            </span>
-          </div>
 
-          <p class="text-gray-300 mb-4">
-            {lesson.data.description}
-          </p>
+            <div class="grid gap-4 pl-4 border-l-2 border-blue-500/30">
+              {lessons.map((lesson) => (
+                <a
+                  href={`${import.meta.env.BASE_URL}/course/${cleanSlug(lesson.id)}`}
+                  class="block bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-blue-500/50 hover:bg-gray-800/70 transition-colors"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <h4 class="text-lg font-medium text-gray-100">
+                      {lesson.data.title}
+                    </h4>
+                    <span class={`px-2 py-0.5 rounded-full text-xs font-medium border ${getDifficultyColor(lesson.data.difficulty)}`}>
+                      {translateDifficulty(lesson.data.difficulty)}
+                    </span>
+                  </div>
 
-          <div class="flex flex-wrap gap-4 text-sm text-gray-400">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{lesson.data.estimatedTime} мин</span>
-            </div>
+                  <p class="text-gray-400 text-sm mb-3 line-clamp-2">
+                    {lesson.data.description}
+                  </p>
 
-            <div class="flex items-center gap-2 flex-wrap">
-              {lesson.data.topics.slice(0, 3).map((topic) => (
-                <span class="px-2 py-1 bg-gray-700 rounded text-xs">
-                  {topic}
-                </span>
+                  <div class="flex flex-wrap gap-3 text-xs text-gray-500">
+                    <div class="flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>{lesson.data.estimatedTime} мин</span>
+                    </div>
+
+                    <div class="flex items-center gap-1 flex-wrap">
+                      {lesson.data.topics.slice(0, 2).map((topic) => (
+                        <span class="px-1.5 py-0.5 bg-gray-700/50 rounded text-xs">
+                          {topic}
+                        </span>
+                      ))}
+                      {lesson.data.topics.length > 2 && (
+                        <span class="text-gray-600">
+                          +{lesson.data.topics.length - 2}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </a>
               ))}
-              {lesson.data.topics.length > 3 && (
-                <span class="text-xs text-gray-500">
-                  +{lesson.data.topics.length - 3}
-                </span>
-              )}
             </div>
-          </div>
-        </a>
-      ))}
+          </section>
+        );
+      })}
     </div>
 
     {sortedLessons.length === 0 && (

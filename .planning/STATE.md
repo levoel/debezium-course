@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 12 of 18 (MySQL Infrastructure + Binlog Fundamentals)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — v1.1 roadmap created
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 12-01-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [░░░░░░░░░░░░░░░░░░░░] 0%
+Progress: v1.0 [████████████████████] 100% | v1.1 [█░░░░░░░░░░░░░░░░░░░] 5%
 
 ## Performance Metrics
 
@@ -30,7 +30,10 @@ Progress: v1.0 [████████████████████] 10
 | 1-11 | 32 | Complete (v1.0 shipped) |
 | 12-18 | TBD | Not started (v1.1) |
 
-**v1.1 Metrics:** Will be tracked after first plan completion.
+**v1.1 Metrics:**
+- Plans completed: 1
+- Average duration: 1 min
+- Phase 12: 1/3 plans complete
 
 ## Accumulated Context
 
@@ -43,6 +46,10 @@ Recent decisions affecting current work:
 - [v1.0]: Confluent Kafka 7.8.1 for ARM64 native support
 - [v1.0]: Russian text / English code for target audience
 - [v1.1]: MySQL 8.0.40 (stable, ARM64 compatible, binlog features complete)
+- [12-01]: Use port 3307 externally to avoid conflicts with local MySQL
+- [12-01]: Inline command configuration for MySQL binlog (avoids MySQL Bug #78957)
+- [12-01]: binlog-row-image=FULL for educational clarity
+- [12-01]: 7-day binlog retention for lab exercises
 
 ### Pending Todos
 
@@ -62,10 +69,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01
-Stopped at: v1.1 roadmap created, ready to plan Phase 12
+Last session: 2026-02-01T10:21:44Z
+Stopped at: Completed 12-01-PLAN.md (MySQL Infrastructure Setup)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — v1.1 roadmap created*
+*Last updated: 2026-02-01 — Completed 12-01-PLAN.md*

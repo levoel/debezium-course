@@ -80,6 +80,10 @@ const modulesArray = Array.from(navigationTree.entries());
 
     <script>
       import { isSidebarOpen } from '../stores/navigation';
+      import { migrateModuleSlugs } from '../stores/progress';
+
+      // Run one-time progress migration on page load
+      migrateModuleSlugs();
 
       isSidebarOpen.subscribe(isOpen => {
         const sidebar = document.getElementById('sidebar');

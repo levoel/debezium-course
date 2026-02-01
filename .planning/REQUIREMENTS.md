@@ -18,9 +18,9 @@
 - [x] **MYSQL-06**: Конфигурация schema history topic и её критическая роль для recovery ✓
 
 **Aurora MySQL:**
-- [ ] **MYSQL-07**: Aurora MySQL-специфичная конфигурация (parameter groups, binlog retention procedures)
-- [ ] **MYSQL-08**: Объяснение Aurora Enhanced Binlog архитектуры (storage nodes, 99% faster recovery)
-- [ ] **MYSQL-09**: Ограничения Aurora MySQL для CDC (global read lock prohibition, snapshot modes)
+- [x] **MYSQL-07**: Aurora MySQL-специфичная конфигурация (parameter groups, binlog retention procedures) ✓
+- [x] **MYSQL-08**: Объяснение Aurora Enhanced Binlog архитектуры (storage nodes, 99% faster recovery) ✓
+- [x] **MYSQL-09**: Ограничения Aurora MySQL для CDC (global read lock prohibition, snapshot modes) ✓
 
 **Production Operations:**
 - [ ] **MYSQL-10**: Мониторинг binlog lag (AuroraBinlogReplicaLag, JMX metrics)
@@ -82,9 +82,9 @@
 | MYSQL-04 | Phase 13 | Complete |
 | MYSQL-05 | Phase 13 | Complete |
 | MYSQL-06 | Phase 13 | Complete |
-| MYSQL-07 | Phase 14 | Pending |
-| MYSQL-08 | Phase 14 | Pending |
-| MYSQL-09 | Phase 14 | Pending |
+| MYSQL-07 | Phase 14 | Complete |
+| MYSQL-08 | Phase 14 | Complete |
+| MYSQL-09 | Phase 14 | Complete |
 | MYSQL-10 | Phase 15 | Pending |
 | MYSQL-11 | Phase 15 | Pending |
 | MYSQL-12 | Phase 15 | Pending |

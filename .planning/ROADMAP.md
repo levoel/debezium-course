@@ -43,7 +43,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 
 - [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
 - [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
-- [ ] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations
+- [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations ✓
 - [ ] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots
 - [ ] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools
 - [ ] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline
@@ -96,9 +96,9 @@ Plans:
 **Plans**: 3 plans (Wave 1 - all parallel)
 
 Plans:
-- [ ] 14-01-PLAN.md — Aurora MySQL parameter groups and binlog retention (stored procedures)
-- [ ] 14-02-PLAN.md — Aurora Enhanced Binlog architecture and trade-offs
-- [ ] 14-03-PLAN.md — Aurora snapshot mode selection and large table strategies
+- [x] 14-01-PLAN.md — Aurora MySQL parameter groups and binlog retention (stored procedures)
+- [x] 14-02-PLAN.md — Aurora Enhanced Binlog architecture and trade-offs
+- [x] 14-03-PLAN.md — Aurora snapshot mode selection and large table strategies
 
 ### Phase 15: Production Operations
 **Goal**: Course learner can monitor, troubleshoot, and operate MySQL CDC in production
@@ -167,7 +167,7 @@ Phases execute in numeric order: 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18
 |-------|-----------|----------------|--------|-----------|
 | 12. MySQL Infra + Binlog | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 13. Connector Setup | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
-| 14. Aurora MySQL | v1.1 | 0/TBD | Not started | - |
+| 14. Aurora MySQL | v1.1 | 3/3 | ✓ Complete | 2026-02-01 |
 | 15. Production Ops | v1.1 | 0/TBD | Not started | - |
 | 16. Advanced + Recovery | v1.1 | 0/TBD | Not started | - |
 | 17. Multi-DB Capstone | v1.1 | 0/TBD | Not started | - |

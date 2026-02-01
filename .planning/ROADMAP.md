@@ -43,7 +43,7 @@ Plans:
 **Plans**: 1 plan (Wave 1)
 
 Plans:
-- [ ] 20-01-PLAN.md — Fix cross-references and add progress migration
+- [x] 20-01-PLAN.md — Fix cross-references and add progress migration
 
 ### Phase 21: Verification and QA
 **Goal**: All navigation works correctly and progress persists
@@ -217,8 +217,8 @@ Phases execute in numeric order: 19 -> 20 -> 21
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 19. Module Renaming | v1.2 | 0/1 | Planned | — |
-| 20. Cross-Reference Updates | v1.2 | 0/? | Not started | — |
+| 19. Module Renaming | v1.2 | 1/1 | Complete | 2026-02-01 |
+| 20. Cross-Reference Updates | v1.2 | 1/1 | Complete | 2026-02-01 |
 | 21. Verification & QA | v1.2 | 0/? | Not started | — |
 
 ## Coverage

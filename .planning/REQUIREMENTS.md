@@ -10,13 +10,13 @@
 **Goal:** Move Module 8 (MySQL/Aurora MySQL) to position 3, right after Module 2 (PostgreSQL), creating a "Database Track" for better comparison.
 
 **Module Renumbering:**
-- [ ] **STRUCT-01a**: Переименовать директории модулей (08→03, сдвинуть 03-07→04-08)
-- [ ] **STRUCT-01b**: Navigation auto-discovers new structure (no config changes needed - directory rename satisfies this)
-- [ ] **STRUCT-01c**: Обновить все внутренние ссылки между уроками
+- [x] **STRUCT-01a**: Переименовать директории модулей (08→03, сдвинуть 03-07→04-08) ✓
+- [x] **STRUCT-01b**: Navigation auto-discovers new structure (no config changes needed - directory rename satisfies this) ✓
+- [x] **STRUCT-01c**: Обновить все внутренние ссылки между уроками ✓
 
 **UI/UX Updates:**
-- [ ] **STRUCT-01d**: Обновить roadmap компонент (порядок модулей)
-- [ ] **STRUCT-01e**: Обновить progress tracking (localStorage keys)
+- [x] **STRUCT-01d**: Обновить roadmap компонент (порядок модулей) — N/A (navigation auto-discovers) ✓
+- [x] **STRUCT-01e**: Обновить progress tracking (localStorage keys) ✓
 
 **Verification:**
 - [ ] **STRUCT-01f**: Проверить все навигационные ссылки работают
@@ -96,11 +96,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STRUCT-01a | Phase 19 | Pending |
-| STRUCT-01b | Phase 19 | Pending |
-| STRUCT-01c | Phase 20 | Pending |
-| STRUCT-01d | Phase 20 | Pending |
-| STRUCT-01e | Phase 20 | Pending |
+| STRUCT-01a | Phase 19 | Complete |
+| STRUCT-01b | Phase 19 | Complete |
+| STRUCT-01c | Phase 20 | Complete |
+| STRUCT-01d | Phase 20 | Complete (N/A) |
+| STRUCT-01e | Phase 20 | Complete |
 | STRUCT-01f | Phase 21 | Pending |
 | STRUCT-01g | Phase 21 | Pending |
 

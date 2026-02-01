@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 14 of 18 (Aurora MySQL Specifics)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 14-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 14-03-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [██████░░░░░░░░░░░░░░] 30%
+Progress: v1.0 [████████████████████] 100% | v1.1 [███████░░░░░░░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -31,11 +31,11 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 8
+- Plans completed: 9
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
-- Phase 14: 2/3 plans complete (in progress)
+- Phase 14: 3/3 plans complete (phase complete)
 
 ## Accumulated Context
 
@@ -77,6 +77,10 @@ Recent decisions affecting current work:
 - [14-02]: Enhanced Binlog suitable for single-region Aurora with high write throughput and no backtrack requirement
 - [14-02]: Resnapshot mandatory after Aurora restore/clone when using Enhanced Binlog (binlog files not in backups)
 - [14-02]: CloudWatch metrics (ChangeLogBytesUsed, ChangeLogReadIOPs, ChangeLogWriteIOPs) required for Enhanced Binlog monitoring
+- [14-03]: snapshot.locking.mode=minimal as safe default for Aurora (<100GB tables)
+- [14-03]: snapshot.locking.mode=none only with schema change freeze guarantee
+- [14-03]: Backup-based approach recommended for 500GB+ tables with zero lock tolerance
+- [14-03]: extended mode never compatible with Aurora (FLUSH TABLES prohibition)
 
 ### Pending Todos
 
@@ -96,10 +100,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:11:52Z
-Stopped at: Completed 14-02-PLAN.md (Aurora Enhanced Binlog Architecture Lesson)
+Last session: 2026-02-01T12:13:02Z
+Stopped at: Completed 14-03-PLAN.md (Aurora MySQL Snapshot Modes Selection Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 14-02-PLAN.md*
+*Last updated: 2026-02-01 — Completed 14-03-PLAN.md*

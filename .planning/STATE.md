@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 14 of 18 (Aurora MySQL Specifics)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-01 — Completed 14-03-PLAN.md
+Phase: 15 of 18 (Production Operations)
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 15-02-PLAN.md
 
-Progress: v1.0 [████████████████████] 100% | v1.1 [███████░░░░░░░░░░░░░] 33%
+Progress: v1.0 [████████████████████] 100% | v1.1 [████████░░░░░░░░░░░░] 37%
 
 ## Performance Metrics
 
@@ -31,11 +31,12 @@ Progress: v1.0 [████████████████████] 10
 | 12-18 | TBD | Not started (v1.1) |
 
 **v1.1 Metrics:**
-- Plans completed: 9
+- Plans completed: 11
 - Average duration: 5 min
 - Phase 12: 3/3 plans complete (phase complete)
 - Phase 13: 3/3 plans complete (phase complete)
 - Phase 14: 3/3 plans complete (phase complete)
+- Phase 15: 2/3 plans complete (in progress)
 
 ## Accumulated Context
 
@@ -81,6 +82,10 @@ Recent decisions affecting current work:
 - [14-03]: snapshot.locking.mode=none only with schema change freeze guarantee
 - [14-03]: Backup-based approach recommended for 500GB+ tables with zero lock tolerance
 - [14-03]: extended mode never compatible with Aurora (FLUSH TABLES prohibition)
+- [15-02]: GTID enables automatic failover - connector resumes from saved GTID without manual position finding
+- [15-02]: gtid.source.includes=".*" recommended for Aurora Global Database (multi-region UUID support)
+- [15-02]: snapshot.mode=when_needed prevents unnecessary resnapshot after failover
+- [15-02]: heartbeat.interval.ms positioned as mandatory for production failover (prevents position loss on idle tables)
 
 ### Pending Todos
 
@@ -100,10 +105,10 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-01T12:13:02Z
-Stopped at: Completed 14-03-PLAN.md (Aurora MySQL Snapshot Modes Selection Lesson)
+Last session: 2026-02-01T12:50:23Z
+Stopped at: Completed 15-02-PLAN.md (GTID Failover Procedures Lesson)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — Completed 14-03-PLAN.md*
+*Last updated: 2026-02-01 — Completed 15-02-PLAN.md*

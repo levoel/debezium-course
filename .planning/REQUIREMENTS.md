@@ -52,19 +52,19 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ONB-01 | TBD | Pending |
-| ONB-02 | TBD | Pending |
-| ONB-03 | TBD | Pending |
-| ONB-04 | TBD | Pending |
-| ONB-05 | TBD | Pending |
-| STRUCT-01 | TBD | Pending |
-| STYLE-01 | TBD | Pending |
+| ONB-01 | 38 | Pending |
+| ONB-02 | 38 | Pending |
+| ONB-03 | 38 | Pending |
+| ONB-04 | 38 | Pending |
+| ONB-05 | 39 | Pending |
+| STRUCT-01 | 40 | Pending |
+| STYLE-01 | 40 | Pending |
 
 **Coverage:**
 - v1.5 requirements: 7 total
-- Mapped to phases: 0
-- Unmapped: 7
+- Mapped to phases: 7
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-03*
-*Last updated: 2026-02-03 after v1.5 milestone started*
+*Last updated: 2026-02-03 — Roadmap created, traceability complete*

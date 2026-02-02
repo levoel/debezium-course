@@ -9,17 +9,27 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 38 - Module 0 - Platform Guide (next)
 Plan: —
-Status: Defining requirements for v1.5
-Last activity: 2026-02-03 — Milestone v1.5 started
+Status: Roadmap created, ready to plan Phase 38
+Last activity: 2026-02-03 — v1.5 roadmap created
 
-Progress: v1.0-v1.4 SHIPPED | v1.5 PLANNING
+Progress: v1.0-v1.4 SHIPPED | v1.5 [----------] 0/3 phases
+
+## v1.5 Milestone Overview
+
+| Phase | Name | Requirements | Status |
+|-------|------|--------------|--------|
+| 38 | Module 0 - Platform Guide | ONB-01, ONB-02, ONB-03, ONB-04 | Pending |
+| 39 | GitHub Repository Link | ONB-05 | Pending |
+| 40 | Module Summaries Extraction | STRUCT-01, STYLE-01 | Pending |
+
+**Requirements:** 7 total | 0 complete | 7 pending
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 108 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 36 + Phase 37: 1 = 37)
+- Total plans completed: 108 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 37)
 - Average duration: ~6 min
 - Total execution time: ~9.5 hours
 
@@ -31,7 +41,8 @@ Progress: v1.0-v1.4 SHIPPED | v1.5 PLANNING
 | v1.1 MySQL/Aurora | 12-18 | 19 | Archived (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Archived (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Archived (2026-02-02) |
-| v1.4 Glass Diagrams | 26-37 | 32 | Archived (2026-02-03) |
+| v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
+| v1.5 Onboarding & Polish | 38-40 | 0 | In Progress |
 
 ## Accumulated Context
 
@@ -63,9 +74,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.5 milestone planning
-Resume file: None
+Stopped at: v1.5 roadmap created
+Resume with: `/gsd:plan-phase 38`
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.5 milestone started*
+*Last updated: 2026-02-03 — v1.5 roadmap created*

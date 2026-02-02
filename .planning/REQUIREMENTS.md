@@ -1,9 +1,116 @@
-# Requirements: Debezium Course v1.3
+# Requirements: Debezium Course v1.4
 
-**Defined:** 2026-02-01
+**Defined:** 2026-02-02
 **Core Value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
 
-## v1.3 Requirements
+## v1.4 Requirements
+
+### Diagram Primitives Library (PRIM)
+
+**Goal:** Создать библиотеку переиспользуемых компонентов для замены Mermaid диаграмм.
+
+- [ ] **PRIM-01**: FlowNode component (glass-styled нода с вариантами: database, connector, cluster, sink, app, target)
+- [ ] **PRIM-02**: Arrow/Connector component (SVG стрелки между нодами)
+- [ ] **PRIM-03**: DiagramContainer component (glass карточка-обёртка для диаграммы)
+- [ ] **PRIM-04**: SequenceActor component (участник sequence диаграммы)
+- [ ] **PRIM-05**: SequenceMessage component (сообщение между участниками)
+- [ ] **PRIM-06**: SequenceLifeline component (вертикальная линия жизни)
+
+### Tooltip System (TOOL)
+
+**Goal:** Интерактивные пояснения при клике на элементы диаграмм.
+
+- [ ] **TOOL-01**: Radix UI Tooltip integration (@radix-ui/react-tooltip)
+- [ ] **TOOL-02**: Click-to-open pattern (не hover-only для mobile)
+- [ ] **TOOL-03**: Keyboard navigation (Tab между нодами, Enter/Space для открытия)
+- [ ] **TOOL-04**: Tooltip positioning (не перекрывает target element)
+- [ ] **TOOL-05**: Glass-styled tooltip content (соответствует design system)
+
+### Module 1 Migration (MOD1)
+
+**Goal:** Заменить Mermaid диаграммы в Module 1 (Введение в CDC) на glass компоненты.
+
+- [ ] **MOD1-01**: Аудит диаграмм Module 1 (количество, типы)
+- [ ] **MOD1-02**: Создать glass-версии всех flowchart диаграмм
+- [ ] **MOD1-03**: Добавить tooltip'ы с пояснениями к нодам
+- [ ] **MOD1-04**: Удалить Mermaid код из MDX файлов Module 1
+
+### Module 2 Migration (MOD2)
+
+**Goal:** Заменить Mermaid диаграммы в Module 2 (PostgreSQL/Aurora PostgreSQL).
+
+- [ ] **MOD2-01**: Аудит диаграмм Module 2
+- [ ] **MOD2-02**: Создать glass-версии диаграмм (WAL архитектура, replication slots)
+- [ ] **MOD2-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD2-04**: Удалить Mermaid код из MDX файлов Module 2
+
+### Module 3 Migration (MOD3)
+
+**Goal:** Заменить Mermaid диаграммы в Module 3 (MySQL/Aurora MySQL).
+
+- [ ] **MOD3-01**: Аудит диаграмм Module 3
+- [ ] **MOD3-02**: Создать glass-версии диаграмм (binlog архитектура, GTID)
+- [ ] **MOD3-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD3-04**: Удалить Mermaid код из MDX файлов Module 3
+
+### Module 4 Migration (MOD4)
+
+**Goal:** Заменить Mermaid диаграммы в Module 4 (Production Operations).
+
+- [ ] **MOD4-01**: Аудит диаграмм Module 4
+- [ ] **MOD4-02**: Создать glass-версии диаграмм (monitoring, alerting)
+- [ ] **MOD4-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD4-04**: Удалить Mermaid код из MDX файлов Module 4
+
+### Module 5 Migration (MOD5)
+
+**Goal:** Заменить Mermaid диаграммы в Module 5 (Advanced Patterns - SMT).
+
+- [ ] **MOD5-01**: Аудит диаграмм Module 5 (высокая сложность - SMT chains)
+- [ ] **MOD5-02**: Создать glass-версии диаграмм (transformation pipelines)
+- [ ] **MOD5-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD5-04**: Удалить Mermaid код из MDX файлов Module 5
+
+### Module 6 Migration (MOD6)
+
+**Goal:** Заменить Mermaid диаграммы в Module 6 (Data Engineering Integration).
+
+- [ ] **MOD6-01**: Аудит диаграмм Module 6
+- [ ] **MOD6-02**: Создать glass-версии диаграмм (streaming architectures, Flink/Spark)
+- [ ] **MOD6-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD6-04**: Удалить Mermaid код из MDX файлов Module 6
+
+### Module 7 Migration (MOD7)
+
+**Goal:** Заменить Mermaid диаграммы в Module 7 (Cloud-Native GCP).
+
+- [ ] **MOD7-01**: Аудит диаграмм Module 7
+- [ ] **MOD7-02**: Создать glass-версии диаграмм (GCP architecture, Pub/Sub, Dataflow)
+- [ ] **MOD7-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD7-04**: Удалить Mermaid код из MDX файлов Module 7
+
+### Module 8 Migration (MOD8)
+
+**Goal:** Заменить Mermaid диаграммы в Module 8 (Capstone).
+
+- [ ] **MOD8-01**: Аудит диаграмм Module 8
+- [ ] **MOD8-02**: Создать glass-версии диаграмм (full pipeline architecture)
+- [ ] **MOD8-03**: Добавить tooltip'ы с пояснениями
+- [ ] **MOD8-04**: Удалить Mermaid код из MDX файлов Module 8
+
+### Finalization (FINAL)
+
+**Goal:** Финальная проверка, оптимизация и удаление Mermaid.
+
+- [ ] **FINAL-01**: Visual regression testing для всех диаграмм
+- [ ] **FINAL-02**: Accessibility audit (WCAG keyboard navigation)
+- [ ] **FINAL-03**: Mobile responsiveness verification
+- [ ] **FINAL-04**: Remove mermaid dependency from package.json
+- [ ] **FINAL-05**: Bundle size optimization verification (~1MB savings)
+
+---
+
+## v1.3 Requirements (Complete)
 
 ### Module Naming (UX-01)
 
@@ -46,66 +153,33 @@
 
 ### Course Structure Reorganization (STRUCT-01)
 
-**Goal:** Move Module 8 (MySQL/Aurora MySQL) to position 3, right after Module 2 (PostgreSQL), creating a "Database Track" for better comparison.
-
-**Module Renumbering:**
-- [x] **STRUCT-01a**: Переименовать директории модулей (08→03, сдвинуть 03-07→04-08) ✓
-- [x] **STRUCT-01b**: Navigation auto-discovers new structure (no config changes needed - directory rename satisfies this) ✓
+- [x] **STRUCT-01a**: Переименовать директории модулей ✓
+- [x] **STRUCT-01b**: Navigation auto-discovers new structure ✓
 - [x] **STRUCT-01c**: Обновить все внутренние ссылки между уроками ✓
-
-**UI/UX Updates:**
-- [x] **STRUCT-01d**: Обновить roadmap компонент (порядок модулей) — N/A (navigation auto-discovers) ✓
-- [x] **STRUCT-01e**: Обновить progress tracking (localStorage keys) ✓
-
-**Verification:**
+- [x] **STRUCT-01d**: Обновить roadmap компонент ✓
+- [x] **STRUCT-01e**: Обновить progress tracking ✓
 - [x] **STRUCT-01f**: Проверить все навигационные ссылки работают ✓
-- [x] **STRUCT-01g**: Проверить progress persistence после реорганизации ✓
+- [x] **STRUCT-01g**: Проверить progress persistence ✓
 
 ---
 
 ## v1.1 Requirements (Complete)
 
-### Module 8: MySQL/Aurora MySQL CDC
+### MySQL/Aurora MySQL CDC (MYSQL-01 to MYSQL-16)
 
-**Binlog Fundamentals:**
-- [x] **MYSQL-01**: Контент объясняет архитектуру MySQL binlog (форматы ROW/STATEMENT/MIXED, события, ротация) ✓
-- [x] **MYSQL-02**: Контент описывает GTID mode и его влияние на CDC (преимущества, ограничения, конфигурация) ✓
-- [x] **MYSQL-03**: Контент объясняет binlog retention и heartbeat events для предотвращения потери позиции ✓
+All 16 requirements complete. See MILESTONES.md for details.
 
-**Connector Setup:**
-- [x] **MYSQL-04**: Пошаговая настройка MySQL коннектора в Docker Compose окружении ✓
-- [x] **MYSQL-05**: Контент сравнивает MySQL binlog vs PostgreSQL WAL (архитектурные различия, мониторинг) ✓
-- [x] **MYSQL-06**: Конфигурация schema history topic и её критическая роль для recovery ✓
+### Infrastructure (INFRA-09 to INFRA-11)
 
-**Aurora MySQL:**
-- [x] **MYSQL-07**: Aurora MySQL-специфичная конфигурация (parameter groups, binlog retention procedures) ✓
-- [x] **MYSQL-08**: Объяснение Aurora Enhanced Binlog архитектуры (storage nodes, 99% faster recovery) ✓
-- [x] **MYSQL-09**: Ограничения Aurora MySQL для CDC (global read lock prohibition, snapshot modes) ✓
+All 3 requirements complete.
 
-**Production Operations:**
-- [x] **MYSQL-10**: Мониторинг binlog lag (AuroraBinlogReplicaLag, JMX metrics) ✓
-- [x] **MYSQL-11**: Процедуры failover для MySQL/Aurora MySQL с GTID ✓
-- [x] **MYSQL-12**: Incremental snapshot конфигурация и signal table operations ✓
+### Platform (PLAT-07)
 
-**Advanced Topics:**
-- [x] **MYSQL-13**: Recovery процедуры: binlog position loss, schema history topic corruption ✓
-- [x] **MYSQL-14**: Multi-connector deployments (server ID registry, conflict prevention) ✓
-- [x] **MYSQL-15**: DDL tool integration (gh-ost, pt-online-schema-change patterns) ✓
+GitHub Pages deployment complete.
 
-**Capstone Extension:**
-- [x] **MYSQL-16**: Multi-database CDC pipeline (PostgreSQL + MySQL → unified processing) ✓
+---
 
-### Infrastructure
-
-- [x] **INFRA-09**: MySQL 8.0.40 Docker service в существующем docker-compose.yml (port 3307) ✓
-- [x] **INFRA-10**: Binlog конфигурация (ROW format, GTID mode, retention) ✓
-- [x] **INFRA-11**: ARM64 совместимость для MySQL Docker образа ✓
-
-### Platform
-
-- [x] **PLAT-07**: GitHub Pages deployment с GitHub Actions CI/CD ✓
-
-## Future Requirements (v1.4+)
+## Future Requirements (v1.5+)
 
 ### Platform Enhancements
 
@@ -123,20 +197,78 @@
 
 | Feature | Reason |
 |---------|--------|
-| MySQL Group Replication deep-dive | Niche use case, basic GTID covers HA patterns |
-| MySQL 8.4 LTS | Requires Debezium 3.0+, defer to v2.0 |
-| Oracle/SQL Server connectors | Focus on PostgreSQL/MySQL/Aurora |
-| Custom SMT development for MySQL | Existing SMT module applies to all connectors |
-| Cloud SQL MySQL | GCP focus on PostgreSQL, defer MySQL to v1.2 |
+| Drag-and-drop diagram editing | Educational content, not diagramming tool |
+| Zoom/pan for diagrams | Most diagrams are simple flowcharts, not complex networks |
+| Animated diagram transitions | Performance overhead, minimal educational value |
+| Real-time collaboration | Static course content |
+| Export diagrams as images | Users can screenshot if needed |
 
 ## Traceability
 
-### v1.3
+### v1.4
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| PRIM-01 | Phase 26 | Pending |
+| PRIM-02 | Phase 26 | Pending |
+| PRIM-03 | Phase 26 | Pending |
+| PRIM-04 | Phase 27 | Pending |
+| PRIM-05 | Phase 27 | Pending |
+| PRIM-06 | Phase 27 | Pending |
+| TOOL-01 | Phase 26 | Pending |
+| TOOL-02 | Phase 26 | Pending |
+| TOOL-03 | Phase 26 | Pending |
+| TOOL-04 | Phase 26 | Pending |
+| TOOL-05 | Phase 26 | Pending |
+| MOD1-01 | Phase 28 | Pending |
+| MOD1-02 | Phase 28 | Pending |
+| MOD1-03 | Phase 28 | Pending |
+| MOD1-04 | Phase 28 | Pending |
+| MOD2-01 | Phase 29 | Pending |
+| MOD2-02 | Phase 29 | Pending |
+| MOD2-03 | Phase 29 | Pending |
+| MOD2-04 | Phase 29 | Pending |
+| MOD3-01 | Phase 30 | Pending |
+| MOD3-02 | Phase 30 | Pending |
+| MOD3-03 | Phase 30 | Pending |
+| MOD3-04 | Phase 30 | Pending |
+| MOD4-01 | Phase 31 | Pending |
+| MOD4-02 | Phase 31 | Pending |
+| MOD4-03 | Phase 31 | Pending |
+| MOD4-04 | Phase 31 | Pending |
+| MOD5-01 | Phase 32 | Pending |
+| MOD5-02 | Phase 32 | Pending |
+| MOD5-03 | Phase 32 | Pending |
+| MOD5-04 | Phase 32 | Pending |
+| MOD6-01 | Phase 33 | Pending |
+| MOD6-02 | Phase 33 | Pending |
+| MOD6-03 | Phase 33 | Pending |
+| MOD6-04 | Phase 33 | Pending |
+| MOD7-01 | Phase 34 | Pending |
+| MOD7-02 | Phase 34 | Pending |
+| MOD7-03 | Phase 34 | Pending |
+| MOD7-04 | Phase 34 | Pending |
+| MOD8-01 | Phase 35 | Pending |
+| MOD8-02 | Phase 35 | Pending |
+| MOD8-03 | Phase 35 | Pending |
+| MOD8-04 | Phase 35 | Pending |
+| FINAL-01 | Phase 36 | Pending |
+| FINAL-02 | Phase 36 | Pending |
+| FINAL-03 | Phase 36 | Pending |
+| FINAL-04 | Phase 36 | Pending |
+| FINAL-05 | Phase 36 | Pending |
+
+**Coverage:**
+- v1.4 requirements: 49 total
+- Mapped to phases: 49/49
+- Unmapped: 0
+
+### v1.3 (Complete)
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | UX-01a | Phase 22 | Complete |
-| UX-01b | Phase 22 | Deferred (no breadcrumb component) |
+| UX-01b | Phase 22 | Deferred |
 | UX-01c | Phase 22 | Complete |
 | UX-02a | Phase 23 | Complete |
 | UX-02b | Phase 23 | Complete |
@@ -151,53 +283,16 @@
 | UX-04e | Phase 25 | Complete |
 | UX-04f | Phase 25 | Complete |
 
-**Coverage:**
-- v1.3 requirements: 15 total
-- Mapped to phases: 15/15
-- Unmapped: 0
+**Coverage:** 15/15 requirements (1 deferred)
 
 ### v1.2 (Complete)
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| STRUCT-01a | Phase 19 | Complete |
-| STRUCT-01b | Phase 19 | Complete |
-| STRUCT-01c | Phase 20 | Complete |
-| STRUCT-01d | Phase 20 | Complete (N/A) |
-| STRUCT-01e | Phase 20 | Complete |
-| STRUCT-01f | Phase 21 | Complete |
-| STRUCT-01g | Phase 21 | Complete |
-
-**Coverage:**
-- v1.2 requirements: 7 total
-- Mapped to phases: 7/7
-- Unmapped: 0
+**Coverage:** 7/7 requirements
 
 ### v1.1 (Complete)
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| INFRA-09 | Phase 12 | Complete |
-| INFRA-10 | Phase 12 | Complete |
-| INFRA-11 | Phase 12 | Complete |
-| MYSQL-01 | Phase 12 | Complete |
-| MYSQL-02 | Phase 12 | Complete |
-| MYSQL-03 | Phase 12 | Complete |
-| MYSQL-04 | Phase 13 | Complete |
-| MYSQL-05 | Phase 13 | Complete |
-| MYSQL-06 | Phase 13 | Complete |
-| MYSQL-07 | Phase 14 | Complete |
-| MYSQL-08 | Phase 14 | Complete |
-| MYSQL-09 | Phase 14 | Complete |
-| MYSQL-10 | Phase 15 | Complete |
-| MYSQL-11 | Phase 15 | Complete |
-| MYSQL-12 | Phase 15 | Complete |
-| MYSQL-13 | Phase 16 | Complete |
-| MYSQL-14 | Phase 16 | Complete |
-| MYSQL-15 | Phase 16 | Complete |
-| MYSQL-16 | Phase 17 | Complete |
-| PLAT-07 | Phase 18 | Complete |
+**Coverage:** 20/20 requirements
 
 ---
-*Requirements defined: 2026-02-01*
-*Last updated: 2026-02-01 — v1.3 UX/Design Refresh requirements added*
+*Requirements defined: 2026-02-02*
+*Last updated: 2026-02-02 — v1.4 Interactive Glass Diagrams requirements added*

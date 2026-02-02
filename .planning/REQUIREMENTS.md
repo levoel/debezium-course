@@ -66,10 +66,10 @@
 
 **Goal:** Заменить Mermaid диаграммы в Module 5 (Advanced Patterns - SMT).
 
-- [ ] **MOD5-01**: Аудит диаграмм Module 5 (высокая сложность - SMT chains)
-- [ ] **MOD5-02**: Создать glass-версии диаграмм (transformation pipelines)
-- [ ] **MOD5-03**: Добавить tooltip'ы с пояснениями
-- [ ] **MOD5-04**: Удалить Mermaid код из MDX файлов Module 5
+- [x] **MOD5-01**: Аудит диаграмм Module 5 (высокая сложность - SMT chains)
+- [x] **MOD5-02**: Создать glass-версии диаграмм (transformation pipelines)
+- [x] **MOD5-03**: Добавить tooltip'ы с пояснениями
+- [x] **MOD5-04**: Удалить Mermaid код из MDX файлов Module 5
 
 ### Module 6 Migration (MOD6)
 

@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 30 of 36 (Module 3 Diagram Migration)
-Plan: 1 of 4 complete
+Plan: 2 of 4 complete
 Status: In progress
-Last activity: 2026-02-02 — Completed 30-01-PLAN.md (11 diagram exports for lessons 01-04)
+Last activity: 2026-02-02 — Completed 30-02-PLAN.md (14 diagram exports for lessons 05-08)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [###########.........] 50%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [############........] 52%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 81 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 9)
+- Total plans completed: 82 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 10)
 - Average duration: ~7 min
-- Total execution time: ~8.4 hours
+- Total execution time: ~8.5 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [###########.........] 50
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 11/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 12/23 | In Progress |
 
 ## Accumulated Context
 
@@ -81,6 +81,10 @@ Recent decisions affecting v1.4 work:
 - [30-01]: GtidReplicationDiagram uses messageSpacing=55 for failover clarity
 - [30-01]: HeartbeatMonitoringDiagram as SequenceDiagram for 4-actor heartbeat flow
 - [30-01]: MysqlConnectorDataFlowDiagram combines phase headers with sequence diagram
+- [30-02]: Blue for PostgreSQL, emerald for MySQL in comparison diagrams
+- [30-02]: Critical steps (Aurora reboot) use animate-pulse with border-rose-400
+- [30-02]: Recovery decision tree uses emerald (success) and rose (failure) paths
+- [30-02]: AWS performance claims shown with explanatory tooltips
 
 ### Pending Todos
 
@@ -103,9 +107,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 30-01-PLAN.md
+Stopped at: Completed 30-02-PLAN.md
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Completed 30-01 (Module 3 lessons 01-04: 11 diagram exports)*
+*Last updated: 2026-02-02 — Completed 30-02 (Module 3 lessons 05-08: 14 diagram exports)*

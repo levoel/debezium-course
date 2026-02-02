@@ -39,10 +39,10 @@
 
 **Goal:** Заменить Mermaid диаграммы в Module 2 (PostgreSQL/Aurora PostgreSQL).
 
-- [ ] **MOD2-01**: Аудит диаграмм Module 2
-- [ ] **MOD2-02**: Создать glass-версии диаграмм (WAL архитектура, replication slots)
-- [ ] **MOD2-03**: Добавить tooltip'ы с пояснениями
-- [ ] **MOD2-04**: Удалить Mermaid код из MDX файлов Module 2
+- [x] **MOD2-01**: Аудит диаграмм Module 2
+- [x] **MOD2-02**: Создать glass-версии диаграмм (WAL архитектура, replication slots)
+- [x] **MOD2-03**: Добавить tooltip'ы с пояснениями
+- [x] **MOD2-04**: Удалить Mermaid код из MDX файлов Module 2
 
 ### Module 3 Migration (MOD3)
 
@@ -224,10 +224,10 @@ GitHub Pages deployment complete.
 | MOD1-02 | Phase 28 | Pending |
 | MOD1-03 | Phase 28 | Pending |
 | MOD1-04 | Phase 28 | Pending |
-| MOD2-01 | Phase 29 | Pending |
-| MOD2-02 | Phase 29 | Pending |
-| MOD2-03 | Phase 29 | Pending |
-| MOD2-04 | Phase 29 | Pending |
+| MOD2-01 | Phase 29 | Complete |
+| MOD2-02 | Phase 29 | Complete |
+| MOD2-03 | Phase 29 | Complete |
+| MOD2-04 | Phase 29 | Complete |
 | MOD3-01 | Phase 30 | Pending |
 | MOD3-02 | Phase 30 | Pending |
 | MOD3-03 | Phase 30 | Pending |
@@ -295,4 +295,4 @@ GitHub Pages deployment complete.
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 — v1.4 roadmap created, traceability confirmed*
+*Last updated: 2026-02-02 — Phase 29 complete (MOD2-01 to MOD2-04 verified)*

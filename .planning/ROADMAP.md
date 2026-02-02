@@ -83,8 +83,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 29-01-PLAN.md — Create glass diagram components for lessons 01-04 (Logical Decoding, Replication Slots, WAL Config, Aurora Parameters)
-- [ ] 29-02-PLAN.md — Create diagram components for lessons 05-07 and update all 7 MDX files
+- [x] 29-01-PLAN.md — Create glass diagram components for lessons 01-04 (Logical Decoding, Replication Slots, WAL Config, Aurora Parameters)
+- [x] 29-02-PLAN.md — Create diagram components for lessons 05-07 and update all 7 MDX files
 
 ### Phase 30: Module 3 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 3 (MySQL/Aurora MySQL) are replaced with interactive glass components
@@ -372,7 +372,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 26. Flowchart Primitives + Tooltip | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 27. Sequence Diagram Primitives | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 28. Module 1 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
-| 29. Module 2 Migration | v1.4 | 0/2 | Not started | - |
+| 29. Module 2 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 30. Module 3 Migration | v1.4 | 0/2 | Not started | - |
 | 31. Module 4 Migration | v1.4 | 0/2 | Not started | - |
 | 32. Module 5 Migration | v1.4 | 0/2 | Not started | - |

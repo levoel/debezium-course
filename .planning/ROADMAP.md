@@ -35,8 +35,8 @@ v1.4 replaces all 170 Mermaid diagrams with interactive React components using t
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 26-01-PLAN.md — Install Radix, extract FlowNode and Arrow primitives with TypeScript interfaces
-- [ ] 26-02-PLAN.md — DiagramContainer + Radix tooltip with glass styling and keyboard accessibility
+- [x] 26-01-PLAN.md — Install Radix, extract FlowNode and Arrow primitives with TypeScript interfaces
+- [x] 26-02-PLAN.md — DiagramContainer + Radix tooltip with glass styling and keyboard accessibility
 
 ### Phase 27: Sequence Diagram Primitives
 **Goal**: Reusable diagram primitives exist for building interactive sequence diagrams
@@ -369,7 +369,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 26. Flowchart Primitives + Tooltip | v1.4 | 0/2 | Not started | - |
+| 26. Flowchart Primitives + Tooltip | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 27. Sequence Diagram Primitives | v1.4 | 0/2 | Not started | - |
 | 28. Module 1 Migration | v1.4 | 0/2 | Not started | - |
 | 29. Module 2 Migration | v1.4 | 0/2 | Not started | - |

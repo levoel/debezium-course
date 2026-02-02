@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 26 - Flowchart Primitives + Tooltip Foundation
+**Current focus:** Phase 27 - Sequence Diagram Primitives
 
 ## Current Position
 
-Phase: 26 of 36 (Flowchart Primitives + Tooltip Foundation)
-Plan: 2 of 2 in current phase - PHASE COMPLETE
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 26-02-PLAN.md (DiagramContainer + Tooltip)
+Phase: 27 of 36 (Sequence Diagram Primitives)
+Plan: 0 of 2 in current phase
+Status: Ready to plan
+Last activity: 2026-02-02 — Phase 26 complete (8 requirements verified)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [##..................] 9%
 

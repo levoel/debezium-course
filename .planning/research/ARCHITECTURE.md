@@ -1,925 +1,636 @@
-# Architecture: Liquid Glass Integration in Astro 5
+# Architecture: Reusable Diagram Components for 170 Diagrams
 
 **Project:** Debezium Course Website
-**Domain:** Liquid glass design system integration
-**Researched:** 2026-02-01
-**Confidence:** HIGH
+**Domain:** Interactive glass diagram system
+**Researched:** 2026-02-02
+**Confidence:** HIGH (based on existing codebase analysis)
 
 ## Executive Summary
 
-The liquid glass design can be integrated into your existing Astro 5 + Tailwind 4 architecture using a **three-tier CSS organization strategy**: global CSS variables for glass design tokens, scoped component styles for complex glass effects, and Tailwind utilities for layout-specific adjustments. This approach leverages Astro's scoped-by-default styling model while avoiding performance pitfalls from excessive backdrop-filter usage.
+The 170 Mermaid diagrams should be replaced with a **primitive-based component architecture** where shared building blocks (FlowNode, Arrow, Container, SequenceMessage) are composed into diagram-specific components. Each diagram becomes a lightweight composition of primitives rather than a monolithic component, enabling rapid creation while maintaining visual consistency with the existing liquid glass design system.
 
-**Key architectural decision:** Use CSS custom properties as the single source of truth for glass design tokens, allowing consistent application across both Tailwind utilities and component-scoped styles.
+**Key architectural decision:** Create a three-tier hierarchy - (1) primitives in `src/components/diagrams/primitives/`, (2) composed diagrams in `src/components/diagrams/`, and (3) MDX imports that use `client:visible` for lazy hydration.
 
-## Current Architecture Analysis
+## Current State Analysis
 
-### Existing Setup
+### Existing Architecture
 
 ```
-Technology Stack:
-- Astro 5.17.1 (latest stable)
-- Tailwind CSS 4.1.18 via @tailwindcss/vite
-- React 19.2.4 (for islands)
-- MDX 4.3.13 (for content)
-
-CSS Organization:
-- Global: src/styles/global.css (Tailwind import + prose styles)
-- Component: Scoped <style> tags in .astro files
-- Utility: Tailwind classes inline in markup
-- No CSS Modules currently used
+src/
+  components/
+    diagrams/
+      DeploymentModes.tsx    # Proof-of-concept (inline primitives)
+    Mermaid.tsx              # Current Mermaid renderer (to be deprecated)
+    Callout.tsx              # Example of glass-styled React component
+    Navigation.tsx           # Uses nanostores for state
+  content/
+    course/
+      **/*.mdx               # 57 lessons containing Mermaid imports
+  styles/
+    global.css               # Glass CSS variables and utilities
+  stores/
+    navigation.ts            # nanostores example
 ```
 
-### Components Requiring Glass Effects
+### Diagram Analysis by Type
 
-Based on project context, these components need glass styling:
+| Type | Count | Primitives Needed |
+|------|-------|-------------------|
+| Flowcharts (`flowchart TB/LR`) | ~90 | FlowNode, Arrow, Container |
+| Sequence Diagrams (`sequenceDiagram`) | ~35 | Participant, Message, Note, ActivationBar |
+| Subgraph-heavy flows | ~30 | Container (nested), FlowNode, Arrow |
+| Simple node chains | ~15 | FlowNode, Arrow |
 
-1. **src/layouts/BaseLayout.astro**
-   - Sidebar (`<aside id="sidebar">`)
-   - Header (`<header>`)
+### Existing Glass Design Tokens
 
-2. **src/components/Callout.tsx** (React)
-   - Background cards with type variants (note/tip/warning/danger)
-
-3. **MDX Tables** (via prose styling)
-   - Rendered in `/course/[...slug].astro` content areas
-
-4. **Homepage Module Cards** (src/pages/index.astro)
-   - Lesson card containers (`bg-gray-800 border`)
-
-### Integration Constraints
-
-1. **Existing Tailwind utilities** - Already using bg-gray-800, border-gray-700, etc.
-2. **Dark theme only** - No light mode support needed (body uses bg-gray-900)
-3. **React islands** - Callout component requires serializable props (no CSS-in-JS)
-4. **MDX rendering** - Tables styled via Tailwind Typography prose classes
-5. **Mobile performance** - Sidebar transform animations must not conflict with glass blur
-
-## Recommended Architecture: Three-Tier CSS Organization
-
-### Tier 1: Global Design Tokens (CSS Variables)
-
-**Location:** `src/styles/global.css`
-
-**Purpose:** Single source of truth for glass design system values.
-
-**Implementation:**
+From `src/styles/global.css`, the diagram system should use:
 
 ```css
-/* Add to src/styles/global.css after @import "tailwindcss" */
+/* Available tokens */
+--glass-blur-md: 10px;
+--glass-blur-lg: 16px;
+--glass-bg-opacity: 0.1;
+--glass-border-color: rgba(255, 255, 255, 0.18);
+--glass-border-radius: 16px;
+--glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+```
 
-:root {
-  /* Glass design tokens */
-  --glass-bg: rgba(17, 24, 39, 0.6);        /* bg-gray-900 with 60% opacity */
-  --glass-bg-elevated: rgba(31, 41, 55, 0.7); /* bg-gray-800 with 70% opacity */
-  --glass-border: rgba(75, 85, 99, 0.3);    /* gray-600 with 30% opacity */
-  --glass-blur: 12px;                        /* Standard blur amount */
-  --glass-blur-mobile: 8px;                  /* Reduced for mobile performance */
+### MDX Integration Pattern
 
-  /* Glass shadows */
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --glass-shadow-elevated: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+Current pattern from `02-debezium-architecture.mdx`:
+
+```tsx
+import { Mermaid } from '../../../components/Mermaid.tsx';
+
+<Mermaid chart={`flowchart TB...`} client:visible />
+```
+
+Target pattern:
+
+```tsx
+import { DeploymentModesDiagram } from '../../../components/diagrams/DeploymentModes';
+
+<DeploymentModesDiagram client:visible />
+```
+
+## Recommended Architecture: Primitive Composition
+
+### Component Hierarchy
+
+```
+src/components/diagrams/
+  primitives/
+    index.ts                 # Re-export all primitives
+    FlowNode.tsx             # Node with variant styling
+    Arrow.tsx                # Directional connector (→, ↓, ←, ↑)
+    Container.tsx            # Subgraph wrapper (ModeCard generalized)
+    Tooltip.tsx              # Click-activated explanation popup
+
+    # Sequence diagram primitives
+    Participant.tsx          # Column header for sequence diagrams
+    Message.tsx              # Arrow with label between participants
+    ActivationBar.tsx        # Vertical bar showing active processing
+    Note.tsx                 # Annotation box in sequences
+
+  # Module 1 diagrams (6 diagrams across 6 lessons)
+  module-1/
+    CDCvsPollingDiagram.tsx
+    CDCSequenceDiagram.tsx
+    DeploymentModesDiagram.tsx
+    KafkaConnectArchitecture.tsx
+    CDCEventFlowSequence.tsx
+    EventStructureDiagram.tsx
+
+  # Module 2 diagrams (7 lessons, ~15 diagrams)
+  module-2/
+    ...
+
+  # Shared diagram layouts
+  layouts/
+    FlowchartLayout.tsx      # Horizontal/vertical flow container
+    SequenceLayout.tsx       # Participant-column based layout
+```
+
+### Primitive API Design
+
+#### FlowNode
+
+```tsx
+interface FlowNodeProps {
+  children: React.ReactNode;
+  variant: 'database' | 'connector' | 'queue' | 'service' | 'cloud' | 'app' | 'target';
+  size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;       // For tooltip activation
+  tooltipContent?: string;    // Russian explanation
+  className?: string;         // Escape hatch for one-offs
+}
+```
+
+**Variant color mapping** (from DeploymentModes.tsx proof-of-concept):
+
+| Variant | Background | Border | Text |
+|---------|------------|--------|------|
+| database | purple-500/20 | purple-400/30 | purple-200 |
+| connector | emerald-500/15 | emerald-400/30 | emerald-200 |
+| queue | emerald-500/20 | emerald-400/40 | emerald-100 |
+| service | blue-500/15 | blue-400/30 | blue-200 |
+| cloud | blue-500/20 | blue-400/40 | blue-100 |
+| app | rose-500/15 | rose-400/30 | rose-200 |
+| target | rose-500/20 | rose-400/40 | rose-100 |
+
+#### Arrow
+
+```tsx
+interface ArrowProps {
+  direction: 'right' | 'down' | 'left' | 'up';
+  label?: string;             // Optional arrow label
+  dashed?: boolean;           // For optional/async flows
+  className?: string;
+}
+```
+
+#### Container
+
+```tsx
+interface ContainerProps {
+  title: string;
+  color: 'emerald' | 'blue' | 'rose' | 'amber' | 'purple' | 'neutral';
+  recommended?: boolean;      // Shows badge
+  children: React.ReactNode;
+  className?: string;
+}
+```
+
+#### Tooltip
+
+```tsx
+interface TooltipProps {
+  content: string;            // Russian explanation text
+  isOpen: boolean;
+  onClose: () => void;
+  anchorEl: HTMLElement | null;
 }
 
-@media (prefers-reduced-motion: reduce) {
+// Tooltip state managed in parent diagram component
+const [tooltipState, setTooltipState] = useState<{
+  content: string;
+  anchor: HTMLElement | null;
+} | null>(null);
+```
+
+### Sequence Diagram Primitives
+
+#### Participant
+
+```tsx
+interface ParticipantProps {
+  id: string;                 // Used for message routing
+  label: string;
+  variant?: 'actor' | 'service' | 'database' | 'queue';
+}
+```
+
+#### Message
+
+```tsx
+interface MessageProps {
+  from: string;               // Participant ID
+  to: string;                 // Participant ID
+  label: string;
+  type?: 'sync' | 'async' | 'return';
+  note?: string;              // Annotation above message
+}
+```
+
+#### SequenceLayout
+
+```tsx
+interface SequenceLayoutProps {
+  participants: ParticipantProps[];
+  children: React.ReactNode;  // Message components
+  columnWidth?: number;       // Default 150px
+}
+```
+
+**Example sequence diagram composition:**
+
+```tsx
+export function CDCSequenceDiagram() {
+  return (
+    <SequenceLayout
+      participants={[
+        { id: 'app', label: 'Приложение', variant: 'actor' },
+        { id: 'pg', label: 'PostgreSQL', variant: 'database' },
+        { id: 'wal', label: 'Transaction Log', variant: 'service' },
+        { id: 'deb', label: 'Debezium', variant: 'service' },
+        { id: 'kafka', label: 'Kafka', variant: 'queue' },
+      ]}
+    >
+      <Message from="app" to="pg" label="INSERT INTO customers" />
+      <Message from="pg" to="wal" label="Запись в WAL" type="sync" />
+      <Message from="pg" to="app" label="OK" type="return" />
+      <Note>~миллисекунды</Note>
+      <Message from="deb" to="wal" label="Чтение новых записей" />
+      <Message from="wal" to="deb" label="CDC Event" type="return" />
+      <Message from="deb" to="kafka" label="Publish" />
+    </SequenceLayout>
+  );
+}
+```
+
+## File Organization Strategy
+
+### Directory Structure
+
+```
+src/components/diagrams/
+  primitives/
+    index.ts                  # Export all primitives
+    FlowNode.tsx
+    Arrow.tsx
+    Container.tsx
+    Tooltip.tsx
+    Participant.tsx
+    Message.tsx
+    ActivationBar.tsx
+    Note.tsx
+    SequenceLayout.tsx
+    FlowchartLayout.tsx
+
+  # Group by module for discoverability
+  module-1/
+    index.ts                  # Export all module-1 diagrams
+    CDCvsPolling.tsx
+    CDCSequence.tsx
+    DeploymentModes.tsx
+    KafkaConnectArch.tsx
+    EventFlow.tsx
+    EventStructure.tsx
+
+  module-2/
+    index.ts
+    LogicalDecoding.tsx
+    ReplicationSlots.tsx
+    ...
+
+  # Continue for all 8 modules
+```
+
+### Naming Convention
+
+| Convention | Example | Rationale |
+|------------|---------|-----------|
+| Diagram file | `CDCvsPolling.tsx` | PascalCase, descriptive |
+| Export name | `CDCvsPollingDiagram` | Suffix with "Diagram" for MDX clarity |
+| Primitive | `FlowNode.tsx` | Generic, reusable name |
+
+### Import Path in MDX
+
+**Recommended:** Use barrel exports for cleaner imports.
+
+```tsx
+// In module-1/index.ts
+export { CDCvsPollingDiagram } from './CDCvsPolling';
+export { CDCSequenceDiagram } from './CDCSequence';
+// ...
+
+// In MDX file
+import { CDCvsPollingDiagram } from '../../../components/diagrams/module-1';
+```
+
+**Alternative:** Direct imports (more explicit, easier to tree-shake)
+
+```tsx
+import { CDCvsPollingDiagram } from '../../../components/diagrams/module-1/CDCvsPolling';
+```
+
+**Recommendation:** Use barrel exports. The 170 diagrams are all used, so tree-shaking is not a concern. Barrel exports reduce import noise in MDX.
+
+## MDX Integration
+
+### Hydration Strategy
+
+All diagram components should use `client:visible` for lazy hydration:
+
+```tsx
+<CDCvsPollingDiagram client:visible />
+```
+
+**Rationale:**
+- Diagrams are below the fold in most lessons
+- `client:visible` delays JS loading until diagram enters viewport
+- Reduces initial page load by ~50KB per diagram (React hydration)
+
+### Component Prop Passing
+
+For diagrams that need lesson-specific variations:
+
+```tsx
+interface DiagramProps {
+  showTooltips?: boolean;     // Disable for screenshots
+  simplified?: boolean;       // Show fewer nodes
+  highlightStep?: number;     // Highlight specific node
+}
+```
+
+**Example in MDX:**
+
+```tsx
+<CDCSequenceDiagram highlightStep={3} client:visible />
+```
+
+### Coexistence with Mermaid
+
+During migration, both systems will coexist:
+
+```tsx
+// Old (to be replaced)
+import { Mermaid } from '../../../components/Mermaid.tsx';
+<Mermaid chart={`...`} client:visible />
+
+// New
+import { CDCSequenceDiagram } from '../../../components/diagrams/module-1';
+<CDCSequenceDiagram client:visible />
+```
+
+**Migration strategy:** Replace one module at a time, keeping Mermaid.tsx available until all 170 diagrams are converted.
+
+## State Management for Tooltips
+
+### Option 1: Local Component State (Recommended)
+
+Each diagram manages its own tooltip state:
+
+```tsx
+export function CDCvsPollingDiagram() {
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+
+  return (
+    <div className="relative">
+      <FlowNode
+        variant="database"
+        onClick={() => setActiveTooltip('database')}
+        isActive={activeTooltip === 'database'}
+      >
+        PostgreSQL
+      </FlowNode>
+
+      {activeTooltip && (
+        <Tooltip
+          content={tooltipContent[activeTooltip]}
+          onClose={() => setActiveTooltip(null)}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+**Rationale:**
+- Simple, no cross-island state needed
+- Each diagram is self-contained
+- nanostores not required for tooltips
+
+### Option 2: nanostores for Cross-Diagram State
+
+If we need to track which diagrams the user has explored:
+
+```tsx
+// src/stores/diagrams.ts
+import { atom } from 'nanostores';
+
+export const $exploredDiagrams = atom<Set<string>>(new Set());
+
+export function markExplored(diagramId: string) {
+  const current = $exploredDiagrams.get();
+  $exploredDiagrams.set(new Set([...current, diagramId]));
+}
+```
+
+**Not recommended for v1.4** - Keep it simple. Tooltips are informational, not progress-tracked.
+
+## Build Order (Phased Approach)
+
+### Phase 1: Primitives Foundation
+
+1. **FlowNode** - Core building block (exists in PoC, needs extraction)
+2. **Arrow** - Directional connector
+3. **Container** - Subgraph wrapper (generalized ModeCard)
+4. **Tooltip** - Click-activated popup
+
+**Output:** `src/components/diagrams/primitives/` with 4 components
+
+### Phase 2: Flowchart Diagrams (Module 1-4)
+
+Priority: Start with Module 1 as they're the entry point for learners.
+
+| Module | Diagram Count | Complexity |
+|--------|---------------|------------|
+| Module 1 | 6 | Low (simple flows) |
+| Module 2 | 15 | Medium (PostgreSQL internals) |
+| Module 3 | 20 | Medium (MySQL binlog) |
+| Module 4 | 15 | Medium (monitoring) |
+
+### Phase 3: Sequence Diagram Primitives
+
+1. **Participant**
+2. **Message**
+3. **ActivationBar**
+4. **Note**
+5. **SequenceLayout**
+
+**Output:** Sequence primitives ready for Module 1-4 sequence diagrams
+
+### Phase 4: Remaining Modules
+
+| Module | Diagram Count | Complexity |
+|--------|---------------|------------|
+| Module 5 | 25 | High (SMT chains, complex flows) |
+| Module 6 | 20 | High (streaming architectures) |
+| Module 7 | 15 | Medium (cloud diagrams) |
+| Module 8 | 10 | Medium (capstone architecture) |
+
+### Phase 5: MDX Migration
+
+Replace Mermaid imports with new diagram components, one module at a time.
+
+### Phase 6: Mermaid Deprecation
+
+Remove `mermaid` npm dependency and `Mermaid.tsx` component.
+
+## Integration Points
+
+### New Components (to create)
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| FlowNode | primitives/FlowNode.tsx | Node rendering |
+| Arrow | primitives/Arrow.tsx | Directional connector |
+| Container | primitives/Container.tsx | Subgraph wrapper |
+| Tooltip | primitives/Tooltip.tsx | Interactive popup |
+| Participant | primitives/Participant.tsx | Sequence participant |
+| Message | primitives/Message.tsx | Sequence message |
+| SequenceLayout | primitives/SequenceLayout.tsx | Sequence container |
+| 170 diagram components | module-N/*.tsx | Composed diagrams |
+
+### Modified Files
+
+| File | Change |
+|------|--------|
+| 57 MDX files | Replace Mermaid imports with diagram components |
+| package.json | Remove `mermaid` dependency (after migration) |
+
+### No Changes Required
+
+| File | Reason |
+|------|--------|
+| src/styles/global.css | Glass tokens already defined |
+| src/stores/* | No cross-island state needed for tooltips |
+| src/layouts/BaseLayout.astro | No layout changes |
+| astro.config.mjs | No config changes |
+
+## Performance Considerations
+
+### Bundle Size Impact
+
+| Item | Size | Notes |
+|------|------|-------|
+| Mermaid (current) | ~1.2MB | Full diagram DSL parser |
+| Diagram primitives | ~15KB | React components only |
+| Per-diagram component | ~1-3KB | Simple compositions |
+
+**Net savings:** ~1MB bundle size reduction after Mermaid removal.
+
+### Hydration Strategy
+
+```tsx
+// Lazy hydration - JS loads when diagram enters viewport
+<DiagramComponent client:visible />
+
+// Alternative: No hydration for static diagrams (future optimization)
+// Render as SVG at build time, no client JS
+```
+
+### Mobile Performance
+
+Diagram components should use reduced blur on mobile:
+
+```tsx
+// Use existing CSS variable
+className="backdrop-blur-[var(--glass-blur-md)]"
+
+// global.css handles mobile reduction
+@media (max-width: 1023px) {
   :root {
-    --glass-blur: 0px;
-    --glass-blur-mobile: 0px;
+    --glass-blur-md: 8px;
   }
 }
 ```
 
-**Rationale:**
-- Astro's official documentation recommends global CSS variables for design tokens [Styles and CSS - Astro Docs](https://docs.astro.build/en/guides/styling/)
-- CSS custom properties work seamlessly with Tailwind's arbitrary value syntax `backdrop-blur-[var(--glass-blur)]`
-- Centralizes glass parameters for easy theming adjustments
-- Supports accessibility (reduced motion users get no blur)
+## Accessibility
 
-### Tier 2: Shared Glass Utilities (Tailwind Config Extension)
-
-**Location:** `src/styles/global.css` (Tailwind 4 uses CSS-first config)
-
-**Purpose:** Reusable glass effect classes via Tailwind's @utility directive.
-
-**Implementation:**
-
-```css
-/* Add to src/styles/global.css */
-
-@utility glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-@utility glass-panel-elevated {
-  background: var(--glass-bg-elevated);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow-elevated);
-}
-
-/* Mobile optimization */
-@media (max-width: 768px) {
-  @utility glass-panel, glass-panel-elevated {
-    backdrop-filter: blur(var(--glass-blur-mobile));
-  }
-}
-```
-
-**Rationale:**
-- Tailwind 4's @utility directive creates custom utility classes [Tailwind CSS Backdrop Blur](https://tailwindcss.com/docs/backdrop-blur)
-- Avoids repetitive backdrop-filter declarations in components
-- Automatically respects CSS variable changes
-- Mobile media query handles performance optimization in one place
-
-### Tier 3: Component-Scoped Refinements
-
-**Location:** Component `<style>` tags in .astro files or .tsx files
-
-**Purpose:** Component-specific glass variations that don't warrant global utilities.
-
-**Pattern:**
-
-```astro
-<!-- src/layouts/BaseLayout.astro example -->
-<aside id="sidebar" class="glass-panel">
-  <!-- content -->
-</aside>
-
-<style>
-  #sidebar {
-    /* Override glass blur for sidebar only */
-    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  }
-
-  /* Glass effect on hover for navigation items */
-  #sidebar nav a:hover {
-    background: var(--glass-bg-elevated);
-  }
-</style>
-```
-
-**Rationale:**
-- Astro's scoped styles have highest precedence in the cascade [Styles and CSS - Astro Docs](https://docs.astro.build/en/guides/styling/)
-- Low-specificity selectors (like `a:hover`) are safe in scoped context
-- Component-specific refinements stay with component code
-- No risk of global namespace pollution
-
-## Component-Specific Implementation Strategies
-
-### 1. Sidebar (BaseLayout.astro)
-
-**Current State:**
-```astro
-<aside id="sidebar" class="bg-gray-800 border-r border-gray-700">
-```
-
-**Glass Implementation:**
-```astro
-<aside id="sidebar" class="glass-panel-elevated border-r border-gray-700">
-```
-
-**Why `glass-panel-elevated`:**
-- Sidebar is elevated UI element (z-50, fixed positioning)
-- Needs stronger background opacity for text legibility
-- Already has transform animations; backdrop-filter won't conflict
-
-**Additional Scoped Styles:**
-```astro
-<style>
-  /* Add subtle animation on mobile slide-in */
-  #sidebar {
-    transition: transform 300ms ease, backdrop-filter 150ms ease;
-  }
-
-  /* Enhance glass on desktop */
-  @media (min-width: 1024px) {
-    #sidebar {
-      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    }
-  }
-</style>
-```
-
-### 2. Header (BaseLayout.astro)
-
-**Current State:**
-```astro
-<header class="sticky top-0 bg-gray-800 border-b border-gray-700 z-10">
-```
-
-**Glass Implementation:**
-```astro
-<header class="sticky top-0 glass-panel border-b border-gray-700 z-10">
-```
-
-**Why this works:**
-- Sticky header benefits from glass effect (shows content scrolling beneath)
-- Standard `glass-panel` sufficient (not elevated UI element)
-- Border provides necessary visual boundary for accessibility
-
-### 3. Callout Component (React)
-
-**Current State:**
-```tsx
-<div className={`my-6 p-4 rounded-lg border-l-4 ${style.bg} ${style.border}`}>
-```
-
-**Challenge:** React component with dynamic type-based styles.
-
-**Glass Implementation Strategy:**
+### Keyboard Navigation
 
 ```tsx
-// src/components/Callout.tsx modifications
-
-const styles = {
-  note: {
-    bg: 'glass-panel', // Replace dark:bg-blue-950/30
-    border: 'border-blue-400/50', // Brighter for glass contrast
-    icon: 'ℹ️',
-    title: 'Note',
-  },
-  // ... other types
-};
+<FlowNode
+  role="img"
+  aria-label="PostgreSQL database"
+  tabIndex={0}
+  onKeyDown={(e) => e.key === 'Enter' && openTooltip()}
+>
+  PostgreSQL
+</FlowNode>
 ```
 
-**Additional component-scoped CSS:**
+### Screen Reader Support
+
 ```tsx
-// Add to Callout.tsx
-const calloutStyles = `
-  .callout-glass {
-    border-left-width: 4px;
-    position: relative;
-  }
-
-  .callout-glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg,
-      rgba(255,255,255,0.1),
-      rgba(255,255,255,0.05)
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-                  linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-`;
-
-return (
-  <>
-    <style>{calloutStyles}</style>
-    <div className={`callout-glass my-6 p-4 rounded-lg ${style.bg} ${style.border}`}>
+<div role="figure" aria-label="CDC event flow diagram showing data from PostgreSQL through Debezium to Kafka">
+  <FlowNode aria-describedby="step-1-desc" />
+  <span id="step-1-desc" className="sr-only">
+    Step 1: PostgreSQL receives INSERT command
+  </span>
+</div>
 ```
 
-**Rationale:**
-- Uses global `glass-panel` utility for consistency
-- Adds subtle gradient border via ::before pseudo-element for premium feel
-- Inline `<style>` tag works in React components within Astro
-- Border colors remain type-specific (blue/green/yellow/red)
+### Reduced Motion
 
-### 4. MDX Tables (Prose Styling)
-
-**Current State:**
-```css
-/* src/styles/global.css */
-.prose { @apply max-w-none; }
-/* No table-specific styles */
-```
-
-**Glass Implementation:**
+Tooltip animations should respect user preferences:
 
 ```css
-/* Add to src/styles/global.css after existing .prose rules */
-
-/* Glass effect for MDX tables */
-.prose table {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: var(--glass-shadow);
-}
-
-.prose thead {
-  background: var(--glass-bg-elevated);
-}
-
-.prose th {
-  @apply text-gray-100 font-semibold px-4 py-3 text-left;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.prose td {
-  @apply text-gray-300 px-4 py-3;
-  border-bottom: 1px solid rgba(75, 85, 99, 0.2);
-}
-
-.prose tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.prose tbody tr:hover {
-  background: rgba(59, 130, 246, 0.05); /* subtle blue tint */
-}
-```
-
-**Rationale:**
-- Tailwind Typography's prose class provides base table structure [Style rendered Markdown with Tailwind Typography](https://docs.astro.build/en/recipes/tailwind-rendered-markdown/)
-- Direct element selectors within `.prose` avoid specificity wars
-- Glass effect applied to table container, not individual cells (performance)
-- Hover state enhances interactivity for large comparison tables
-
-### 5. Homepage Module Cards (index.astro)
-
-**Current State:**
-```astro
-<a class="block bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-blue-500">
-```
-
-**Glass Implementation:**
-```astro
-<a class="block glass-panel rounded-lg p-6 hover:border-blue-500 transition-all duration-200">
-```
-
-**Enhanced Hover Effect:**
-```astro
-<style>
-  /* Lesson cards with enhanced glass on hover */
-  .lesson-card {
-    transition: all 200ms ease;
-  }
-
-  .lesson-card:hover {
-    background: var(--glass-bg-elevated);
-    transform: translateY(-2px);
-    box-shadow: var(--glass-shadow-elevated);
-  }
-
-  .lesson-card:active {
-    transform: translateY(0);
-  }
-</style>
-
-<!-- In markup -->
-<a class="lesson-card glass-panel rounded-lg p-6">
-```
-
-**Rationale:**
-- Cards are focal points of homepage, deserve enhanced glass effect
-- Transform on hover creates depth without layout shift
-- Active state provides tactile feedback
-- Transition duration matches existing site patterns (200ms)
-
-## CSS Cascade and Precedence Strategy
-
-### Order of Evaluation (Astro's CSS Loading Order)
-
-1. **Tailwind base/utilities** (imported via `@import "tailwindcss"`)
-2. **Global prose styles** (src/styles/global.css)
-3. **Custom @utility definitions** (src/styles/global.css)
-4. **Component scoped styles** (highest precedence)
-
-### Avoiding Conflicts
-
-**Problem:** Tailwind's `bg-gray-800` conflicts with `glass-panel` background.
-
-**Solution:** Replace conflicting utilities, don't layer them.
-
-```astro
-<!-- WRONG: Conflicting backgrounds -->
-<div class="glass-panel bg-gray-800">
-
-<!-- CORRECT: Single background source -->
-<div class="glass-panel">
-```
-
-**Problem:** Border utilities override glass border in `glass-panel`.
-
-**Solution:** Glass utilities handle borders; use border-{side} for additions.
-
-```astro
-<!-- WRONG: Redundant border -->
-<div class="glass-panel border border-gray-700">
-
-<!-- CORRECT: Only directional borders if needed -->
-<div class="glass-panel border-r border-gray-700">
-```
-
-### Specificity Management
-
-| Selector Type | Specificity | Use Case |
-|---------------|-------------|----------|
-| `.glass-panel` | (0,1,0) | Utility class, lowest |
-| `.prose table` | (0,2,1) | Element within class |
-| `#sidebar nav a:hover` | (1,0,3) | Scoped style, highest |
-
-**Guideline:** Use class utilities for base styles, scoped selectors for component-specific overrides.
-
-## Performance Optimization Strategy
-
-### Critical Performance Constraints
-
-Glassmorphism's `backdrop-filter: blur()` is GPU-intensive. Research shows:
-
-- Limit to 2-3 glass elements per viewport on mobile [Glassmorphism: Definition and Best Practices](https://www.nngroup.com/articles/glassmorphism/)
-- Reduce blur values to 6-8px on mobile (vs 12-16px desktop) [12 Glassmorphism UI Features, Best Practices](https://uxpilot.ai/blogs/glassmorphism-ui)
-- Avoid animating backdrop-filter [Glassmorphism: What It Is and How to Use It in 2026](https://invernessdesignstudio.com/glassmorphism-what-it-is-and-how-to-use-it-in-2026)
-
-### Implementation in This Project
-
-**Glass Elements Per View:**
-
-| Route | Glass Elements | Mobile Viewport Count |
-|-------|----------------|----------------------|
-| Homepage | Lesson cards | 1-2 visible at once |
-| Lesson page | Sidebar (off-canvas), Header | Header only (1) |
-| Lesson page (desktop) | Sidebar, Header, Tables | 2-3 (acceptable) |
-
-**Mobile Optimization:**
-
-```css
-/* Already implemented in Tier 2 approach */
-@media (max-width: 768px) {
-  @utility glass-panel, glass-panel-elevated {
-    backdrop-filter: blur(var(--glass-blur-mobile)); /* 8px */
-  }
-}
-```
-
-**Animation Strategy:**
-
-```css
-/* Sidebar transform animation (existing) - NO CONFLICT */
-#sidebar {
-  transform: translateX(-100%);
-  transition: transform 300ms ease; /* Only transform animated */
-}
-
-/* Glass effect static during animation */
-#sidebar.open {
-  transform: translateX(0);
-  /* backdrop-filter never animates */
-}
-```
-
-**Fallback for Low-End Devices:**
-
-```css
-/* Add to global.css */
 @media (prefers-reduced-motion: reduce) {
-  .glass-panel, .glass-panel-elevated {
-    backdrop-filter: none !important;
-    background: rgba(31, 41, 55, 0.95); /* Higher opacity fallback */
+  .tooltip-enter {
+    animation: none;
   }
 }
 ```
 
-### Performance Testing Checklist
+## Testing Strategy
 
-- [ ] Test on iPhone 12 or equivalent (representative mid-range device)
-- [ ] Verify 60fps scrolling on lesson pages with tables
-- [ ] Check sidebar slide animation smoothness on mobile
-- [ ] Validate hover states on lesson cards (no jank)
-- [ ] Confirm reduced-motion preference disables blur
+### Visual Regression
 
-## Build Order and Migration Path
+Use Playwright for screenshot comparison:
 
-### Phase 1: Foundation (CSS Variables and Utilities)
-
-**Tasks:**
-1. Add CSS custom properties to `src/styles/global.css`
-2. Define `@utility glass-panel` and `@utility glass-panel-elevated`
-3. Test utilities in browser DevTools on existing components
-
-**Validation:**
-- Tailwind build succeeds
-- Utilities appear in compiled CSS
-- Variables accessible via `var(--glass-bg)` in inspector
-
-**Estimated time:** 15 minutes
-
-### Phase 2: Structural Components (Sidebar, Header)
-
-**Tasks:**
-1. Replace `bg-gray-800` with `glass-panel-elevated` on sidebar
-2. Replace `bg-gray-800` with `glass-panel` on header
-3. Add scoped styles for sidebar hover effects
-4. Test mobile sidebar slide animation
-
-**Validation:**
-- Sidebar background is translucent with blur
-- Header shows scrolling content beneath
-- No animation jank on mobile
-
-**Estimated time:** 20 minutes
-
-### Phase 3: Content Components (Cards, Callout)
-
-**Tasks:**
-1. Update homepage lesson cards with `glass-panel` class
-2. Add hover enhancement scoped styles
-3. Modify Callout.tsx to use glass utilities
-4. Add gradient border pseudo-element to Callout
-
-**Validation:**
-- Cards show glass effect on homepage
-- Callout variants (note/tip/warning/danger) maintain color identity
-- Hover states work smoothly
-
-**Estimated time:** 30 minutes
-
-### Phase 4: MDX Tables (Prose Styling)
-
-**Tasks:**
-1. Add `.prose table` glass styles to global.css
-2. Test on lessons with complex tables (module 8 architecture docs)
-3. Adjust border-radius and spacing for polish
-
-**Validation:**
-- Tables in MDX lessons have glass background
-- Headers visually distinct from rows
-- Hover row highlight works
-- Mobile responsive (tables scroll horizontally if needed)
-
-**Estimated time:** 20 minutes
-
-### Phase 5: Polish and Performance
-
-**Tasks:**
-1. Add reduced-motion fallbacks
-2. Test on iPhone 12 or equivalent
-3. Verify DevTools performance metrics (60fps)
-4. Adjust blur values if performance issues detected
-
-**Validation:**
-- No dropped frames during scrolling
-- Reduced motion users see solid backgrounds
-- All components maintain readability
-
-**Estimated time:** 30 minutes
-
-**Total estimated time:** 1 hour 55 minutes
-
-## Architecture Patterns to Follow
-
-### Pattern 1: CSS Variables as Single Source of Truth
-
-**What:** All glass design values live in CSS custom properties.
-
-**When:** Defining any glass-related value (color, blur, shadow).
-
-**Why:** Enables runtime theming, respects user preferences, works with Tailwind arbitrary values.
-
-**Example:**
-```css
-:root {
-  --glass-blur: 12px;
-}
-
-/* Used in utility */
-@utility glass-panel {
-  backdrop-filter: blur(var(--glass-blur));
-}
-
-/* Used in Tailwind arbitrary value */
-<div class="backdrop-blur-[var(--glass-blur)]">
+```typescript
+test('CDCvsPollingDiagram renders correctly', async ({ page }) => {
+  await page.goto('/course/01-module-1/01-cdc-fundamentals');
+  await expect(page.locator('[data-testid="cdc-vs-polling-diagram"]'))
+    .toHaveScreenshot();
+});
 ```
 
-### Pattern 2: Hybrid Class Composition
+### Component Tests
 
-**What:** Combine glass utilities with Tailwind layout/spacing utilities.
+Use Vitest + React Testing Library:
 
-**When:** Building component markup.
-
-**Why:** Leverages both systems' strengths - glass for theming, Tailwind for layout.
-
-**Example:**
-```astro
-<aside class="glass-panel-elevated border-r border-gray-700 p-6 rounded-lg">
-  <!-- glass-panel-elevated: theming -->
-  <!-- border-r, p-6, rounded-lg: layout -->
-</aside>
+```typescript
+test('FlowNode renders with correct variant styles', () => {
+  render(<FlowNode variant="database">PostgreSQL</FlowNode>);
+  expect(screen.getByText('PostgreSQL')).toHaveClass('bg-purple-500/20');
+});
 ```
 
-### Pattern 3: Scoped Style Overrides
+### Integration Tests
 
-**What:** Use component `<style>` tags for one-off glass refinements.
+Verify MDX imports work:
 
-**When:** Component needs unique glass variation not worth global utility.
-
-**Why:** Keeps global CSS lean, leverages Astro's scoping, maintains component cohesion.
-
-**Example:**
-```astro
-<header class="glass-panel">
-  <h1>Title</h1>
-</header>
-
-<style>
-  header {
-    /* Enhance glass on this component only */
-    backdrop-filter: blur(var(--glass-blur)) saturate(120%);
-  }
-</style>
+```typescript
+test('MDX renders diagram component', async () => {
+  const lesson = await import('./01-cdc-fundamentals.mdx');
+  render(<lesson.default />);
+  expect(screen.getByTestId('cdc-vs-polling-diagram')).toBeInTheDocument();
+});
 ```
 
-### Pattern 4: Progressive Enhancement for Glass
-
-**What:** Provide fallback backgrounds for browsers/users without backdrop-filter.
-
-**When:** Defining glass utilities and component styles.
-
-**Why:** Accessibility (reduced motion), browser support (older devices).
-
-**Example:**
-```css
-@utility glass-panel {
-  background: rgba(31, 41, 55, 0.95); /* Fallback: solid */
-  backdrop-filter: blur(12px);        /* Enhancement: glass */
-}
-
-@supports (backdrop-filter: blur(1px)) {
-  @utility glass-panel {
-    background: rgba(31, 41, 55, 0.6); /* Lighter when glass works */
-  }
-}
-```
-
-## Anti-Patterns to Avoid
-
-### Anti-Pattern 1: Animating backdrop-filter
-
-**What:** Transitioning blur values on hover/scroll.
-
-**Why bad:** GPU-intensive, causes jank on mobile, poor UX.
-
-**Instead:** Animate transform, opacity, or background color.
-
-```css
-/* WRONG */
-.card {
-  backdrop-filter: blur(8px);
-  transition: backdrop-filter 300ms;
-}
-.card:hover {
-  backdrop-filter: blur(16px); /* Janky animation */
-}
-
-/* CORRECT */
-.card {
-  backdrop-filter: blur(12px); /* Static blur */
-  transition: transform 200ms;
-}
-.card:hover {
-  transform: translateY(-2px); /* Smooth animation */
-}
-```
-
-### Anti-Pattern 2: Over-applying Glass Effects
-
-**What:** Adding glass to every container on the page.
-
-**Why bad:** Performance degrades, visual hierarchy lost, design feels busy.
-
-**Instead:** Limit to 2-3 glass elements per viewport, use for elevated UI only.
-
-```astro
-<!-- WRONG: Everything is glass -->
-<main class="glass-panel">
-  <section class="glass-panel">
-    <article class="glass-panel">
-      <div class="glass-panel">Content</div>
-    </article>
-  </section>
-</main>
-
-<!-- CORRECT: Strategic glass on elevated UI -->
-<main>
-  <section>
-    <article>
-      <div class="glass-panel">Content card</div>
-    </article>
-  </section>
-</main>
-```
-
-### Anti-Pattern 3: Mixing Background Utilities
-
-**What:** Combining Tailwind bg-* classes with glass utilities.
-
-**Why bad:** Creates conflicting background declarations, unpredictable cascade.
-
-**Instead:** Replace bg-* utilities with glass-* utilities.
-
-```astro
-<!-- WRONG: Conflicting backgrounds -->
-<div class="glass-panel bg-gray-800 bg-opacity-70">
-
-<!-- CORRECT: Single background source -->
-<div class="glass-panel">
-```
-
-### Anti-Pattern 4: High Blur on Mobile
-
-**What:** Using same blur values (12-16px) on mobile as desktop.
-
-**Why bad:** Mobile GPUs struggle, causes scrolling jank, drains battery.
-
-**Instead:** Reduce blur to 6-8px on mobile via media queries.
-
-```css
-/* WRONG: Same blur everywhere */
-@utility glass-panel {
-  backdrop-filter: blur(16px);
-}
-
-/* CORRECT: Responsive blur values */
-@utility glass-panel {
-  backdrop-filter: blur(12px);
-}
-
-@media (max-width: 768px) {
-  @utility glass-panel {
-    backdrop-filter: blur(8px);
-  }
-}
-```
-
-### Anti-Pattern 5: Ignoring Accessibility
-
-**What:** No fallback for users with prefers-reduced-motion.
-
-**Why bad:** Violates WCAG guidelines, poor UX for motion-sensitive users.
-
-**Instead:** Disable blur for reduced-motion preference.
-
-```css
-/* WRONG: No accessibility consideration */
-@utility glass-panel {
-  backdrop-filter: blur(12px);
-}
-
-/* CORRECT: Respects user preference */
-@media (prefers-reduced-motion: reduce) {
-  @utility glass-panel {
-    backdrop-filter: none;
-    background: rgba(31, 41, 55, 0.95); /* Higher opacity fallback */
-  }
-}
-```
-
-## Integration with Existing Components
-
-### Minimal Breaking Changes
-
-The recommended architecture preserves existing component structure:
-
-| Component | Current Classes | Glass Migration | Breaking? |
-|-----------|----------------|-----------------|-----------|
-| Sidebar | `bg-gray-800 border-r border-gray-700` | `glass-panel-elevated border-r border-gray-700` | No |
-| Header | `bg-gray-800 border-b border-gray-700` | `glass-panel border-b border-gray-700` | No |
-| Callout | `bg-blue-950/30 border-blue-800` | `glass-panel border-blue-400/50` | Slight visual change |
-| Lesson cards | `bg-gray-800 border border-gray-700` | `glass-panel` | No |
-| Tables | No classes (prose default) | `.prose table` styles | No |
-
-**Migration risk:** LOW - Only class name replacements, no structural changes.
-
-### Testing Strategy
-
-1. **Visual regression:**
-   - Take screenshots of homepage, lesson page, sidebar
-   - Apply glass changes
-   - Compare screenshots for unintended layout shifts
-
-2. **Functional testing:**
-   - Sidebar open/close on mobile
-   - Navigation link clicks
-   - Table scrolling on mobile
-   - Callout rendering with all types
-
-3. **Performance testing:**
-   - Chrome DevTools Performance tab (60fps target)
-   - Mobile device testing (iPhone 12 minimum)
-   - Reduced motion preference validation
-
-## Astro 5 Specific Considerations
-
-### Vite Integration
-
-Astro 5.2+ uses `@tailwindcss/vite` plugin (not the older `@astrojs/tailwind`). This affects:
-
-- **No tailwind.config.js:** Configuration happens in CSS via `@theme` and `@utility` directives
-- **Faster builds:** Vite plugin is performance-optimized for Astro 5
-- **HMR support:** Glass style changes hot-reload without full page refresh
-
-**Implication:** All glass utilities and variables defined in CSS files, not JS config.
-
-### MDX Integration
-
-Astro's MDX integration (`@astrojs/mdx`) renders MDX content as Astro components. This means:
-
-- **Prose classes apply automatically** when wrapping `<Content />` with `.prose`
-- **Custom components pass via props:** `<Content components={{ Callout }} />`
-- **Styles cascade correctly:** Global `.prose table` styles work on MDX tables
-
-**Implication:** No special glass integration needed for MDX; standard prose approach works.
-
-### React Islands (Client-Side Hydration)
-
-Components like Callout.tsx use `client:load` directive. This affects:
-
-- **Inline styles render server-side:** The `<style>` tag in Callout component is SSR'd
-- **Tailwind classes must be in Astro's scan paths:** Glass utilities work because global.css is imported
-- **No CSS-in-JS needed:** Standard className strings work with Tailwind
-
-**Implication:** React components can use glass utilities exactly like Astro components.
-
-### Build Output Optimization
-
-Astro's CSS handling automatically:
-
-- **Bundles and minifies CSS** from all sources
-- **Removes unused Tailwind utilities** via PurgeCSS
-- **Inlines critical CSS** in HTML head
-- **Scope-transforms component styles** with unique data attributes
-
-**Implication:** Glass utilities in global.css will be tree-shaken if unused; component scoped styles always included.
-
-## Roadmap Integration Recommendations
-
-### Phase Structure for Roadmap
-
-Based on this architecture research, recommend these milestone phases:
-
-**Phase 1: Foundation**
-- Add CSS variables and glass utilities to global.css
-- Validate build process and HMR
-- **Why first:** Establishes design system before component work
-
-**Phase 2: Core UI (Sidebar + Header)**
-- Apply glass to layout components
-- Test mobile sidebar animation compatibility
-- **Why second:** High-visibility components, validates architecture
-
-**Phase 3: Content Components (Cards + Callout)**
-- Homepage lesson cards
-- Callout component variants
-- **Why third:** Lower risk, benefits from Phase 2 learnings
-
-**Phase 4: MDX Styling (Tables)**
-- Prose table styles
-- Test with existing lesson content
-- **Why fourth:** Depends on understanding glass performance from earlier phases
-
-**Phase 5: Polish + Performance**
-- Mobile optimization
-- Accessibility audit
-- Performance testing
-- **Why last:** Requires all components implemented to test holistically
-
-### Dependency Graph
-
-```
-Foundation (CSS variables)
-    ↓
-    ├─→ Core UI (Sidebar, Header)
-    │       ↓
-    │   Content Components (Cards, Callout)
-    │       ↓
-    └─→ MDX Styling (Tables)
-            ↓
-        Polish + Performance
-```
-
-**No parallel work recommended:** Each phase validates architecture assumptions for next phase.
+## Key Decisions Summary
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Component organization | Module-based folders | Discoverability, matches content structure |
+| Primitive extraction | Dedicated primitives/ folder | Reusability across 170 diagrams |
+| State management | Local component state | Simple, no cross-island complexity |
+| Hydration | client:visible | Performance (lazy loading) |
+| Import style | Barrel exports | Cleaner MDX imports |
+| Tooltip approach | Click-activated | Touch-friendly, explicit interaction |
+| Sequence diagrams | Layout component + Messages | Flexible, composable |
+
+## Roadmap Implications
+
+Based on this architecture:
+
+1. **Phase 1-2:** Primitives first (foundation for all diagrams)
+2. **Phase 3-4:** Module 1 diagrams (learning path entry point)
+3. **Phase 5+:** Sequential module migration (2, 3, 4, 5, 6, 7, 8)
+4. **Final phase:** Mermaid removal (after all 170 converted)
+
+**Suggested phase count:** 12-15 phases
+- 2 phases for primitives
+- 8 phases for module diagrams (one per module)
+- 2-3 phases for testing, polish, and Mermaid removal
 
 ## Sources
 
-### Official Documentation
-- [Styles and CSS - Astro Docs](https://docs.astro.build/en/guides/styling/)
-- [Tailwind CSS Backdrop Blur](https://tailwindcss.com/docs/backdrop-blur)
-- [Style rendered Markdown with Tailwind Typography](https://docs.astro.build/en/recipes/tailwind-rendered-markdown/)
-- [astrojs/mdx - Astro Docs](https://docs.astro.build/en/guides/integrations-guide/mdx/)
-
-### Glassmorphism Best Practices (2026)
-- [Glassmorphism: Definition and Best Practices - NN/G](https://www.nngroup.com/articles/glassmorphism/)
-- [12 Glassmorphism UI Features, Best Practices](https://uxpilot.ai/blogs/glassmorphism-ui)
-- [Glassmorphism: What It Is and How to Use It in 2026](https://invernessdesignstudio.com/glassmorphism-what-it-is-and-how-to-use-it-in-2026)
-- [Creating Glassmorphism Effects with Tailwind CSS](https://www.epicweb.dev/tips/creating-glassmorphism-effects-with-tailwind-css)
-
-### Performance and Implementation
-- [How To Easily Implement Liquid Glass Effects In Tailwind](https://flyonui.com/blog/liquid-glass-effects-in-tailwind-css/)
-- [Next-level frosted glass with backdrop-filter](https://medium.com/@kaklotarrahul79/next-level-frosted-glass-with-backdrop-filter-456e0271ab9d)
-- [Dark Glassmorphism: The Aesthetic That Will Define UI in 2026](https://medium.com/@developer_89726/dark-glassmorphism-the-aesthetic-that-will-define-ui-in-2026-93aa4153088f)
-
-**Confidence Level: HIGH** - All recommendations verified against official Astro 5 and Tailwind 4 documentation, with glassmorphism patterns validated against 2026 best practices from authoritative sources (NN/G, performance studies).
+- Existing codebase analysis (HIGH confidence)
+- DeploymentModes.tsx proof-of-concept (HIGH confidence)
+- Astro Islands documentation for hydration strategies
+- Existing glass design system in global.css

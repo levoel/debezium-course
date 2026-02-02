@@ -87,13 +87,14 @@ None.
 | 002 | Remove duplicate course roadmap | 2026-02-01 | 642fe5f | [002-remove-course-roadmap](./quick/002-remove-course-roadmap/) |
 | 003 | Collapsible sidebar modules | 2026-02-01 | 50b366a | [003-collapsible-sidebar-modules](./quick/003-collapsible-sidebar-modules/) |
 | 004 | Apple glass style fixes | 2026-02-01 | 294f2aa | [004-apple-glass-style-fixes](./quick/004-apple-glass-style-fixes/) |
+| 005 | Fix lesson navigation buttons | 2026-02-02 | 2cf3270 | [005-fix-lesson-navigation-buttons](./quick/005-fix-lesson-navigation-buttons/) |
 
 ## Session Continuity
 
-Last session: 2026-02-01
-Stopped at: v1.3 milestone complete
+Last session: 2026-02-02
+Stopped at: Completed quick task 005 (Fix lesson navigation buttons)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-01 — v1.3 UX/Design Refresh milestone complete*
+*Last updated: 2026-02-02 — Quick task 005 complete*

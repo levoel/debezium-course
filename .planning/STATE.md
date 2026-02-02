@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 28 - Module 1 Diagram Migration
+**Current focus:** Phase 29 - Module 2 Diagram Migration
 
 ## Current Position
 

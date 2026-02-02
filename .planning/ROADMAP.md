@@ -67,8 +67,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 28-01-PLAN.md — Create glass diagram components for lessons 01-03 (CDC, Architecture, Lab Setup)
-- [ ] 28-02-PLAN.md — Create diagram components for lessons 04-06 and update all MDX files
+- [x] 28-01-PLAN.md — Create glass diagram components for lessons 01-03 (CDC, Architecture, Lab Setup)
+- [x] 28-02-PLAN.md — Create diagram components for lessons 04-06 and update all MDX files
 
 ### Phase 29: Module 2 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 2 (PostgreSQL/Aurora PostgreSQL) are replaced with interactive glass components
@@ -371,7 +371,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 |-------|-----------|----------------|--------|-----------|
 | 26. Flowchart Primitives + Tooltip | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 27. Sequence Diagram Primitives | v1.4 | 2/2 | Complete | 2026-02-02 |
-| 28. Module 1 Migration | v1.4 | 0/2 | Not started | - |
+| 28. Module 1 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 29. Module 2 Migration | v1.4 | 0/2 | Not started | - |
 | 30. Module 3 Migration | v1.4 | 0/2 | Not started | - |
 | 31. Module 4 Migration | v1.4 | 0/2 | Not started | - |

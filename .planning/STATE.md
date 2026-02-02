@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 36 of 36 (Finalization)
-Plan: 0 of 3 completed
-Status: Not started
-Last activity: 2026-02-02 — Completed Phase 35 (Module 8: 8 diagrams, 5 MDX files, C4 Model patterns)
+Plan: 1 of 3 completed
+Status: In progress
+Last activity: 2026-02-02 — Completed 36-01 (Diagram smoke tests + accessibility tests)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [██████████████████████░] 99%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 105 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 33)
+- Total plans completed: 106 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 34)
 - Average duration: ~6 min
 - Total execution time: ~9.4 hours
 
@@ -152,6 +152,8 @@ Recent decisions affecting v1.4 work:
 - [35-02]: PostgreSQL blue (bg-blue-500/20 border-blue-400/30), MySQL red (bg-red-500/20 border-red-400/30) in multi-database diagrams
 - [35-02]: Metric heterogeneity footer explaining PostgreSQL WAL bytes vs MySQL binlog milliseconds
 - [35-02]: Module 8 complete: 8 diagrams, 5 MDX files, zero Mermaid code blocks
+- [36-01]: Filter React hydration error #418 in error-tracking fixture (pre-existing SSR issue)
+- [36-01]: Use role="tooltip" selector for custom DiagramTooltip (not Radix Popover)
 
 ### Pending Todos
 
@@ -175,9 +177,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Phase 35 complete, continuing to Phase 36
+Stopped at: Completed 36-01-PLAN.md (Diagram smoke tests + accessibility tests)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Phase 35 complete (Module 8 Diagram Migration: 8 diagrams, 5 MDX files, C4 Model patterns)*
+*Last updated: 2026-02-02 — Completed 36-01 (Diagram smoke tests: 8 modules, accessibility tests: keyboard nav + axe-core)*

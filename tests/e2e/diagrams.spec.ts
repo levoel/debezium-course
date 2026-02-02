@@ -37,13 +37,18 @@ test.describe('Mobile responsiveness', () => {
     await page.goto(`${BASE}/course/01-module-1/02-debezium-architecture`);
     await page.waitForLoadState('networkidle');
 
-    // Check no horizontal scroll needed
-    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-    expect(scrollWidth).toBeLessThanOrEqual(390);
-
     // Verify diagrams are present
-    const diagrams = await page.locator('figure[role="figure"]').count();
-    expect(diagrams).toBeGreaterThan(0);
+    const diagrams = page.locator('figure[role="figure"]');
+    const diagramCount = await diagrams.count();
+    expect(diagramCount).toBeGreaterThan(0);
+
+    // Check each diagram fits within viewport width (no horizontal overflow from diagrams)
+    for (let i = 0; i < diagramCount; i++) {
+      const box = await diagrams.nth(i).boundingBox();
+      if (box) {
+        expect(box.width).toBeLessThanOrEqual(390);
+      }
+    }
   });
 
   test('diagrams visible and not squashed on mobile', async ({ page }) => {

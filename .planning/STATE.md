@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 32 - Module 5 Diagram Migration
+**Current focus:** Phase 33 - Module 6 Diagram Migration
 
 ## Current Position
 
-Phase: 32 of 36 (Module 5 Diagram Migration)
-Plan: 3 of 3 completed
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 32-03-PLAN.md (Schema Registry & Evolution diagrams, all 8 MDX files migrated)
+Phase: 33 of 36 (Module 6 Diagram Migration)
+Plan: 1 of 4 completed
+Status: In progress
+Last activity: 2026-02-02 — Completed 33-01-PLAN.md (Python Foundations: Advanced Consumer & Pandas Integration diagrams)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [███████████████████░] 95%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████████████████] 96%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 95 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 23)
-- Average duration: ~7 min
-- Total execution time: ~9.0 hours
+- Total plans completed: 96 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 24)
+- Average duration: ~6 min
+- Total execution time: ~9.1 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 23/24 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 24/24 | In Progress |
 
 ## Accumulated Context
 
@@ -114,6 +114,10 @@ Recent decisions affecting v1.4 work:
 - [32-03]: Decision tree with 3 independent paths for schema changes (add/remove/change)
 - [32-03]: Color-coded compatibility: emerald=BACKWARD, blue=FORWARD, purple=FULL, rose=NONE
 - [32-03]: Module 5 complete: 21 diagrams, 8 MDX files, zero Mermaid code blocks
+- [33-01]: Amber for at-least-once (caution), emerald for exactly-once (recommended) in delivery semantics
+- [33-01]: SequenceDiagram for consumer rebalancing with max.poll.interval.ms timeout (8 messages, messageSpacing=55)
+- [33-01]: Hierarchical tree layout for CDC envelope structure (nested DiagramContainers with horizontal arrows)
+- [33-01]: Color-coded CDC fields: blue=payload, emerald=before/after, rose=op, amber=ts_ms, purple=source
 
 ### Pending Todos
 
@@ -137,9 +141,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 32-03-PLAN.md (Module 5 migration complete)
+Stopped at: Completed 33-01-PLAN.md (Module 6 Python Foundations: 3 diagrams)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 32-03 complete (Module 5: 21 diagrams, 8 MDX files, zero Mermaid)*
+*Last updated: 2026-02-02 — Plan 33-01 complete (Module 6 Python Foundations: 3 diagrams, 2 components)*

@@ -114,11 +114,13 @@ Plans:
   3. User can click nodes to see operations-specific explanations
   4. No Mermaid code blocks remain in Module 4 MDX files
   5. Monitoring/alerting architecture diagrams are interactive
-**Plans**: TBD
+**Plans**: 4 plans (Wave 1: 01, 02, 03 | Wave 2: 04)
 
 Plans:
-- [ ] 31-01-PLAN.md — Audit Module 4 diagrams and create glass component versions
-- [ ] 31-02-PLAN.md — Add tooltips and remove Mermaid from Module 4
+- [ ] 31-01-PLAN.md — Create glass components for lessons 01-03 (JMX Metrics, Prometheus, Grafana)
+- [ ] 31-02-PLAN.md — Create glass components for lessons 04-05 (Alerting, WAL Bloat/Heartbeat)
+- [ ] 31-03-PLAN.md — Create glass components for lessons 06-07 (Connector Scaling, Disaster Recovery)
+- [ ] 31-04-PLAN.md — Migrate all 7 MDX files to use glass components
 
 ### Phase 32: Module 5 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 5 (Advanced Patterns - SMT) are replaced with interactive glass components
@@ -376,7 +378,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 28. Module 1 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 29. Module 2 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 30. Module 3 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
-| 31. Module 4 Migration | v1.4 | 0/2 | Not started | - |
+| 31. Module 4 Migration | v1.4 | 0/4 | Ready | - |
 | 32. Module 5 Migration | v1.4 | 0/2 | Not started | - |
 | 33. Module 6 Migration | v1.4 | 0/2 | Not started | - |
 | 34. Module 7 Migration | v1.4 | 0/2 | Not started | - |

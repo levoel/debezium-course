@@ -187,8 +187,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 35-01-PLAN.md — Core capstone diagrams: hero pipeline, C4 architecture, production readiness (5 diagrams)
-- [ ] 35-02-PLAN.md — Multi-database extension + MDX migration + barrel export (3 diagrams + 5 MDX files)
+- [x] 35-01-PLAN.md — Core capstone diagrams: hero pipeline, C4 architecture, production readiness (5 diagrams)
+- [x] 35-02-PLAN.md — Multi-database extension + MDX migration + barrel export (3 diagrams + 5 MDX files)
 
 ### Phase 36: Finalization (Testing + Mermaid Removal)
 **Goal**: All diagrams pass quality verification and Mermaid dependency is removed
@@ -386,7 +386,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 32. Module 5 Migration | v1.4 | 3/3 | Complete | 2026-02-02 |
 | 33. Module 6 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
 | 34. Module 7 Migration | v1.4 | 3/3 | Complete | 2026-02-02 |
-| 35. Module 8 Migration | v1.4 | 0/2 | Not started | - |
+| 35. Module 8 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 36. Finalization | v1.4 | 0/3 | Not started | - |
 
 ## Coverage

@@ -132,11 +132,12 @@ Plans:
   3. User can click transformation nodes to see SMT-specific explanations
   4. No Mermaid code blocks remain in Module 5 MDX files
   5. Multi-step transformation pipelines render clearly
-**Plans**: TBD
+**Plans**: 3 plans (Wave 1: 01, 02 | Wave 2: 03)
 
 Plans:
-- [ ] 32-01-PLAN.md — Audit Module 5 diagrams and create glass component versions
-- [ ] 32-02-PLAN.md — Add tooltips and remove Mermaid from Module 5
+- [ ] 32-01-PLAN.md — Create glass components for lessons 01-03 (SMT Overview, Predicates, PII Masking)
+- [ ] 32-02-PLAN.md — Create glass components for lessons 04-06 (Content Routing, Outbox Pattern, Outbox Implementation)
+- [ ] 32-03-PLAN.md — Create remaining components (lessons 07-08) and migrate all 8 MDX files
 
 ### Phase 33: Module 6 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 6 (Data Engineering Integration) are replaced with interactive glass components
@@ -379,7 +380,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 29. Module 2 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 30. Module 3 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
 | 31. Module 4 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
-| 32. Module 5 Migration | v1.4 | 0/2 | Not started | - |
+| 32. Module 5 Migration | v1.4 | 0/3 | Not started | - |
 | 33. Module 6 Migration | v1.4 | 0/2 | Not started | - |
 | 34. Module 7 Migration | v1.4 | 0/2 | Not started | - |
 | 35. Module 8 Migration | v1.4 | 0/2 | Not started | - |

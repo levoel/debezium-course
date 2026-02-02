@@ -9,10 +9,10 @@ Requirements for v1.5 Onboarding & Polish milestone.
 
 ### Onboarding
 
-- [ ] **ONB-01**: Module 0 с объяснением навигации по курсу (sidebar, roadmap, поиск)
-- [ ] **ONB-02**: Module 0 с объяснением системы прогресса (localStorage, чекбоксы)
-- [ ] **ONB-03**: Module 0 с кратким intro в Docker lab setup
-- [ ] **ONB-04**: Module 0 с обзором структуры курса и рекомендуемым путём прохождения
+- [x] **ONB-01**: Module 0 с объяснением навигации по курсу (sidebar, roadmap, поиск)
+- [x] **ONB-02**: Module 0 с объяснением системы прогресса (localStorage, чекбоксы)
+- [x] **ONB-03**: Module 0 с кратким intro в Docker lab setup
+- [x] **ONB-04**: Module 0 с обзором структуры курса и рекомендуемым путём прохождения
 - [ ] **ONB-05**: Ссылка на GitHub репозиторий в header или footer
 
 ### Content Structure
@@ -52,10 +52,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ONB-01 | 38 | Pending |
-| ONB-02 | 38 | Pending |
-| ONB-03 | 38 | Pending |
-| ONB-04 | 38 | Pending |
+| ONB-01 | 38 | Complete |
+| ONB-02 | 38 | Complete |
+| ONB-03 | 38 | Complete |
+| ONB-04 | 38 | Complete |
 | ONB-05 | 39 | Pending |
 | STRUCT-01 | 40 | Pending |
 | STYLE-01 | 40 | Pending |

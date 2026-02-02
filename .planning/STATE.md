@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 36 of 36 (Finalization)
-Plan: 1 of 3 completed
+Plan: 2 of 3 completed
 Status: In progress
-Last activity: 2026-02-02 — Completed 36-01 (Diagram smoke tests + accessibility tests)
+Last activity: 2026-02-02 — Completed 36-02 (Mobile tests + Mermaid removal)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [██████████████████████░] 99%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [███████████████████████░] 99%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 106 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 34)
+- Total plans completed: 107 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 35)
 - Average duration: ~6 min
 - Total execution time: ~9.4 hours
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 33/34 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 35/36 | In Progress |
 
 ## Accumulated Context
 
@@ -154,6 +154,8 @@ Recent decisions affecting v1.4 work:
 - [35-02]: Module 8 complete: 8 diagrams, 5 MDX files, zero Mermaid code blocks
 - [36-01]: Filter React hydration error #418 in error-tracking fixture (pre-existing SSR issue)
 - [36-01]: Use role="tooltip" selector for custom DiagramTooltip (not Radix Popover)
+- [36-02]: Mobile viewport test checks element bounding boxes (not page scrollWidth) for accuracy
+- [36-02]: Code blocks may overflow intentionally with horizontal scroll - diagrams must fit
 
 ### Pending Todos
 
@@ -177,9 +179,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 36-01-PLAN.md (Diagram smoke tests + accessibility tests)
+Stopped at: Completed 36-02-PLAN.md (Mobile tests + Mermaid removal)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Completed 36-01 (Diagram smoke tests: 8 modules, accessibility tests: keyboard nav + axe-core)*
+*Last updated: 2026-02-02 — Completed 36-02 (Mobile viewport tests + Mermaid dependency removed)*

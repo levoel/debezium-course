@@ -80,11 +80,11 @@ Plans:
   3. User can click nodes to see PostgreSQL-specific explanations
   4. No Mermaid code blocks remain in Module 2 MDX files
   5. Complex WAL/replication diagrams render clearly on mobile
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 29-01-PLAN.md — Audit Module 2 diagrams and create glass component versions
-- [ ] 29-02-PLAN.md — Add tooltips and remove Mermaid from Module 2
+- [ ] 29-01-PLAN.md — Create glass diagram components for lessons 01-04 (Logical Decoding, Replication Slots, WAL Config, Aurora Parameters)
+- [ ] 29-02-PLAN.md — Create diagram components for lessons 05-07 and update all 7 MDX files
 
 ### Phase 30: Module 3 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 3 (MySQL/Aurora MySQL) are replaced with interactive glass components

@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 31 of 36 (Module 4 Diagram Migration)
-Plan: 1 of 4 planned
+Plan: 2 of 4 planned
 Status: In progress
-Last activity: 2026-02-02 — Completed 31-01-PLAN.md (8 diagrams for lessons 01-03)
+Last activity: 2026-02-02 — Completed 31-02-PLAN.md (7 diagrams for lessons 04-05)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [#################...] 70%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [##################..] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 89 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 17)
+- Total plans completed: 90 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 18)
 - Average duration: ~7 min
-- Total execution time: ~8.5 hours
+- Total execution time: ~8.6 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [#################...] 70
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 19/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 20/23 | In Progress |
 
 ## Accumulated Context
 
@@ -93,6 +93,9 @@ Recent decisions affecting v1.4 work:
 - [31-01]: JMX Exporter uses amber className override (not new variant) for one-off color
 - [31-01]: Health states color scheme: emerald (healthy), amber (attention), rose (critical)
 - [31-01]: Decision tree uses nested divs with flex for branching (not SVG)
+- [31-02]: Alert severity uses custom color classes (yellow/orange/rose) via className overrides
+- [31-02]: LowTrafficWalScenarioDiagram uses SequenceDiagram with 4 actors, 9 messages, messageSpacing=45
+- [31-02]: MultiLayerDefenseDiagram as vertical flowchart emphasizing defense-in-depth
 
 ### Pending Todos
 
@@ -116,9 +119,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 31-01-PLAN.md (8 diagrams for lessons 01-03)
+Stopped at: Completed 31-02-PLAN.md (7 diagrams for lessons 04-05)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 31-01 complete (8 Module 4 diagrams: JMX, Prometheus, Grafana)*
+*Last updated: 2026-02-02 — Plan 31-02 complete (7 Module 4 diagrams: Alerting, WAL Bloat, Heartbeat)*

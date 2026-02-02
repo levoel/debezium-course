@@ -57,10 +57,10 @@
 
 **Goal:** Заменить Mermaid диаграммы в Module 4 (Production Operations).
 
-- [ ] **MOD4-01**: Аудит диаграмм Module 4
-- [ ] **MOD4-02**: Создать glass-версии диаграмм (monitoring, alerting)
-- [ ] **MOD4-03**: Добавить tooltip'ы с пояснениями
-- [ ] **MOD4-04**: Удалить Mermaid код из MDX файлов Module 4
+- [x] **MOD4-01**: Аудит диаграмм Module 4
+- [x] **MOD4-02**: Создать glass-версии диаграмм (monitoring, alerting)
+- [x] **MOD4-03**: Добавить tooltip'ы с пояснениями
+- [x] **MOD4-04**: Удалить Mermaid код из MDX файлов Module 4
 
 ### Module 5 Migration (MOD5)
 

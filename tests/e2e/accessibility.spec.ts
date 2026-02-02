@@ -143,3 +143,47 @@ test.describe('Accessibility preferences respected', () => {
     }
   });
 });
+
+test.describe('Diagram keyboard accessibility', () => {
+  test('FlowNode tooltips accessible via keyboard', async ({ page }) => {
+    await page.goto(`${BASE}/course/01-module-1/01-cdc-fundamentals`);
+    await page.waitForLoadState('networkidle');
+
+    // Find first interactive diagram node (Radix Popover.Trigger uses button role)
+    const firstNode = page.locator('figure[role="figure"] button').first();
+
+    // Check if there are any interactive nodes with tooltips
+    if (await firstNode.count() > 0) {
+      await firstNode.focus();
+      await page.keyboard.press('Enter');
+
+      // Radix Popover creates this wrapper when open
+      await expect(page.locator('[data-radix-popper-content-wrapper]')).toBeVisible();
+
+      // Close with Escape
+      await page.keyboard.press('Escape');
+      await expect(page.locator('[data-radix-popper-content-wrapper]')).toBeHidden();
+    }
+  });
+
+  test('diagram containers meet axe-core accessibility', async ({ page }) => {
+    await page.goto(`${BASE}/course/01-module-1/02-debezium-architecture`);
+    await page.waitForLoadState('networkidle');
+
+    // Check if there are diagrams on the page
+    const diagramCount = await page.locator('figure[role="figure"]').count();
+
+    if (diagramCount > 0) {
+      const results = await new AxeBuilder({ page })
+        .include('figure[role="figure"]')
+        .withTags(['wcag2aa'])
+        .analyze();
+
+      if (results.violations.length > 0) {
+        console.log('Diagram accessibility violations:', JSON.stringify(results.violations, null, 2));
+      }
+
+      expect(results.violations).toEqual([]);
+    }
+  });
+});

@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Planning next milestone (v1.5)
+**Current focus:** v1.5 Onboarding & Polish
 
 ## Current Position
 
-Phase: —
+Phase: Not started (defining requirements)
 Plan: —
-Status: Milestone v1.4 archived, ready for v1.5 planning
-Last activity: 2026-02-03 — v1.4 Interactive Glass Diagrams milestone archived
+Status: Defining requirements for v1.5
+Last activity: 2026-02-03 — Milestone v1.5 started
 
-Progress: v1.0-v1.4 SHIPPED
+Progress: v1.0-v1.4 SHIPPED | v1.5 PLANNING
 
 ## Performance Metrics
 
@@ -63,9 +63,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.4 milestone archived
+Stopped at: v1.5 milestone planning
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.4 milestone archived*
+*Last updated: 2026-02-03 — v1.5 milestone started*

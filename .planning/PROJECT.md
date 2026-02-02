@@ -62,15 +62,14 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Next Milestone: v1.5 (Planning)
+## Current Milestone: v1.5 Onboarding & Polish
 
-**Potential scope:**
-- Search functionality across lessons (PLAT-09)
-- Dark/light theme toggle (PLAT-10)
-- Export/import progress (PLAT-11)
-- MongoDB change streams module (CONT-01)
+**Goal:** Улучшить onboarding для новых пользователей и повысить визуальное качество контента.
 
-Run `/gsd:new-milestone` to define v1.5 scope and requirements.
+**Target features:**
+- Module 0: Как пользоваться платформой (навигация, прогресс, lab intro, структура курса)
+- Ссылка на GitHub репозиторий в header/footer
+- Glass-стилизация "Ключевые выводы" во всех уроках
 
 ## Requirements
 
@@ -105,7 +104,12 @@ Run `/gsd:new-milestone` to define v1.5 scope and requirements.
 
 ### Active
 
-**v1.5 Candidates:**
+**v1.5 Onboarding & Polish:**
+- [ ] ONB-01: Module 0 — Как пользоваться платформой
+- [ ] ONB-02: Ссылка на GitHub репозиторий
+- [ ] STYLE-01: Glass-стилизация "Ключевые выводы"
+
+**Deferred to v1.6+:**
 - [ ] PLAT-09: Search functionality across lessons
 - [ ] PLAT-10: Dark/light theme toggle
 - [ ] PLAT-11: Export/import progress
@@ -162,4 +166,4 @@ Run `/gsd:new-milestone` to define v1.5 scope and requirements.
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 after v1.4 milestone*
+*Last updated: 2026-02-03 after v1.5 milestone started*

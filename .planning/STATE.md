@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 31 of 36 (Module 4 Diagram Migration)
-Plan: 0 of 2 planned
-Status: Ready to plan
-Last activity: 2026-02-02 — Quick task 006: Fixed 13 visual diagram issues
+Plan: 1 of 4 planned
+Status: In progress
+Last activity: 2026-02-02 — Completed 31-01-PLAN.md (8 diagrams for lessons 01-03)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [################....] 65%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [#################...] 70%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 88 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 16)
+- Total plans completed: 89 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 17)
 - Average duration: ~7 min
 - Total execution time: ~8.5 hours
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [################....] 65
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 18/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 19/23 | In Progress |
 
 ## Accumulated Context
 
@@ -90,6 +90,9 @@ Recent decisions affecting v1.4 work:
 - [30-03]: GTID set comparison with side-by-side containers and UUID highlighting
 - [30-03]: Chunk watermarks (LOW/HIGH) with interleaving binlog events
 - [30-03]: Three-tier monitoring architecture (JMX amber, CloudWatch blue, Operational emerald)
+- [31-01]: JMX Exporter uses amber className override (not new variant) for one-off color
+- [31-01]: Health states color scheme: emerald (healthy), amber (attention), rose (critical)
+- [31-01]: Decision tree uses nested divs with flex for branching (not SVG)
 
 ### Pending Todos
 
@@ -113,9 +116,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Quick task 006 complete, ready to plan Phase 31
+Stopped at: Completed 31-01-PLAN.md (8 diagrams for lessons 01-03)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Phase 30 complete (Module 3 Migration: 49 diagrams, 14 MDX files, zero Mermaid)*
+*Last updated: 2026-02-02 — Plan 31-01 complete (8 Module 4 diagrams: JMX, Prometheus, Grafana)*

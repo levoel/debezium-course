@@ -10,13 +10,24 @@
 
 ## Current State
 
-**Version:** v1.3 (shipped 2026-02-02)
+**Version:** v1.4 (shipped 2026-02-03)
 **Live:** https://levoel.github.io/debezium-course/
-**Codebase:** 74 source files, 35,000+ LOC (TypeScript, MDX, Astro)
-**Content:** 8 modules, 57+ lessons, 400+ code examples, 170 Mermaid diagrams
+**Codebase:** 144 source files, 60,000+ LOC (TypeScript, MDX, Astro, React)
+**Content:** 8 modules, 57+ lessons, 400+ code examples, 170 interactive glass diagrams
 **Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
+**Bundle:** 1.0MB JavaScript (72% reduction from 3.6MB after Mermaid removal)
 
 ## Completed Milestones
+
+### v1.4 Interactive Glass Diagrams (shipped 2026-02-03)
+
+**Delivered:**
+- Primitives library: FlowNode, Arrow, DiagramContainer, DiagramTooltip, SequenceActor, SequenceLifeline, SequenceMessage, SequenceDiagram
+- 170 interactive glass diagram components across all 8 modules
+- 2.6MB JavaScript bundle reduction (72%) - Mermaid removed
+- Full keyboard accessibility with Radix tooltips (Tab, Enter/Space, Escape)
+- Mobile-responsive layouts verified at 390x844 viewport
+- Russian-language tooltips with contextual explanations
 
 ### v1.3 UX/Design Refresh (shipped 2026-02-02)
 
@@ -51,17 +62,15 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.4 Interactive Glass Diagrams
+## Next Milestone: v1.5 (Planning)
 
-**Goal:** Заменить все 170 Mermaid диаграмм на интерактивные React компоненты в стиле liquid glass
+**Potential scope:**
+- Search functionality across lessons (PLAT-09)
+- Dark/light theme toggle (PLAT-10)
+- Export/import progress (PLAT-11)
+- MongoDB change streams module (CONT-01)
 
-**Scope:**
-- Создать библиотеку переиспользуемых diagram primitives (FlowNode, Arrow, ModeCard, etc.)
-- Заменить все Mermaid flowcharts на glass-styled компоненты
-- Добавить tooltip'ы при клике на ноды с пояснениями
-- Сохранить мобильную адаптивность и accessibility
-
-**Phases:** 26+
+Run `/gsd:new-milestone` to define v1.5 scope and requirements.
 
 ## Requirements
 
@@ -87,22 +96,16 @@
 - ✓ Homepage accordion menu — v1.3
 - ✓ Glass-styled tables and callouts — v1.3
 - ✓ Accessibility fallbacks — v1.3
+- ✓ Diagram primitives library (FlowNode, Arrow, Container, Tooltip) — v1.4
+- ✓ Sequence diagram primitives (Actor, Lifeline, Message, Layout) — v1.4
+- ✓ 170 interactive glass diagrams across 8 modules — v1.4
+- ✓ 2.6MB bundle reduction (Mermaid removed) — v1.4
+- ✓ Keyboard accessibility (Tab, Enter/Space, Escape) — v1.4
+- ✓ Mobile responsiveness verified (390x844) — v1.4
 
 ### Active
 
-**v1.4 Scope:**
-- [ ] DIAG-01: Diagram primitives library (FlowNode, Arrow, Container components)
-- [ ] DIAG-02: Tooltip system for node explanations
-- [ ] DIAG-03: Replace Module 1 Mermaid diagrams with glass components
-- [ ] DIAG-04: Replace Module 2 Mermaid diagrams
-- [ ] DIAG-05: Replace Module 3 Mermaid diagrams
-- [ ] DIAG-06: Replace Module 4 Mermaid diagrams
-- [ ] DIAG-07: Replace Module 5 Mermaid diagrams
-- [ ] DIAG-08: Replace Module 6 Mermaid diagrams
-- [ ] DIAG-09: Replace Module 7 Mermaid diagrams
-- [ ] DIAG-10: Replace Module 8 Mermaid diagrams
-
-**Deferred:**
+**v1.5 Candidates:**
 - [ ] PLAT-09: Search functionality across lessons
 - [ ] PLAT-10: Dark/light theme toggle
 - [ ] PLAT-11: Export/import progress
@@ -159,4 +162,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-02 — v1.4 Interactive Glass Diagrams milestone started*
+*Last updated: 2026-02-03 after v1.4 milestone*

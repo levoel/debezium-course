@@ -142,7 +142,7 @@ function translateDifficulty(difficulty: string) {
   </article>
 
   <!-- End of lesson completion prompt -->
-  <div class="mt-8 p-6 bg-gray-800 border border-gray-700 rounded-lg">
+  <div class="mt-8 p-6 bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-lg">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
         <h3 class="text-lg font-semibold text-gray-200 mb-1">Закончили урок?</h3>
@@ -158,7 +158,7 @@ function translateDifficulty(difficulty: string) {
       {prevLesson ? (
         <a
           href={`${import.meta.env.BASE_URL}/course/${cleanSlug(prevLesson.id)}`}
-          class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors"
+          class="group flex items-center gap-4 p-4 bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-lg hover:border-blue-500 transition-colors"
         >
           <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -177,7 +177,7 @@ function translateDifficulty(difficulty: string) {
       {nextLesson ? (
         <a
           href={`${import.meta.env.BASE_URL}/course/${cleanSlug(nextLesson.id)}`}
-          class="group flex items-center gap-4 p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 transition-colors md:justify-end"
+          class="group flex items-center gap-4 p-4 bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-lg hover:border-blue-500 transition-colors md:justify-end"
         >
           <div class="text-right">
             <div class="text-xs text-gray-400 mb-1">Следующий урок</div>

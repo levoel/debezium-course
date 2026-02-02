@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 34 - Module 7 Diagram Migration
+**Current focus:** Phase 35 - Module 8 Diagram Migration
 
 ## Current Position
 
-Phase: 34 of 36 (Module 7 Diagram Migration)
-Plan: 3 of 3 completed
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 34-03-PLAN.md (Cloud Run event-driven + monitoring diagrams, all 6 MDX files migrated)
+Phase: 35 of 36 (Module 8 Diagram Migration)
+Plan: 0 of 2 completed
+Status: Not started
+Last activity: 2026-02-02 — Completed Phase 34 (Module 7: 13 diagrams, 6 MDX files, 6 GCP variants)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [█████████████████████░] 99%
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 30/32 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 31/34 | In Progress |
 
 ## Accumulated Context
 
@@ -167,9 +167,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 34-03-PLAN.md (Cloud Run event-driven + monitoring diagrams, all 6 MDX files migrated, 5m)
+Stopped at: Phase 34 complete, continuing to Phase 35
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Phase 34 Plan 02 complete (IAM/Workload Identity + Dataflow/BigQuery: 3 diagrams, authentication sequence + pipeline architecture)*
+*Last updated: 2026-02-02 — Phase 34 complete (Module 7 Diagram Migration: 13 diagrams, 129 tooltips, 6 GCP variants)*

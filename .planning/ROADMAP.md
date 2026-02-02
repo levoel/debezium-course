@@ -10,7 +10,7 @@
 
 ## Overview
 
-v1.4 replaces all 170 Mermaid diagrams with interactive React components using the liquid glass design system. The migration follows a primitives-first approach: build reusable FlowNode, Arrow, Container, and Tooltip components (Phase 26), then sequence diagram primitives (Phase 27), then migrate diagrams module-by-module (Phases 28-35), and finalize with testing and Mermaid removal (Phase 36). This delivers full interactivity, visual consistency, and ~1MB bundle size reduction.
+v1.4 replaces all 170 Mermaid diagrams with interactive React components using the liquid glass design system. The migration follows a primitives-first approach: build reusable FlowNode, Arrow, Container, and Tooltip components (Phase 26), then sequence diagram primitives (Phase 27), then migrate diagrams module-by-module (Phases 28-35), and finalize with testing and Mermaid removal (Phase 36). This delivers full interactivity, visual consistency, and ~2MB bundle size reduction.
 
 ## Phases
 
@@ -195,17 +195,17 @@ Plans:
 **Depends on**: Phase 35
 **Requirements**: FINAL-01, FINAL-02, FINAL-03, FINAL-04, FINAL-05
 **Success Criteria** (what must be TRUE):
-  1. Visual regression tests pass for all 170 diagrams across all modules
+  1. Smoke tests verify all 170 diagrams render without console errors
   2. Accessibility audit shows zero WCAG violations for keyboard navigation
-  3. Mobile responsiveness verified on iPhone 12 equivalent viewport
+  3. Mobile responsiveness verified on iPhone 12 equivalent viewport (390x844)
   4. Mermaid package removed from package.json and node_modules
-  5. Bundle size reduced by approximately 1MB (verified via build comparison)
-**Plans**: TBD
+  5. Bundle size reduced by approximately 2MB (verified via build comparison)
+**Plans**: 3 plans (Wave 1: 01 | Wave 2: 02 | Wave 3: 03)
 
 Plans:
-- [ ] 36-01-PLAN.md — Visual regression and accessibility testing setup
-- [ ] 36-02-PLAN.md — Mobile verification and Mermaid removal
-- [ ] 36-03-PLAN.md — Bundle size verification and final optimization
+- [ ] 36-01-PLAN.md — Smoke tests for diagram rendering + accessibility verification
+- [ ] 36-02-PLAN.md — Mobile viewport tests + remove Mermaid + delete test page
+- [ ] 36-03-PLAN.md — Bundle size verification + final optimization
 
 <details>
 <summary>[x] v1.3 UX/Design Refresh (Phases 22-25) - SHIPPED 2026-02-02</summary>
@@ -438,7 +438,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | MOD8-02 | 35 | Module 8 glass diagram creation |
 | MOD8-03 | 35 | Module 8 tooltip addition |
 | MOD8-04 | 35 | Module 8 Mermaid removal |
-| FINAL-01 | 36 | Visual regression testing |
+| FINAL-01 | 36 | Smoke tests (diagram rendering verification) |
 | FINAL-02 | 36 | Accessibility audit (WCAG keyboard) |
 | FINAL-03 | 36 | Mobile responsiveness verification |
 | FINAL-04 | 36 | Remove mermaid dependency |

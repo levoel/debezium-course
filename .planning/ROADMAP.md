@@ -149,11 +149,13 @@ Plans:
   3. User can click nodes to see data engineering explanations
   4. No Mermaid code blocks remain in Module 6 MDX files
   5. Streaming architecture diagrams show data flow clearly
-**Plans**: TBD
+**Plans**: 4 plans (Wave 1: 01, 02, 03 | Wave 2: 04)
 
 Plans:
-- [ ] 33-01-PLAN.md — Audit Module 6 diagrams and create glass component versions
-- [ ] 33-02-PLAN.md — Add tooltips and remove Mermaid from Module 6
+- [ ] 33-01-PLAN.md — Create glass components for lessons 01-02 (Python Consumer, Pandas Integration)
+- [ ] 33-02-PLAN.md — Create glass components for lessons 03-04 (PyFlink Connector, Stateful Processing)
+- [ ] 33-03-PLAN.md — Create glass components for lessons 05-06 (PySpark Streaming, ETL/ELT Patterns)
+- [ ] 33-04-PLAN.md — Create Feature Engineering components and migrate all 7 MDX files
 
 ### Phase 34: Module 7 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 7 (Cloud-Native GCP) are replaced with interactive glass components
@@ -381,7 +383,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 30. Module 3 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
 | 31. Module 4 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
 | 32. Module 5 Migration | v1.4 | 3/3 | Complete | 2026-02-02 |
-| 33. Module 6 Migration | v1.4 | 0/2 | Not started | - |
+| 33. Module 6 Migration | v1.4 | 0/4 | Not started | - |
 | 34. Module 7 Migration | v1.4 | 0/2 | Not started | - |
 | 35. Module 8 Migration | v1.4 | 0/2 | Not started | - |
 | 36. Finalization | v1.4 | 0/3 | Not started | - |

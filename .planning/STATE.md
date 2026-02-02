@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 29 - Module 2 Diagram Migration
+**Current focus:** Phase 30 - Module 3 Diagram Migration
 
 ## Current Position
 
-Phase: 29 of 36 (Module 2 Diagram Migration) — VERIFIED COMPLETE
-Plan: 2 of 2 complete
-Status: Ready for Phase 30
-Last activity: 2026-02-02 — Phase 29 verified (19 diagrams, 177 tooltips, Mermaid removed)
+Phase: 30 of 36 (Module 3 Diagram Migration)
+Plan: 1 of 4 complete
+Status: In progress
+Last activity: 2026-02-02 — Completed 30-01-PLAN.md (11 diagram exports for lessons 01-04)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [##########..........] 45%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [###########.........] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 80 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 8)
+- Total plans completed: 81 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 9)
 - Average duration: ~7 min
 - Total execution time: ~8.4 hours
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [##########..........] 45
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 10/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 11/23 | In Progress |
 
 ## Accumulated Context
 
@@ -77,6 +77,10 @@ Recent decisions affecting v1.4 work:
 - [29-02]: Global Database with two regions and Aurora replication arrow
 - [29-02]: Snapshot decision tree with nested FlowNodes and color-coded paths
 - [29-02]: Lab completion as numbered step list with tooltip summaries
+- [30-01]: BinlogEventSequenceDiagram uses messageSpacing=38 for 16 messages
+- [30-01]: GtidReplicationDiagram uses messageSpacing=55 for failover clarity
+- [30-01]: HeartbeatMonitoringDiagram as SequenceDiagram for 4-actor heartbeat flow
+- [30-01]: MysqlConnectorDataFlowDiagram combines phase headers with sequence diagram
 
 ### Pending Todos
 
@@ -99,9 +103,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Phase 29 verified complete, ready for Phase 30
+Stopped at: Completed 30-01-PLAN.md
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Phase 29 verified complete (Module 2: 19 diagrams, 177 tooltips)*
+*Last updated: 2026-02-02 — Completed 30-01 (Module 3 lessons 01-04: 11 diagram exports)*

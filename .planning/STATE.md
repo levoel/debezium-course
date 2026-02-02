@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 35 of 36 (Module 8 Diagram Migration)
-Plan: 0 of 2 completed
-Status: Not started
-Last activity: 2026-02-02 — Completed Phase 34 (Module 7: 13 diagrams, 6 MDX files, 6 GCP variants)
+Plan: 1 of 2 completed
+Status: In progress
+Last activity: 2026-02-02 — Completed 35-01-PLAN.md (5 core capstone diagrams)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [█████████████████████░] 99%
 
@@ -144,6 +144,11 @@ Recent decisions affecting v1.4 work:
 - [34-03]: 3-column grid layout for monitoring points hierarchy (not nested containers) for flat service-to-metrics mapping
 - [34-03]: Alert hierarchy with nested DiagramContainers for severity levels (rose=Critical, amber=Warning, blue=Info)
 - [34-03]: Module 7 complete: 14 diagrams, 6 MDX files, zero Mermaid code blocks
+- [35-01]: C4 Model: Map Person to FlowNode variant='app' with rounded-full className (no custom icon)
+- [35-01]: C4 Model: Map System_Ext to FlowNode variant='sink' with border-dashed className
+- [35-01]: Hero diagram: Use vertical stacking of DiagramContainers for 5 architectural layers
+- [35-01]: Outbox table: Use red color override (bg-red-500/20 border-red-400/30) as Outbox Pattern signature
+- [35-01]: Four Golden Signals: Map Latency->Replication Lag, Traffic->Event Throughput, Errors->Connector Failures, Saturation->Queue Capacity
 
 ### Pending Todos
 
@@ -167,9 +172,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Phase 34 complete, continuing to Phase 35
+Stopped at: Completed 35-01-PLAN.md, ready for 35-02
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Phase 34 complete (Module 7 Diagram Migration: 13 diagrams, 129 tooltips, 6 GCP variants)*
+*Last updated: 2026-02-02 — Completed 35-01 (5 core capstone diagrams: hero architecture, C4 System Context, C4 Container, Production Gap, Four Golden Signals)*

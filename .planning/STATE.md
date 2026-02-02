@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 33 of 36 (Module 6 Diagram Migration)
-Plan: 3 of 4 completed
+Plan: 2 of 4 completed
 Status: In progress
-Last activity: 2026-02-02 — Completed 33-03-PLAN.md (PySpark & ETL/ELT diagrams, 9 total diagrams for lessons 05-06)
+Last activity: 2026-02-02 — Completed 33-02-PLAN.md (PyFlink Streaming diagrams: 10 diagrams for lessons 03-04)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [█████████████████████] 98%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [███████████████████░░] 96%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 98 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 26)
+- Total plans completed: 96 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 24)
 - Average duration: ~6 min
-- Total execution time: ~9.2 hours
+- Total execution time: ~9.1 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 26/24 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 24/24 | In Progress |
 
 ## Accumulated Context
 
@@ -114,6 +114,11 @@ Recent decisions affecting v1.4 work:
 - [32-03]: Decision tree with 3 independent paths for schema changes (add/remove/change)
 - [32-03]: Color-coded compatibility: emerald=BACKWARD, blue=FORWARD, purple=FULL, rose=NONE
 - [32-03]: Module 5 complete: 21 diagrams, 8 MDX files, zero Mermaid code blocks
+- [33-02]: SequenceDiagram for out-of-order events (messageSpacing=60) and temporal joins (messageSpacing=55)
+- [33-02]: Horizontal FlowNode chains for window timelines (simpler than Gantt, proven pattern)
+- [33-02]: Color progression for state growth: emerald (Day 1) → amber (Day 7/30) → rose with animate-pulse (Day 90 OOM)
+- [33-02]: Multi-layer nested containers for CDC architecture (Source/CDC/Processing/Output layers)
+- [33-02]: Russian tooltips with streaming terminology (watermark, event time, processing time, window types)
 - [33-01]: Amber for at-least-once (caution), emerald for exactly-once (recommended) in delivery semantics
 - [33-01]: SequenceDiagram for consumer rebalancing with max.poll.interval.ms timeout (8 messages, messageSpacing=55)
 - [33-01]: Hierarchical tree layout for CDC envelope structure (nested DiagramContainers with horizontal arrows)
@@ -146,9 +151,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 33-03-PLAN.md (Module 6 PySpark & ETL/ELT: 9 diagrams)
+Stopped at: Completed 33-02-PLAN.md (PyFlink Streaming: 10 diagrams for lessons 03-04)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 33-03 complete (Module 6: PySpark & ETL/ELT - 9 diagrams for lessons 05-06)*
+*Last updated: 2026-02-02 — Plan 33-02 complete (Module 6: PyFlink streaming diagrams with SequenceDiagram for temporal flows)*

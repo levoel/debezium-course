@@ -6,7 +6,7 @@
 - [x] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (shipped 2026-02-01)
 - [x] **v1.2 Course Reorganization** - Phases 19-21 (shipped 2026-02-01)
 - [x] **v1.3 UX/Design Refresh** - Phases 22-25 (shipped 2026-02-02)
-- [ ] **v1.4 Interactive Glass Diagrams** - Phases 26-36 (in progress)
+- [x] **v1.4 Interactive Glass Diagrams** - Phases 26-36 (shipped 2026-02-02)
 
 ## Overview
 
@@ -203,9 +203,9 @@ Plans:
 **Plans**: 3 plans (Wave 1: 01 | Wave 2: 02 | Wave 3: 03)
 
 Plans:
-- [ ] 36-01-PLAN.md — Smoke tests for diagram rendering + accessibility verification
-- [ ] 36-02-PLAN.md — Mobile viewport tests + remove Mermaid + delete test page
-- [ ] 36-03-PLAN.md — Bundle size verification + final optimization
+- [x] 36-01-PLAN.md — Smoke tests for diagram rendering + accessibility verification
+- [x] 36-02-PLAN.md — Mobile viewport tests + remove Mermaid + delete test page
+- [x] 36-03-PLAN.md — Bundle size verification + v1.4 finalization
 
 <details>
 <summary>[x] v1.3 UX/Design Refresh (Phases 22-25) - SHIPPED 2026-02-02</summary>
@@ -387,7 +387,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 33. Module 6 Migration | v1.4 | 4/4 | Complete | 2026-02-02 |
 | 34. Module 7 Migration | v1.4 | 3/3 | Complete | 2026-02-02 |
 | 35. Module 8 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
-| 36. Finalization | v1.4 | 0/3 | Not started | - |
+| 36. Finalization | v1.4 | 3/3 | Complete | 2026-02-02 |
 
 ## Coverage
 

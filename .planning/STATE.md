@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 33 of 36 (Module 6 Diagram Migration)
-Plan: 1 of 4 completed
+Plan: 3 of 4 completed
 Status: In progress
-Last activity: 2026-02-02 — Completed 33-01-PLAN.md (Python Foundations: Advanced Consumer & Pandas Integration diagrams)
+Last activity: 2026-02-02 — Completed 33-03-PLAN.md (PySpark & ETL/ELT diagrams, 9 total diagrams for lessons 05-06)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████████████████] 96%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [█████████████████████] 98%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 96 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 24)
+- Total plans completed: 98 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 26)
 - Average duration: ~6 min
-- Total execution time: ~9.1 hours
+- Total execution time: ~9.2 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 24/24 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 26/24 | In Progress |
 
 ## Accumulated Context
 
@@ -118,6 +118,11 @@ Recent decisions affecting v1.4 work:
 - [33-01]: SequenceDiagram for consumer rebalancing with max.poll.interval.ms timeout (8 messages, messageSpacing=55)
 - [33-01]: Hierarchical tree layout for CDC envelope structure (nested DiagramContainers with horizontal arrows)
 - [33-01]: Color-coded CDC fields: blue=payload, emerald=before/after, rose=op, amber=ts_ms, purple=source
+- [33-03]: Side-by-side comparison for PySpark vs PyFlink philosophy (blue vs purple containers)
+- [33-03]: Timeline visualization for watermark events (vertical with threshold line and late event highlighting)
+- [33-03]: Three-layer data lake architecture (nested DiagramContainers for raw/snapshot/history)
+- [33-03]: Operation separation with color-coded branching (emerald=INSERT, amber=UPDATE, rose=DELETE)
+- [33-03]: Metadata columns grid (2x2) for append-only pattern (_operation, _cdc_timestamp, _processed_at, _source_db/_source_table)
 
 ### Pending Todos
 
@@ -141,9 +146,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 33-01-PLAN.md (Module 6 Python Foundations: 3 diagrams)
+Stopped at: Completed 33-03-PLAN.md (Module 6 PySpark & ETL/ELT: 9 diagrams)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 33-01 complete (Module 6 Python Foundations: 3 diagrams, 2 components)*
+*Last updated: 2026-02-02 — Plan 33-03 complete (Module 6: PySpark & ETL/ELT - 9 diagrams for lessons 05-06)*

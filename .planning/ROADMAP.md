@@ -64,11 +64,11 @@ Plans:
   3. User can click nodes in Module 1 diagrams to see contextual explanations
   4. No Mermaid code blocks remain in Module 1 MDX files
   5. Module 1 lessons render correctly with new diagram components
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 28-01-PLAN.md — Audit Module 1 diagrams and create glass component versions
-- [ ] 28-02-PLAN.md — Add tooltips and remove Mermaid from Module 1
+- [ ] 28-01-PLAN.md — Create glass diagram components for lessons 01-03 (CDC, Architecture, Lab Setup)
+- [ ] 28-02-PLAN.md — Create diagram components for lessons 04-06 and update all MDX files
 
 ### Phase 29: Module 2 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 2 (PostgreSQL/Aurora PostgreSQL) are replaced with interactive glass components

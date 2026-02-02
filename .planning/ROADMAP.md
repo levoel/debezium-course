@@ -32,11 +32,11 @@ v1.4 replaces all 170 Mermaid diagrams with interactive React components using t
   4. User can click any FlowNode to reveal tooltip with explanation text
   5. User can navigate between nodes using Tab key and activate tooltip with Enter/Space
   6. Tooltips position correctly without overlapping target elements on both desktop and mobile
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 26-01-PLAN.md — FlowNode, Arrow, DiagramContainer primitives with TypeScript interfaces
-- [ ] 26-02-PLAN.md — Radix tooltip integration with glass styling and accessibility
+- [ ] 26-01-PLAN.md — Install Radix, extract FlowNode and Arrow primitives with TypeScript interfaces
+- [ ] 26-02-PLAN.md — DiagramContainer + Radix tooltip with glass styling and keyboard accessibility
 
 ### Phase 27: Sequence Diagram Primitives
 **Goal**: Reusable diagram primitives exist for building interactive sequence diagrams

@@ -6,7 +6,7 @@
 - [x] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (shipped 2026-02-01)
 - [x] **v1.2 Course Reorganization** - Phases 19-21 (shipped 2026-02-01)
 - [x] **v1.3 UX/Design Refresh** - Phases 22-25 (shipped 2026-02-02)
-- [x] **v1.4 Interactive Glass Diagrams** - Phases 26-36 (shipped 2026-02-02)
+- [x] **v1.4 Interactive Glass Diagrams** - Phases 26-37 (shipped 2026-02-02)
 
 ## Overview
 
@@ -19,7 +19,7 @@ v1.4 replaces all 170 Mermaid diagrams with interactive React components using t
 - v1.1: Phases 12-18 (complete)
 - v1.2: Phases 19-21 (complete)
 - v1.3: Phases 22-25 (complete)
-- v1.4: Phases 26-36
+- v1.4: Phases 26-37
 
 ### Phase 26: Flowchart Primitives + Tooltip Foundation
 **Goal**: Reusable diagram primitives exist for building interactive flowchart diagrams with accessible tooltips
@@ -207,6 +207,21 @@ Plans:
 - [x] 36-02-PLAN.md — Mobile viewport tests + remove Mermaid + delete test page
 - [x] 36-03-PLAN.md — Bundle size verification + v1.4 finalization
 
+### Phase 37: Visual Diagram Verification
+**Goal**: All 170 diagrams are visually verified in browser and any issues are fixed
+**Depends on**: Phase 36
+**Requirements**: VISUAL-01, VISUAL-02, VISUAL-03
+**Success Criteria** (what must be TRUE):
+  1. All sequence diagrams render messages correctly (no missing elements)
+  2. All flowchart diagrams render with proper alignment and spacing
+  3. All tooltips are accessible and display content correctly
+  4. No visual regressions across all 8 modules
+  5. Any discovered issues are fixed and committed
+**Plans**: 1 plan (Wave 1: 01)
+
+Plans:
+- [x] 37-01-PLAN.md — Visual verification of all diagrams using browser with issue fixes
+
 <details>
 <summary>[x] v1.3 UX/Design Refresh (Phases 22-25) - SHIPPED 2026-02-02</summary>
 
@@ -373,7 +388,7 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35 -> 36
+Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35 -> 36 -> 37
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -388,6 +403,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | 34. Module 7 Migration | v1.4 | 3/3 | Complete | 2026-02-02 |
 | 35. Module 8 Migration | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 36. Finalization | v1.4 | 3/3 | Complete | 2026-02-02 |
+| 37. Visual Verification | v1.4 | 1/1 | Complete | 2026-02-02 |
 
 ## Coverage
 
@@ -443,8 +459,11 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | FINAL-03 | 36 | Mobile responsiveness verification |
 | FINAL-04 | 36 | Remove mermaid dependency |
 | FINAL-05 | 36 | Bundle size optimization verification |
+| VISUAL-01 | 37 | Visual verification of all sequence diagrams |
+| VISUAL-02 | 37 | Visual verification of all flowchart diagrams |
+| VISUAL-03 | 37 | Tooltip accessibility verification |
 
-**Coverage:** 48/48 requirements mapped
+**Coverage:** 51/51 requirements mapped
 
 ### v1.3 Requirement Mapping (Complete)
 

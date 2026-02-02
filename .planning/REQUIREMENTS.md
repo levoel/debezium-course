@@ -75,10 +75,10 @@
 
 **Goal:** Заменить Mermaid диаграммы в Module 6 (Data Engineering Integration).
 
-- [ ] **MOD6-01**: Аудит диаграмм Module 6
-- [ ] **MOD6-02**: Создать glass-версии диаграмм (streaming architectures, Flink/Spark)
-- [ ] **MOD6-03**: Добавить tooltip'ы с пояснениями
-- [ ] **MOD6-04**: Удалить Mermaid код из MDX файлов Module 6
+- [x] **MOD6-01**: Аудит диаграмм Module 6
+- [x] **MOD6-02**: Создать glass-версии диаграмм (streaming architectures, Flink/Spark)
+- [x] **MOD6-03**: Добавить tooltip'ы с пояснениями
+- [x] **MOD6-04**: Удалить Mermaid код из MDX файлов Module 6
 
 ### Module 7 Migration (MOD7)
 
@@ -240,10 +240,10 @@ GitHub Pages deployment complete.
 | MOD5-02 | Phase 32 | Pending |
 | MOD5-03 | Phase 32 | Pending |
 | MOD5-04 | Phase 32 | Pending |
-| MOD6-01 | Phase 33 | Pending |
-| MOD6-02 | Phase 33 | Pending |
-| MOD6-03 | Phase 33 | Pending |
-| MOD6-04 | Phase 33 | Pending |
+| MOD6-01 | Phase 33 | Complete |
+| MOD6-02 | Phase 33 | Complete |
+| MOD6-03 | Phase 33 | Complete |
+| MOD6-04 | Phase 33 | Complete |
 | MOD7-01 | Phase 34 | Pending |
 | MOD7-02 | Phase 34 | Pending |
 | MOD7-03 | Phase 34 | Pending |
@@ -295,4 +295,4 @@ GitHub Pages deployment complete.
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 — Phase 30 complete (MOD3-01 to MOD3-04 verified)*
+*Last updated: 2026-02-02 — Phase 33 complete (MOD6-01 to MOD6-04 verified)*

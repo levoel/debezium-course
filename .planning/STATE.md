@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 32 of 36 (Module 5 Diagram Migration)
-Plan: 1 of 3 planned
+Plan: 2 of 3 planned
 Status: Phase in progress
-Last activity: 2026-02-02 — Completed 32-01-PLAN.md (10 diagrams for SMT fundamentals)
+Last activity: 2026-02-02 — Completed 32-02-PLAN.md (8 diagrams for Routing & Outbox Pattern)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [####################] 87%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [####################] 91%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 93 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 21)
+- Total plans completed: 94 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 22)
 - Average duration: ~7 min
 - Total execution time: ~8.9 hours
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [####################] 87
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 21/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 22/23 | In Progress |
 
 ## Accumulated Context
 
@@ -105,6 +105,10 @@ Recent decisions affecting v1.4 work:
 - [32-01]: SMT chain diagrams use horizontal FlowNode chains (logical order, not temporal)
 - [32-01]: Color scheme: rose=filter, blue=unwrap, purple=route, amber=mask
 - [32-01]: Predicate evaluation with TRUE/FALSE branches (emerald=apply, gray=skip)
+- [32-02]: Nested DiagramContainers for multi-subsystem architecture (App/DB/CDC/Kafka)
+- [32-02]: Rose color for failure scenarios (dual-write problem visualization)
+- [32-02]: Side-by-side field mapping pattern for SMT transformations
+- [32-02]: Multi-service architecture with grid layout and separate containers per service
 
 ### Pending Todos
 
@@ -128,9 +132,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 32-01-PLAN.md (10 SMT diagrams, Module 5 fundamentals)
+Stopped at: Completed 32-02-PLAN.md (8 routing & outbox diagrams)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 32-01 complete (10 diagrams for Module 5 lessons 01-03)*
+*Last updated: 2026-02-02 — Plan 32-02 complete (8 routing & outbox diagrams with nested containers)*

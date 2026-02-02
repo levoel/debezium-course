@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 36 - Finalization (Testing + Mermaid Removal)
+**Current focus:** v1.4 Complete - Interactive Glass Diagrams shipped
 
 ## Current Position
 
 Phase: 36 of 36 (Finalization)
-Plan: 2 of 3 completed
-Status: In progress
-Last activity: 2026-02-02 — Completed 36-02 (Mobile tests + Mermaid removal)
+Plan: 3 of 3 completed
+Status: v1.4 COMPLETE
+Last activity: 2026-02-02 — Completed 36-03 (Bundle verification + v1.4 finalization)
 
-Progress: v1.0-v1.3 [####################] 100% | v1.4 [███████████████████████░] 99%
+Progress: v1.0-v1.4 [████████████████████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 107 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 35)
+- Total plans completed: 108 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 36)
 - Average duration: ~6 min
-- Total execution time: ~9.4 hours
+- Total execution time: ~9.5 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [████████
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 35/36 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 36/36 | Complete (2026-02-02) |
 
 ## Accumulated Context
 
@@ -156,6 +156,7 @@ Recent decisions affecting v1.4 work:
 - [36-01]: Use role="tooltip" selector for custom DiagramTooltip (not Radix Popover)
 - [36-02]: Mobile viewport test checks element bounding boxes (not page scrollWidth) for accuracy
 - [36-02]: Code blocks may overflow intentionally with horizontal scroll - diagrams must fit
+- [36-03]: Mermaid removed - 2.6MB bundle reduction (72% JS reduction, 3.6MB to 1.0MB)
 
 ### Pending Todos
 
@@ -179,9 +180,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 36-02-PLAN.md (Mobile tests + Mermaid removal)
+Stopped at: Completed 36-03-PLAN.md (v1.4 finalization - MILESTONE COMPLETE)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Completed 36-02 (Mobile viewport tests + Mermaid dependency removed)*
+*Last updated: 2026-02-02 — v1.4 COMPLETE: 170 glass diagrams, 2.6MB bundle reduction*

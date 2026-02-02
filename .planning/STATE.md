@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 31 - Module 4 Diagram Migration
+**Current focus:** Phase 32 - Module 5 Diagram Migration
 
 ## Current Position
 
-Phase: 31 of 36 (Module 4 Diagram Migration)
-Plan: 4 of 4 planned
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 31-04-PLAN.md (24 MDX migrations, Module 4 complete)
+Phase: 32 of 36 (Module 5 Diagram Migration)
+Plan: 1 of 3 planned
+Status: Phase in progress
+Last activity: 2026-02-02 — Completed 32-01-PLAN.md (10 diagrams for SMT fundamentals)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [####################] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 92 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 20)
+- Total plans completed: 93 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 21)
 - Average duration: ~7 min
-- Total execution time: ~8.8 hours
+- Total execution time: ~8.9 hours
 
 **By Milestone:**
 
@@ -31,7 +31,7 @@ Progress: v1.0-v1.3 [####################] 100% | v1.4 [####################] 87
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26-36 | 20/23 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 21/23 | In Progress |
 
 ## Accumulated Context
 
@@ -102,6 +102,9 @@ Recent decisions affecting v1.4 work:
 - [31-03]: OrphanedSlotCleanupDiagram uses color-coded outcomes (emerald=safe, amber=escalate, blue=wait)
 - [31-04]: Module 4 MDX import pattern: import from ../../../components/diagrams/module4
 - [31-04]: client:load directive for React hydration in Astro MDX
+- [32-01]: SMT chain diagrams use horizontal FlowNode chains (logical order, not temporal)
+- [32-01]: Color scheme: rose=filter, blue=unwrap, purple=route, amber=mask
+- [32-01]: Predicate evaluation with TRUE/FALSE branches (emerald=apply, gray=skip)
 
 ### Pending Todos
 
@@ -109,7 +112,7 @@ None.
 
 ### Blockers/Concerns
 
-- [Research]: SMT chain diagrams (Module 5) may need specialized multi-step components
+None.
 
 ### Quick Tasks Completed
 
@@ -125,9 +128,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 31-04-PLAN.md (Module 4 MDX migration complete)
+Stopped at: Completed 32-01-PLAN.md (10 SMT diagrams, Module 5 fundamentals)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — Plan 31-04 complete (24 MDX migrations, Module 4 zero Mermaid)*
+*Last updated: 2026-02-02 — Plan 32-01 complete (10 diagrams for Module 5 lessons 01-03)*

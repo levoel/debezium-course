@@ -48,10 +48,10 @@
 
 **Goal:** Заменить Mermaid диаграммы в Module 3 (MySQL/Aurora MySQL).
 
-- [ ] **MOD3-01**: Аудит диаграмм Module 3
-- [ ] **MOD3-02**: Создать glass-версии диаграмм (binlog архитектура, GTID)
-- [ ] **MOD3-03**: Добавить tooltip'ы с пояснениями
-- [ ] **MOD3-04**: Удалить Mermaid код из MDX файлов Module 3
+- [x] **MOD3-01**: Аудит диаграмм Module 3
+- [x] **MOD3-02**: Создать glass-версии диаграмм (binlog архитектура, GTID)
+- [x] **MOD3-03**: Добавить tooltip'ы с пояснениями
+- [x] **MOD3-04**: Удалить Mermaid код из MDX файлов Module 3
 
 ### Module 4 Migration (MOD4)
 
@@ -228,10 +228,10 @@ GitHub Pages deployment complete.
 | MOD2-02 | Phase 29 | Complete |
 | MOD2-03 | Phase 29 | Complete |
 | MOD2-04 | Phase 29 | Complete |
-| MOD3-01 | Phase 30 | Pending |
-| MOD3-02 | Phase 30 | Pending |
-| MOD3-03 | Phase 30 | Pending |
-| MOD3-04 | Phase 30 | Pending |
+| MOD3-01 | Phase 30 | Complete |
+| MOD3-02 | Phase 30 | Complete |
+| MOD3-03 | Phase 30 | Complete |
+| MOD3-04 | Phase 30 | Complete |
 | MOD4-01 | Phase 31 | Pending |
 | MOD4-02 | Phase 31 | Pending |
 | MOD4-03 | Phase 31 | Pending |
@@ -295,4 +295,4 @@ GitHub Pages deployment complete.
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 — Phase 29 complete (MOD2-01 to MOD2-04 verified)*
+*Last updated: 2026-02-02 — Phase 30 complete (MOD3-01 to MOD3-04 verified)*

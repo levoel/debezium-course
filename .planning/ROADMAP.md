@@ -48,11 +48,11 @@ Plans:
   3. SequenceLifeline component renders vertical dashed lines from actors
   4. User can click sequence diagram elements to reveal tooltips with explanations
   5. Sequence diagram layout handles variable message count and actor positioning
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 27-01-PLAN.md — SequenceActor, SequenceMessage, SequenceLifeline primitives
-- [ ] 27-02-PLAN.md — SequenceLayout container with column calculation and tooltip integration
+- [ ] 27-01-PLAN.md — SequenceActor, SequenceLifeline, SequenceMessage primitives
+- [ ] 27-02-PLAN.md — SequenceDiagram layout container with column calculation and tooltip integration
 
 ### Phase 28: Module 1 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 1 (Введение в CDC) are replaced with interactive glass components

@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 27 - Sequence Diagram Primitives
+**Current focus:** Phase 28 - Module 1 Diagram Migration
 
 ## Current Position
 
-Phase: 27 of 36 (Sequence Diagram Primitives)
-Plan: 2 of 2 in current phase (Phase Complete)
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 27-02-PLAN.md (SequenceDiagram Layout Container)
+Phase: 28 of 36 (Module 1 Diagram Migration)
+Plan: 0 of 2 in current phase
+Status: Ready to plan
+Last activity: 2026-02-02 — Phase 27 complete (3 requirements verified)
 
 Progress: v1.0-v1.3 [####################] 100% | v1.4 [####................] 17%
 
@@ -65,7 +65,6 @@ None.
 
 ### Blockers/Concerns
 
-- [Research]: Sequence diagram layout needs column width calculation algorithm (Phase 27)
 - [Research]: SMT chain diagrams (Module 5) may need specialized multi-step components
 
 ### Quick Tasks Completed

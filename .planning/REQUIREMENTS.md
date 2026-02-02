@@ -9,22 +9,22 @@
 
 **Goal:** Создать библиотеку переиспользуемых компонентов для замены Mermaid диаграмм.
 
-- [ ] **PRIM-01**: FlowNode component (glass-styled нода с вариантами: database, connector, cluster, sink, app, target)
-- [ ] **PRIM-02**: Arrow/Connector component (SVG стрелки между нодами)
-- [ ] **PRIM-03**: DiagramContainer component (glass карточка-обёртка для диаграммы)
-- [ ] **PRIM-04**: SequenceActor component (участник sequence диаграммы)
-- [ ] **PRIM-05**: SequenceMessage component (сообщение между участниками)
-- [ ] **PRIM-06**: SequenceLifeline component (вертикальная линия жизни)
+- [x] **PRIM-01**: FlowNode component (glass-styled нода с вариантами: database, connector, cluster, sink, app, target)
+- [x] **PRIM-02**: Arrow/Connector component (SVG стрелки между нодами)
+- [x] **PRIM-03**: DiagramContainer component (glass карточка-обёртка для диаграммы)
+- [x] **PRIM-04**: SequenceActor component (участник sequence диаграммы)
+- [x] **PRIM-05**: SequenceMessage component (сообщение между участниками)
+- [x] **PRIM-06**: SequenceLifeline component (вертикальная линия жизни)
 
 ### Tooltip System (TOOL)
 
 **Goal:** Интерактивные пояснения при клике на элементы диаграмм.
 
-- [ ] **TOOL-01**: Radix UI Tooltip integration (@radix-ui/react-tooltip)
-- [ ] **TOOL-02**: Click-to-open pattern (не hover-only для mobile)
-- [ ] **TOOL-03**: Keyboard navigation (Tab между нодами, Enter/Space для открытия)
-- [ ] **TOOL-04**: Tooltip positioning (не перекрывает target element)
-- [ ] **TOOL-05**: Glass-styled tooltip content (соответствует design system)
+- [x] **TOOL-01**: Radix UI Tooltip integration (@radix-ui/react-tooltip)
+- [x] **TOOL-02**: Click-to-open pattern (не hover-only для mobile)
+- [x] **TOOL-03**: Keyboard navigation (Tab между нодами, Enter/Space для открытия)
+- [x] **TOOL-04**: Tooltip positioning (не перекрывает target element)
+- [x] **TOOL-05**: Glass-styled tooltip content (соответствует design system)
 
 ### Module 1 Migration (MOD1)
 

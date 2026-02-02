@@ -51,8 +51,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 27-01-PLAN.md — SequenceActor, SequenceLifeline, SequenceMessage primitives
-- [ ] 27-02-PLAN.md — SequenceDiagram layout container with column calculation and tooltip integration
+- [x] 27-01-PLAN.md — SequenceActor, SequenceLifeline, SequenceMessage primitives
+- [x] 27-02-PLAN.md — SequenceDiagram layout container with column calculation and tooltip integration
 
 ### Phase 28: Module 1 Diagram Migration
 **Goal**: All Mermaid diagrams in Module 1 (Введение в CDC) are replaced with interactive glass components
@@ -370,7 +370,7 @@ Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 ->
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 26. Flowchart Primitives + Tooltip | v1.4 | 2/2 | Complete | 2026-02-02 |
-| 27. Sequence Diagram Primitives | v1.4 | 0/2 | Not started | - |
+| 27. Sequence Diagram Primitives | v1.4 | 2/2 | Complete | 2026-02-02 |
 | 28. Module 1 Migration | v1.4 | 0/2 | Not started | - |
 | 29. Module 2 Migration | v1.4 | 0/2 | Not started | - |
 | 30. Module 3 Migration | v1.4 | 0/2 | Not started | - |

@@ -149,7 +149,8 @@ test.describe('Diagram keyboard accessibility', () => {
     await page.goto(`${BASE}/course/01-module-1/01-cdc-fundamentals`);
     await page.waitForLoadState('networkidle');
 
-    // Find first interactive diagram node (Radix Popover.Trigger uses button role)
+    // Find first interactive diagram node with tooltip (button inside figure)
+    // DiagramTooltip uses a custom button + role="tooltip" pattern
     const firstNode = page.locator('figure[role="figure"] button').first();
 
     // Check if there are any interactive nodes with tooltips
@@ -157,12 +158,12 @@ test.describe('Diagram keyboard accessibility', () => {
       await firstNode.focus();
       await page.keyboard.press('Enter');
 
-      // Radix Popover creates this wrapper when open
-      await expect(page.locator('[data-radix-popper-content-wrapper]')).toBeVisible();
+      // Custom DiagramTooltip creates a div with role="tooltip" when open
+      await expect(page.locator('[role="tooltip"]')).toBeVisible();
 
       // Close with Escape
       await page.keyboard.press('Escape');
-      await expect(page.locator('[data-radix-popper-content-wrapper]')).toBeHidden();
+      await expect(page.locator('[role="tooltip"]')).toBeHidden();
     }
   });
 

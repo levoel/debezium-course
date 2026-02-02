@@ -184,11 +184,11 @@ Plans:
   3. User can click nodes to see capstone-specific explanations
   4. No Mermaid code blocks remain in Module 8 MDX files
   5. Full pipeline architecture diagram is interactive and comprehensive
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
 
 Plans:
-- [ ] 35-01-PLAN.md — Audit Module 8 diagrams and create glass component versions
-- [ ] 35-02-PLAN.md — Add tooltips and remove Mermaid from Module 8
+- [ ] 35-01-PLAN.md — Core capstone diagrams: hero pipeline, C4 architecture, production readiness (5 diagrams)
+- [ ] 35-02-PLAN.md — Multi-database extension + MDX migration + barrel export (3 diagrams + 5 MDX files)
 
 ### Phase 36: Finalization (Testing + Mermaid Removal)
 **Goal**: All diagrams pass quality verification and Mermaid dependency is removed

@@ -9,6 +9,7 @@
  * Map of module directory IDs to descriptive names (Russian)
  */
 export const MODULE_NAMES: Record<string, string> = {
+  '00-module-0': 'Как пользоваться',
   '01-module-1': 'Введение в CDC',
   '02-module-2': 'PostgreSQL и Aurora',
   '03-module-3': 'MySQL/Aurora',

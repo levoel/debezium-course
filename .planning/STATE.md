@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.4 Interactive Glass Diagrams
+**Current focus:** Phase 26 - Flowchart Primitives + Tooltip Foundation
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-02-02 — Milestone v1.4 started
+Phase: 26 of 36 (Flowchart Primitives + Tooltip Foundation)
+Plan: 0 of 2 in current phase
+Status: Ready to plan
+Last activity: 2026-02-02 — Roadmap created for v1.4 (11 phases, 49 requirements)
 
-Progress: v1.0-v1.3 [████████████████████] 100% | v1.4 [░░░░░░░░░░░░░░░░░░░░] 0%
+Progress: v1.0-v1.3 [####################] 100% | v1.4 [....................] 0%
 
 ## Performance Metrics
 
@@ -31,46 +31,21 @@ Progress: v1.0-v1.3 [███████████████████�
 | v1.1 MySQL/Aurora | 12-18 | 19 | Complete (2026-02-01) |
 | v1.2 Reorganization | 19-21 | 4 | Complete (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Complete (2026-02-02) |
-| v1.4 Glass Diagrams | 26+ | 0 | In Progress |
+| v1.4 Glass Diagrams | 26-36 | 0/23 | In Progress |
 
 ## Accumulated Context
 
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting v1.3 work:
+Recent decisions affecting v1.4 work:
 
-- [v1.3 Research]: Tailwind 4 native utilities (backdrop-blur-*) sufficient — no third-party plugins needed
-- [v1.3 Research]: Three-tier CSS architecture — CSS variables → Tailwind utilities → scoped styles
-- [v1.3 Research]: Blur budget enforcement — max 12px desktop, 8px mobile (performance constraint)
-- [v1.3 Research]: Vibrant gradient backgrounds mandatory — glass invisible on solid black
-- [v1.3 Research]: WCAG 4.5:1 contrast non-negotiable — test all text with WebAIM Contrast Checker
-- [v1.3 Research]: Accessibility media queries required — prefers-reduced-transparency, prefers-reduced-motion
-- [22-01]: CSS custom properties centralize all glass parameters for consistency
-- [22-01]: Three glass variants (standard panel, elevated panel, darker sidebar) for different UI contexts
-- [22-01]: Mobile blur reduction (10px → 8px) for performance on mobile devices
-- [22-01]: Accessibility-first approach - glass effects are enhancement, not requirement
-- [22-02]: Module names stored in single source of truth (moduleNames.ts) imported by all components
-- [22-02]: Module display format: 'NN. Descriptive Name' (e.g., '01. Введение в CDC')
-- [22-02]: Homepage organized by modules with left border visual grouping
-- [22-02]: Glass sidebar uses 10px blur desktop, 8px mobile (from 22-01 foundation)
-- [22-02]: Lesson cards made more compact (p-4 vs p-6) for better density
-- [23-01]: All modules collapsed by default for cleaner initial homepage view
-- [23-01]: Progress shows 0% during SSR to avoid hydration mismatch
-- [23-01]: Glass card hover lift pattern (-2px translateY) for interactive cards
-- [23-02]: React islands receive serializable data (arrays not Maps)
-- [23-02]: Glass styling hierarchy: glass-panel for static containers, glass-card for interactive elements
-- [24-01]: Light glass for tables (8px blur, 0.05 opacity) - lighter than standard panels for readability
-- [24-01]: Visible 1px solid cell borders in tables for data tracking
-- [24-01]: Code blocks use solid 0.95 opacity backgrounds (no glass) to preserve syntax highlighting
-- [24-01]: Table header rows have elevated opacity (0.1 vs 0.05) for visual hierarchy
-- [24-02]: Callout components use bg-{color}-500/10 glass tints (blue/green/yellow/red)
-- [24-02]: Remove dark mode variants - glass design is universal theme
-- [25-01]: Safari CSS variable workaround - hardcoded -webkit-backdrop-filter values (Safari 18 bug)
-- [25-01]: Mobile webkit overrides in media query - explicit class rules, not just CSS variable updates
-- [25-02]: Exclude Shiki code blocks from accessibility tests (third-party theme contrast limitation)
-- [25-02]: Conditional text-white for duration on active sidebar links (WCAG 4.5:1 contrast)
-- [25-02]: Topic tags use text-gray-200 on bg-gray-700 for adequate contrast
+- [Research]: Use @radix-ui/react-tooltip (~8KB) for accessible tooltips - WCAG compliant out of box
+- [Research]: Custom React/SVG primitives (no React Flow or diagram libraries) - zero bundle cost
+- [Research]: Primitives-first approach - build FlowNode/Arrow/Container before bulk migration
+- [Research]: Glass design uses existing CSS variables (--glass-blur-md, --glass-border-color)
+- [Research]: Click-to-open tooltips (not hover-only) for mobile accessibility
+- [Research]: Sequence diagram primitives needed in Phase 27 before Module 2+ migration
 
 ### Pending Todos
 
@@ -78,7 +53,8 @@ None.
 
 ### Blockers/Concerns
 
-None.
+- [Research]: Sequence diagram layout needs column width calculation algorithm (Phase 27)
+- [Research]: SMT chain diagrams (Module 5) may need specialized multi-step components
 
 ### Quick Tasks Completed
 
@@ -93,9 +69,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Starting v1.4 milestone (Interactive Glass Diagrams)
+Stopped at: Roadmap created for v1.4 Interactive Glass Diagrams (Phases 26-36)
 Resume file: None
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-02 — v1.4 milestone started*
+*Last updated: 2026-02-02 — v1.4 roadmap created*

@@ -116,36 +116,36 @@
 
 **Goal:** Заменить "Модуль N" на описательные названия для лучшей навигации.
 
-- [x] **UX-01a**: Описательные названия модулей в сайдбаре ✓
+- [x] **UX-01a**: Описательные названия модулей в сайдбаре
 - [ ] **UX-01b**: Описательные названия в хлебных крошках (deferred - no breadcrumb component)
-- [x] **UX-01c**: Описательные названия на homepage ✓
+- [x] **UX-01c**: Описательные названия на homepage
 
 ### Homepage Accordion (UX-02)
 
 **Goal:** Организовать уроки по модулям на главной странице с accordion-меню.
 
-- [x] **UX-02a**: Accordion-меню модулей (свёрнуты по умолчанию) ✓
-- [x] **UX-02b**: Список уроков раскрывается по клику ✓
-- [x] **UX-02c**: Индикатор прогресса по модулю ✓
+- [x] **UX-02a**: Accordion-меню модулей (свёрнуты по умолчанию)
+- [x] **UX-02b**: Список уроков раскрывается по клику
+- [x] **UX-02c**: Индикатор прогресса по модулю
 
 ### Table Redesign (UX-03)
 
 **Goal:** Улучшить читаемость таблиц с чёткими границами и контрастом.
 
-- [x] **UX-03a**: Чёткие границы ячеек (1px solid) ✓
-- [x] **UX-03b**: Читаемый контраст текста (WCAG 4.5:1) ✓
-- [x] **UX-03c**: Light glass эффект (blur 8px, низкая прозрачность) ✓
+- [x] **UX-03a**: Чёткие границы ячеек (1px solid)
+- [x] **UX-03b**: Читаемый контраст текста (WCAG 4.5:1)
+- [x] **UX-03c**: Light glass эффект (blur 8px, низкая прозрачность)
 
 ### Liquid Glass Design (UX-04)
 
 **Goal:** Применить glassmorphism дизайн к UI элементам.
 
-- [x] **UX-04a**: Gradient background (основа для glass эффекта) ✓
-- [x] **UX-04b**: Glass sidebar navigation ✓
-- [x] **UX-04c**: Glass callouts (info, warning, tip) ✓
-- [x] **UX-04d**: Glass карточки модулей на homepage ✓
-- [x] **UX-04e**: Responsive blur (меньше на mobile) ✓
-- [x] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency) ✓
+- [x] **UX-04a**: Gradient background (основа для glass эффекта)
+- [x] **UX-04b**: Glass sidebar navigation
+- [x] **UX-04c**: Glass callouts (info, warning, tip)
+- [x] **UX-04d**: Glass карточки модулей на homepage
+- [x] **UX-04e**: Responsive blur (меньше на mobile)
+- [x] **UX-04f**: Accessibility fallbacks (prefers-reduced-transparency)
 
 ---
 
@@ -153,13 +153,13 @@
 
 ### Course Structure Reorganization (STRUCT-01)
 
-- [x] **STRUCT-01a**: Переименовать директории модулей ✓
-- [x] **STRUCT-01b**: Navigation auto-discovers new structure ✓
-- [x] **STRUCT-01c**: Обновить все внутренние ссылки между уроками ✓
-- [x] **STRUCT-01d**: Обновить roadmap компонент ✓
-- [x] **STRUCT-01e**: Обновить progress tracking ✓
-- [x] **STRUCT-01f**: Проверить все навигационные ссылки работают ✓
-- [x] **STRUCT-01g**: Проверить progress persistence ✓
+- [x] **STRUCT-01a**: Переименовать директории модулей
+- [x] **STRUCT-01b**: Navigation auto-discovers new structure
+- [x] **STRUCT-01c**: Обновить все внутренние ссылки между уроками
+- [x] **STRUCT-01d**: Обновить roadmap компонент
+- [x] **STRUCT-01e**: Обновить progress tracking
+- [x] **STRUCT-01f**: Проверить все навигационные ссылки работают
+- [x] **STRUCT-01g**: Проверить progress persistence
 
 ---
 
@@ -259,8 +259,8 @@ GitHub Pages deployment complete.
 | FINAL-05 | Phase 36 | Pending |
 
 **Coverage:**
-- v1.4 requirements: 49 total
-- Mapped to phases: 49/49
+- v1.4 requirements: 48 total
+- Mapped to phases: 48/48
 - Unmapped: 0
 
 ### v1.3 (Complete)
@@ -295,4 +295,4 @@ GitHub Pages deployment complete.
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 — v1.4 Interactive Glass Diagrams requirements added*
+*Last updated: 2026-02-02 — v1.4 roadmap created, traceability confirmed*

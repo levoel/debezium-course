@@ -5,11 +5,12 @@
 - [x] **v1.0 MVP** - Phases 1-11 (shipped 2026-02-01)
 - [x] **v1.1 MySQL/Aurora MySQL + Deployment** - Phases 12-18 (shipped 2026-02-01)
 - [x] **v1.2 Course Reorganization** - Phases 19-21 (shipped 2026-02-01)
-- [x] **v1.3 UX/Design Refresh** - Phases 22-25 (shipped 2026-02-01)
+- [x] **v1.3 UX/Design Refresh** - Phases 22-25 (shipped 2026-02-02)
+- [ ] **v1.4 Interactive Glass Diagrams** - Phases 26-36 (in progress)
 
 ## Overview
 
-v1.3 applies liquid glass (glassmorphism) design to the course website and improves navigation with descriptive module names and accordion-based homepage. This milestone transforms the visual experience while maintaining WCAG accessibility standards and mobile performance.
+v1.4 replaces all 170 Mermaid diagrams with interactive React components using the liquid glass design system. The migration follows a primitives-first approach: build reusable FlowNode, Arrow, Container, and Tooltip components (Phase 26), then sequence diagram primitives (Phase 27), then migrate diagrams module-by-module (Phases 28-35), and finalize with testing and Mermaid removal (Phase 36). This delivers full interactivity, visual consistency, and ~1MB bundle size reduction.
 
 ## Phases
 
@@ -17,7 +18,189 @@ v1.3 applies liquid glass (glassmorphism) design to the course website and impro
 - v1.0: Phases 1-11 (complete)
 - v1.1: Phases 12-18 (complete)
 - v1.2: Phases 19-21 (complete)
-- v1.3: Phases 22-25
+- v1.3: Phases 22-25 (complete)
+- v1.4: Phases 26-36
+
+### Phase 26: Flowchart Primitives + Tooltip Foundation
+**Goal**: Reusable diagram primitives exist for building interactive flowchart diagrams with accessible tooltips
+**Depends on**: Phase 25 (v1.3 complete)
+**Requirements**: PRIM-01, PRIM-02, PRIM-03, TOOL-01, TOOL-02, TOOL-03, TOOL-04, TOOL-05
+**Success Criteria** (what must be TRUE):
+  1. FlowNode component renders glass-styled nodes with 6 variants (database, connector, cluster, sink, app, target)
+  2. Arrow component renders SVG directional connectors between nodes (right, down, left, up) with optional labels
+  3. DiagramContainer component wraps diagrams in glass card with title and optional description
+  4. User can click any FlowNode to reveal tooltip with explanation text
+  5. User can navigate between nodes using Tab key and activate tooltip with Enter/Space
+  6. Tooltips position correctly without overlapping target elements on both desktop and mobile
+**Plans**: TBD
+
+Plans:
+- [ ] 26-01-PLAN.md — FlowNode, Arrow, DiagramContainer primitives with TypeScript interfaces
+- [ ] 26-02-PLAN.md — Radix tooltip integration with glass styling and accessibility
+
+### Phase 27: Sequence Diagram Primitives
+**Goal**: Reusable diagram primitives exist for building interactive sequence diagrams
+**Depends on**: Phase 26
+**Requirements**: PRIM-04, PRIM-05, PRIM-06
+**Success Criteria** (what must be TRUE):
+  1. SequenceActor component renders participant boxes at top of sequence diagrams
+  2. SequenceMessage component renders arrows between actors with message labels
+  3. SequenceLifeline component renders vertical dashed lines from actors
+  4. User can click sequence diagram elements to reveal tooltips with explanations
+  5. Sequence diagram layout handles variable message count and actor positioning
+**Plans**: TBD
+
+Plans:
+- [ ] 27-01-PLAN.md — SequenceActor, SequenceMessage, SequenceLifeline primitives
+- [ ] 27-02-PLAN.md — SequenceLayout container with column calculation and tooltip integration
+
+### Phase 28: Module 1 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 1 (Введение в CDC) are replaced with interactive glass components
+**Depends on**: Phase 27
+**Requirements**: MOD1-01, MOD1-02, MOD1-03, MOD1-04
+**Success Criteria** (what must be TRUE):
+  1. Module 1 diagram audit complete with count and types documented
+  2. All flowchart diagrams in Module 1 use FlowNode/Arrow/DiagramContainer components
+  3. User can click nodes in Module 1 diagrams to see contextual explanations
+  4. No Mermaid code blocks remain in Module 1 MDX files
+  5. Module 1 lessons render correctly with new diagram components
+**Plans**: TBD
+
+Plans:
+- [ ] 28-01-PLAN.md — Audit Module 1 diagrams and create glass component versions
+- [ ] 28-02-PLAN.md — Add tooltips and remove Mermaid from Module 1
+
+### Phase 29: Module 2 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 2 (PostgreSQL/Aurora PostgreSQL) are replaced with interactive glass components
+**Depends on**: Phase 28
+**Requirements**: MOD2-01, MOD2-02, MOD2-03, MOD2-04
+**Success Criteria** (what must be TRUE):
+  1. Module 2 diagram audit complete (WAL architecture, replication slots, etc.)
+  2. All diagrams in Module 2 use glass primitives including sequence diagrams
+  3. User can click nodes to see PostgreSQL-specific explanations
+  4. No Mermaid code blocks remain in Module 2 MDX files
+  5. Complex WAL/replication diagrams render clearly on mobile
+**Plans**: TBD
+
+Plans:
+- [ ] 29-01-PLAN.md — Audit Module 2 diagrams and create glass component versions
+- [ ] 29-02-PLAN.md — Add tooltips and remove Mermaid from Module 2
+
+### Phase 30: Module 3 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 3 (MySQL/Aurora MySQL) are replaced with interactive glass components
+**Depends on**: Phase 29
+**Requirements**: MOD3-01, MOD3-02, MOD3-03, MOD3-04
+**Success Criteria** (what must be TRUE):
+  1. Module 3 diagram audit complete (binlog architecture, GTID, etc.)
+  2. All diagrams in Module 3 use glass primitives
+  3. User can click nodes to see MySQL-specific explanations
+  4. No Mermaid code blocks remain in Module 3 MDX files
+  5. Binlog/GTID flow diagrams render clearly
+**Plans**: TBD
+
+Plans:
+- [ ] 30-01-PLAN.md — Audit Module 3 diagrams and create glass component versions
+- [ ] 30-02-PLAN.md — Add tooltips and remove Mermaid from Module 3
+
+### Phase 31: Module 4 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 4 (Production Operations) are replaced with interactive glass components
+**Depends on**: Phase 30
+**Requirements**: MOD4-01, MOD4-02, MOD4-03, MOD4-04
+**Success Criteria** (what must be TRUE):
+  1. Module 4 diagram audit complete (monitoring, alerting flows)
+  2. All diagrams in Module 4 use glass primitives
+  3. User can click nodes to see operations-specific explanations
+  4. No Mermaid code blocks remain in Module 4 MDX files
+  5. Monitoring/alerting architecture diagrams are interactive
+**Plans**: TBD
+
+Plans:
+- [ ] 31-01-PLAN.md — Audit Module 4 diagrams and create glass component versions
+- [ ] 31-02-PLAN.md — Add tooltips and remove Mermaid from Module 4
+
+### Phase 32: Module 5 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 5 (Advanced Patterns - SMT) are replaced with interactive glass components
+**Depends on**: Phase 31
+**Requirements**: MOD5-01, MOD5-02, MOD5-03, MOD5-04
+**Success Criteria** (what must be TRUE):
+  1. Module 5 diagram audit complete (SMT chains, transformation pipelines)
+  2. Complex SMT chain diagrams use glass primitives with clear data flow
+  3. User can click transformation nodes to see SMT-specific explanations
+  4. No Mermaid code blocks remain in Module 5 MDX files
+  5. Multi-step transformation pipelines render clearly
+**Plans**: TBD
+
+Plans:
+- [ ] 32-01-PLAN.md — Audit Module 5 diagrams and create glass component versions
+- [ ] 32-02-PLAN.md — Add tooltips and remove Mermaid from Module 5
+
+### Phase 33: Module 6 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 6 (Data Engineering Integration) are replaced with interactive glass components
+**Depends on**: Phase 32
+**Requirements**: MOD6-01, MOD6-02, MOD6-03, MOD6-04
+**Success Criteria** (what must be TRUE):
+  1. Module 6 diagram audit complete (streaming architectures, Flink/Spark)
+  2. All diagrams in Module 6 use glass primitives
+  3. User can click nodes to see data engineering explanations
+  4. No Mermaid code blocks remain in Module 6 MDX files
+  5. Streaming architecture diagrams show data flow clearly
+**Plans**: TBD
+
+Plans:
+- [ ] 33-01-PLAN.md — Audit Module 6 diagrams and create glass component versions
+- [ ] 33-02-PLAN.md — Add tooltips and remove Mermaid from Module 6
+
+### Phase 34: Module 7 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 7 (Cloud-Native GCP) are replaced with interactive glass components
+**Depends on**: Phase 33
+**Requirements**: MOD7-01, MOD7-02, MOD7-03, MOD7-04
+**Success Criteria** (what must be TRUE):
+  1. Module 7 diagram audit complete (GCP architecture, Pub/Sub, Dataflow)
+  2. All diagrams in Module 7 use glass primitives with cloud service styling
+  3. User can click nodes to see GCP-specific explanations
+  4. No Mermaid code blocks remain in Module 7 MDX files
+  5. Cloud architecture diagrams show service relationships clearly
+**Plans**: TBD
+
+Plans:
+- [ ] 34-01-PLAN.md — Audit Module 7 diagrams and create glass component versions
+- [ ] 34-02-PLAN.md — Add tooltips and remove Mermaid from Module 7
+
+### Phase 35: Module 8 Diagram Migration
+**Goal**: All Mermaid diagrams in Module 8 (Capstone) are replaced with interactive glass components
+**Depends on**: Phase 34
+**Requirements**: MOD8-01, MOD8-02, MOD8-03, MOD8-04
+**Success Criteria** (what must be TRUE):
+  1. Module 8 diagram audit complete (full pipeline architecture)
+  2. All capstone diagrams use glass primitives
+  3. User can click nodes to see capstone-specific explanations
+  4. No Mermaid code blocks remain in Module 8 MDX files
+  5. Full pipeline architecture diagram is interactive and comprehensive
+**Plans**: TBD
+
+Plans:
+- [ ] 35-01-PLAN.md — Audit Module 8 diagrams and create glass component versions
+- [ ] 35-02-PLAN.md — Add tooltips and remove Mermaid from Module 8
+
+### Phase 36: Finalization (Testing + Mermaid Removal)
+**Goal**: All diagrams pass quality verification and Mermaid dependency is removed
+**Depends on**: Phase 35
+**Requirements**: FINAL-01, FINAL-02, FINAL-03, FINAL-04, FINAL-05
+**Success Criteria** (what must be TRUE):
+  1. Visual regression tests pass for all 170 diagrams across all modules
+  2. Accessibility audit shows zero WCAG violations for keyboard navigation
+  3. Mobile responsiveness verified on iPhone 12 equivalent viewport
+  4. Mermaid package removed from package.json and node_modules
+  5. Bundle size reduced by approximately 1MB (verified via build comparison)
+**Plans**: TBD
+
+Plans:
+- [ ] 36-01-PLAN.md — Visual regression and accessibility testing setup
+- [ ] 36-02-PLAN.md — Mobile verification and Mermaid removal
+- [ ] 36-03-PLAN.md — Bundle size verification and final optimization
+
+<details>
+<summary>[x] v1.3 UX/Design Refresh (Phases 22-25) - SHIPPED 2026-02-02</summary>
 
 ### Phase 22: Foundation (Glass Design System + Module Naming)
 **Goal**: Design system established with CSS variables, gradient backgrounds, glass utilities, and descriptive module names throughout interface
@@ -89,6 +272,8 @@ Plans:
 - [x] 25-02-PLAN.md — Add @axe-core/playwright accessibility tests
 - [x] 25-03-PLAN.md — Manual verification via user acceptance testing (quick tasks)
 
+</details>
+
 <details>
 <summary>[x] v1.2 Course Reorganization (Phases 19-21) - SHIPPED 2026-02-01</summary>
 
@@ -145,127 +330,13 @@ Plans:
 **Stats:** 7 phases, 20 plans, 20/20 requirements (100%)
 **Live:** https://levoel.github.io/debezium-course/
 
-- [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory ✓
-- [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison ✓
-- [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations ✓
-- [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots ✓
-- [x] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools ✓
-- [x] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline ✓
-- [x] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD (complete)
-
-## Phase Details
-
-### Phase 12: MySQL Infrastructure + Binlog Fundamentals
-**Goal**: Course learner can understand MySQL binlog architecture and has working MySQL Docker environment for hands-on labs
-**Depends on**: Phase 11 (v1.0 complete)
-**Requirements**: INFRA-09, INFRA-10, INFRA-11, MYSQL-01, MYSQL-02, MYSQL-03
-**Success Criteria** (what must be TRUE):
-  1. MySQL 8.0.40 Docker service starts successfully alongside existing PostgreSQL/Kafka infrastructure
-  2. Binlog is enabled with ROW format and GTID mode active (verifiable via `SHOW VARIABLES`)
-  3. Learner can explain ROW vs STATEMENT vs MIXED binlog formats and when to use each
-  4. Learner understands GTID mode benefits for CDC (failover, position tracking) and configuration requirements
-  5. Learner knows how to configure binlog retention and heartbeat events to prevent position loss
-**Plans**: 3 plans (Wave 1 - all parallel)
-
-Plans:
-- [x] 12-01-PLAN.md — MySQL Docker infrastructure with binlog configuration
-- [x] 12-02-PLAN.md — Binlog architecture lesson (ROW/STATEMENT/MIXED formats)
-- [x] 12-03-PLAN.md — GTID mode and retention/heartbeat lessons
-
-### Phase 13: Connector Setup + Comparison
-**Goal**: Course learner can configure MySQL CDC connector and understand architectural differences from PostgreSQL
-**Depends on**: Phase 12
-**Requirements**: MYSQL-04, MYSQL-05, MYSQL-06
-**Success Criteria** (what must be TRUE):
-  1. Learner can deploy MySQL CDC connector via Kafka Connect REST API with working configuration
-  2. Learner can articulate key differences between MySQL binlog and PostgreSQL WAL (replication approach, monitoring metrics, position tracking)
-  3. Schema history topic is properly configured and learner understands its critical role for connector recovery
-  4. CDC events flow from MySQL to Kafka topics with correct schema
-**Plans**: 3 plans (Wave 1 - all parallel)
-
-Plans:
-- [x] 13-01-PLAN.md — MySQL connector configuration lesson (REST API deployment, properties)
-- [x] 13-02-PLAN.md — Binlog vs WAL architectural comparison lesson
-- [x] 13-03-PLAN.md — Schema history topic and recovery procedures lesson
-
-### Phase 14: Aurora MySQL Specifics
-**Goal**: Course learner can configure Debezium for Aurora MySQL and understands Aurora-specific behaviors
-**Depends on**: Phase 13
-**Requirements**: MYSQL-07, MYSQL-08, MYSQL-09
-**Success Criteria** (what must be TRUE):
-  1. Learner can configure Aurora MySQL parameter groups for CDC (binlog format, retention)
-  2. Learner understands Aurora Enhanced Binlog architecture (storage nodes, 99% faster recovery claims)
-  3. Learner knows Aurora MySQL CDC limitations (global read lock prohibition, affected snapshot modes)
-  4. Learner can choose appropriate snapshot.mode for Aurora MySQL based on table size and lock tolerance
-**Plans**: 3 plans (Wave 1 - all parallel)
-
-Plans:
-- [x] 14-01-PLAN.md — Aurora MySQL parameter groups and binlog retention (stored procedures)
-- [x] 14-02-PLAN.md — Aurora Enhanced Binlog architecture and trade-offs
-- [x] 14-03-PLAN.md — Aurora snapshot mode selection and large table strategies
-
-### Phase 15: Production Operations
-**Goal**: Course learner can monitor, troubleshoot, and operate MySQL CDC in production
-**Depends on**: Phase 14
-**Requirements**: MYSQL-10, MYSQL-11, MYSQL-12
-**Success Criteria** (what must be TRUE):
-  1. Learner can set up binlog lag monitoring using JMX metrics and AuroraBinlogReplicaLag CloudWatch metric
-  2. Learner can execute MySQL/Aurora MySQL failover procedure with GTID mode (position preservation)
-  3. Learner can configure and trigger incremental snapshots using signal table operations
-  4. Prometheus/Grafana dashboard includes MySQL-specific metrics (binlog position, gtid set)
-**Plans**: 3 plans (Wave 1 - all parallel)
-
-Plans:
-- [x] 15-01-PLAN.md — Binlog lag monitoring lesson (JMX, CloudWatch, Grafana dashboard)
-- [x] 15-02-PLAN.md — GTID failover procedures lesson (runbook, validation)
-- [x] 15-03-PLAN.md — Incremental snapshots lesson (signal table, read-only snapshots)
-
-### Phase 16: Advanced Topics + Recovery
-**Goal**: Course learner can handle advanced MySQL CDC scenarios and recover from failures
-**Depends on**: Phase 15
-**Requirements**: MYSQL-13, MYSQL-14, MYSQL-15
-**Success Criteria** (what must be TRUE):
-  1. Learner can recover from binlog position loss (purged binlogs) using snapshot restart
-  2. Learner can recover from schema history topic corruption using Kafka topic restoration
-  3. Learner can deploy multiple MySQL connectors with proper server.id registry (conflict prevention)
-  4. Learner understands gh-ost and pt-online-schema-change patterns for zero-downtime DDL with CDC
-**Plans**: 3 plans (Wave 1 - all parallel)
-
-Plans:
-- [x] 16-01-PLAN.md — Recovery procedures lesson (binlog loss + schema history corruption)
-- [x] 16-02-PLAN.md — Multi-connector deployments lesson (server.id registry)
-- [x] 16-03-PLAN.md — DDL tools integration lesson (gh-ost + pt-osc patterns)
-
-### Phase 17: Multi-Database Capstone
-**Goal**: Course learner can design and implement a multi-database CDC pipeline combining PostgreSQL and MySQL
-**Depends on**: Phase 16
-**Requirements**: MYSQL-16
-**Success Criteria** (what must be TRUE):
-  1. Capstone extension clearly explains multi-database CDC architecture (PostgreSQL + MySQL sources)
-  2. Learner can configure both connectors to produce to unified topic naming scheme
-  3. Unified consumer processes events from both databases with schema awareness
-  4. Learner understands trade-offs: separate vs merged topics, schema evolution challenges
-**Plans**: 3 plans (Wave 1: 01, 02 parallel | Wave 2: 03)
-
-Plans:
-- [x] 17-01-PLAN.md — Multi-database CDC architecture lesson (patterns, operational differences)
-- [x] 17-02-PLAN.md — Connector configuration + PyFlink unified consumer lesson
-- [x] 17-03-PLAN.md — Self-assessment checklist extension for multi-database
-
-### Phase 18: GitHub Pages Deployment
-**Goal**: Debezium course is publicly accessible via GitHub Pages
-**Depends on**: Phase 17 (content complete)
-**Requirements**: PLAT-07
-**Success Criteria** (what must be TRUE):
-  1. GitHub Actions workflow builds Astro site on push to main
-  2. Course is accessible at `https://<username>.github.io/debezium-course/` (or custom domain)
-  3. All pages render correctly (MDX, Mermaid diagrams, syntax highlighting)
-  4. Build passes consistently (no flaky failures)
-**Plans**: 2 plans (Wave 1: 01 | Wave 2: 02)
-
-Plans:
-- [x] 18-01-PLAN.md — Update workflow to use withastro/action + local verification
-- [x] 18-02-PLAN.md — Push, configure GitHub Pages, verify live deployment
+- [x] **Phase 12: MySQL Infrastructure + Binlog Fundamentals** - Docker MySQL service and binlog theory
+- [x] **Phase 13: Connector Setup + Comparison** - MySQL connector configuration and WAL comparison
+- [x] **Phase 14: Aurora MySQL Specifics** - Aurora Enhanced Binlog and limitations
+- [x] **Phase 15: Production Operations** - Monitoring, failover, incremental snapshots
+- [x] **Phase 16: Advanced Topics + Recovery** - Recovery procedures, multi-connector, DDL tools
+- [x] **Phase 17: Multi-Database Capstone** - PostgreSQL + MySQL unified pipeline
+- [x] **Phase 18: GitHub Pages Deployment** - Static site deployment with CI/CD
 
 </details>
 
@@ -294,18 +365,80 @@ See `.planning/milestones/v1.0-MILESTONE-AUDIT.md` for full details.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 22 -> 23 -> 24 -> 25
+Phases execute in numeric order: 26 -> 27 -> 28 -> 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35 -> 36
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 22. Foundation | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 23. Homepage Redesign | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 24. Content Components | v1.3 | 2/2 | Complete | 2026-02-01 |
-| 25. Polish | v1.3 | 3/3 | Complete | 2026-02-01 |
+| 26. Flowchart Primitives + Tooltip | v1.4 | 0/2 | Not started | - |
+| 27. Sequence Diagram Primitives | v1.4 | 0/2 | Not started | - |
+| 28. Module 1 Migration | v1.4 | 0/2 | Not started | - |
+| 29. Module 2 Migration | v1.4 | 0/2 | Not started | - |
+| 30. Module 3 Migration | v1.4 | 0/2 | Not started | - |
+| 31. Module 4 Migration | v1.4 | 0/2 | Not started | - |
+| 32. Module 5 Migration | v1.4 | 0/2 | Not started | - |
+| 33. Module 6 Migration | v1.4 | 0/2 | Not started | - |
+| 34. Module 7 Migration | v1.4 | 0/2 | Not started | - |
+| 35. Module 8 Migration | v1.4 | 0/2 | Not started | - |
+| 36. Finalization | v1.4 | 0/3 | Not started | - |
 
 ## Coverage
 
-### v1.3 Requirement Mapping
+### v1.4 Requirement Mapping
+
+| Requirement | Phase | Description |
+|-------------|-------|-------------|
+| PRIM-01 | 26 | FlowNode component (glass-styled with 6 variants) |
+| PRIM-02 | 26 | Arrow/Connector component (SVG between nodes) |
+| PRIM-03 | 26 | DiagramContainer component (glass wrapper) |
+| PRIM-04 | 27 | SequenceActor component (participant) |
+| PRIM-05 | 27 | SequenceMessage component (arrows between actors) |
+| PRIM-06 | 27 | SequenceLifeline component (vertical dashed lines) |
+| TOOL-01 | 26 | Radix UI Tooltip integration |
+| TOOL-02 | 26 | Click-to-open pattern (mobile friendly) |
+| TOOL-03 | 26 | Keyboard navigation (Tab, Enter/Space) |
+| TOOL-04 | 26 | Tooltip positioning (no overlap) |
+| TOOL-05 | 26 | Glass-styled tooltip content |
+| MOD1-01 | 28 | Module 1 diagram audit |
+| MOD1-02 | 28 | Module 1 glass diagram creation |
+| MOD1-03 | 28 | Module 1 tooltip addition |
+| MOD1-04 | 28 | Module 1 Mermaid removal |
+| MOD2-01 | 29 | Module 2 diagram audit |
+| MOD2-02 | 29 | Module 2 glass diagram creation |
+| MOD2-03 | 29 | Module 2 tooltip addition |
+| MOD2-04 | 29 | Module 2 Mermaid removal |
+| MOD3-01 | 30 | Module 3 diagram audit |
+| MOD3-02 | 30 | Module 3 glass diagram creation |
+| MOD3-03 | 30 | Module 3 tooltip addition |
+| MOD3-04 | 30 | Module 3 Mermaid removal |
+| MOD4-01 | 31 | Module 4 diagram audit |
+| MOD4-02 | 31 | Module 4 glass diagram creation |
+| MOD4-03 | 31 | Module 4 tooltip addition |
+| MOD4-04 | 31 | Module 4 Mermaid removal |
+| MOD5-01 | 32 | Module 5 diagram audit |
+| MOD5-02 | 32 | Module 5 glass diagram creation |
+| MOD5-03 | 32 | Module 5 tooltip addition |
+| MOD5-04 | 32 | Module 5 Mermaid removal |
+| MOD6-01 | 33 | Module 6 diagram audit |
+| MOD6-02 | 33 | Module 6 glass diagram creation |
+| MOD6-03 | 33 | Module 6 tooltip addition |
+| MOD6-04 | 33 | Module 6 Mermaid removal |
+| MOD7-01 | 34 | Module 7 diagram audit |
+| MOD7-02 | 34 | Module 7 glass diagram creation |
+| MOD7-03 | 34 | Module 7 tooltip addition |
+| MOD7-04 | 34 | Module 7 Mermaid removal |
+| MOD8-01 | 35 | Module 8 diagram audit |
+| MOD8-02 | 35 | Module 8 glass diagram creation |
+| MOD8-03 | 35 | Module 8 tooltip addition |
+| MOD8-04 | 35 | Module 8 Mermaid removal |
+| FINAL-01 | 36 | Visual regression testing |
+| FINAL-02 | 36 | Accessibility audit (WCAG keyboard) |
+| FINAL-03 | 36 | Mobile responsiveness verification |
+| FINAL-04 | 36 | Remove mermaid dependency |
+| FINAL-05 | 36 | Bundle size optimization verification |
+
+**Coverage:** 48/48 requirements mapped
+
+### v1.3 Requirement Mapping (Complete)
 
 | Requirement | Phase | Description |
 |-------------|-------|-------------|

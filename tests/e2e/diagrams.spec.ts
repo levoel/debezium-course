@@ -30,3 +30,32 @@ test.describe('Glass diagram rendering', () => {
     });
   }
 });
+
+test.describe('Mobile responsiveness', () => {
+  test('diagrams fit iPhone 12 viewport (390x844)', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${BASE}/course/01-module-1/02-debezium-architecture`);
+    await page.waitForLoadState('networkidle');
+
+    // Check no horizontal scroll needed
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(390);
+
+    // Verify diagrams are present
+    const diagrams = await page.locator('figure[role="figure"]').count();
+    expect(diagrams).toBeGreaterThan(0);
+  });
+
+  test('diagrams visible and not squashed on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${BASE}/course/01-module-1/01-cdc-fundamentals`);
+    await page.waitForLoadState('networkidle');
+
+    const firstDiagram = page.locator('figure[role="figure"]').first();
+    await expect(firstDiagram).toBeVisible();
+
+    // Verify diagram has reasonable width (not squashed to tiny size)
+    const box = await firstDiagram.boundingBox();
+    expect(box?.width).toBeGreaterThan(200);
+  });
+});

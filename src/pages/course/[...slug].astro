@@ -30,7 +30,7 @@ const lessonSlug = entry.id.replace(/\/index\.mdx?$/, '').replace(/\.mdx?$/, '')
 
 // Get all lessons for navigation
 const allLessons = await getCollection('course');
-const sortedLessons = allLessons.sort((a, b) => a.data.order - b.data.order);
+const sortedLessons = allLessons.sort((a, b) => a.id.localeCompare(b.id));
 
 // Find current lesson index
 const currentIndex = sortedLessons.findIndex((lesson) => lesson.id === entry.id);

@@ -10,13 +10,23 @@
 
 ## Current State
 
-**Version:** v1.2 (shipped 2026-02-01)
+**Version:** v1.3 (shipped 2026-02-02)
 **Live:** https://levoel.github.io/debezium-course/
 **Codebase:** 74 source files, 35,000+ LOC (TypeScript, MDX, Astro)
-**Content:** 8 modules, 57+ lessons, 400+ code examples
+**Content:** 8 modules, 57+ lessons, 400+ code examples, 170 Mermaid diagrams
 **Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 
 ## Completed Milestones
+
+### v1.3 UX/Design Refresh (shipped 2026-02-02)
+
+**Delivered:**
+- Liquid glass design system (CSS variables, gradient backgrounds, glass utilities)
+- Descriptive module names instead of "Module N"
+- Homepage with accordion menu and module progress indicators
+- Glass-styled tables, callouts, sidebar, and cards
+- Responsive blur reduction for mobile performance
+- Accessibility fallbacks (prefers-reduced-transparency, prefers-reduced-motion)
 
 ### v1.2 Course Reorganization (shipped 2026-02-01)
 
@@ -41,24 +51,17 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.3 UX/Design Refresh
+## Current Milestone: v1.4 Interactive Glass Diagrams
 
-**Goal:** Улучшить навигацию и визуальный дизайн курса с liquid glass эффектами
+**Goal:** Заменить все 170 Mermaid диаграмм на интерактивные React компоненты в стиле liquid glass
 
 **Scope:**
-- Описательные названия модулей вместо "Модуль N"
-- Homepage с accordion-меню модулей и уроков
-- Редизайн таблиц (границы, контраст, читаемость)
-- Liquid glass дизайн (таблицы, карточки, сайдбар, callouts)
+- Создать библиотеку переиспользуемых diagram primitives (FlowNode, Arrow, ModeCard, etc.)
+- Заменить все Mermaid flowcharts на glass-styled компоненты
+- Добавить tooltip'ы при клике на ноды с пояснениями
+- Сохранить мобильную адаптивность и accessibility
 
-**Phases:** 22+
-
-## Future Milestone: v1.4
-
-**Potential features:**
-- Search functionality across lessons
-- Dark/light theme toggle
-- Export/import progress
+**Phases:** 26+
 
 ## Requirements
 
@@ -79,14 +82,25 @@
 - ✓ Course reorganization (MySQL = Module 3) — v1.2
 - ✓ Progress migration for structure changes — v1.2
 - ✓ E2E test suite (Playwright) — v1.2
+- ✓ Liquid glass design system — v1.3
+- ✓ Descriptive module names — v1.3
+- ✓ Homepage accordion menu — v1.3
+- ✓ Glass-styled tables and callouts — v1.3
+- ✓ Accessibility fallbacks — v1.3
 
 ### Active
 
-**v1.3 Scope:**
-- [ ] UX-01: Описательные названия модулей
-- [ ] UX-02: Homepage с accordion-меню
-- [ ] UX-03: Редизайн таблиц
-- [ ] UX-04: Liquid glass дизайн
+**v1.4 Scope:**
+- [ ] DIAG-01: Diagram primitives library (FlowNode, Arrow, Container components)
+- [ ] DIAG-02: Tooltip system for node explanations
+- [ ] DIAG-03: Replace Module 1 Mermaid diagrams with glass components
+- [ ] DIAG-04: Replace Module 2 Mermaid diagrams
+- [ ] DIAG-05: Replace Module 3 Mermaid diagrams
+- [ ] DIAG-06: Replace Module 4 Mermaid diagrams
+- [ ] DIAG-07: Replace Module 5 Mermaid diagrams
+- [ ] DIAG-08: Replace Module 6 Mermaid diagrams
+- [ ] DIAG-09: Replace Module 7 Mermaid diagrams
+- [ ] DIAG-10: Replace Module 8 Mermaid diagrams
 
 **Deferred:**
 - [ ] PLAT-09: Search functionality across lessons
@@ -145,4 +159,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-01 — v1.3 milestone started*
+*Last updated: 2026-02-02 — v1.4 Interactive Glass Diagrams milestone started*

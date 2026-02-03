@@ -168,15 +168,15 @@ export function ModuleAccordion({ modules, basePath = '' }: ModuleAccordionProps
               className={`overflow-hidden transition-all duration-200 ease-in-out ${isExpanded ? 'max-h-[2000px]' : 'max-h-0'}`}
             >
               <div className="px-6 pb-4 pt-2 border-t border-white/10">
-                <ul className="space-y-2">
+                <ul className="space-y-2 list-none m-0 p-0">
                   {lessons.map(lesson => {
                     const isComplete = mounted && completed.includes(lesson.slug);
 
                     return (
-                      <li key={lesson.slug}>
+                      <li key={lesson.slug} className="m-0 p-0">
                         <a
                           href={`${basePath}/course/${lesson.slug}`}
-                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-colors"
+                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/5"
                         >
                           <div className="flex items-center gap-3">
                             {isComplete && (

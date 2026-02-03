@@ -17,8 +17,8 @@ Requirements for v1.5 Onboarding & Polish milestone.
 
 ### Content Structure
 
-- [ ] **STRUCT-01**: Вынести итоги модулей в отдельные мини-уроки (8 модулей)
-- [ ] **STYLE-01**: Glass-стилизация мини-уроков с итогами модулей
+- [x] **STRUCT-01**: Вынести итоги модулей в отдельные мини-уроки (8 модулей)
+- [x] **STYLE-01**: Glass-стилизация мини-уроков с итогами модулей
 
 ## Future Requirements
 
@@ -57,8 +57,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ONB-03 | 38 | Complete |
 | ONB-04 | 38 | Complete |
 | ONB-05 | 39 | Complete |
-| STRUCT-01 | 40 | Pending |
-| STYLE-01 | 40 | Pending |
+| STRUCT-01 | 40 | Complete |
+| STYLE-01 | 40 | Complete |
 
 **Coverage:**
 - v1.5 requirements: 7 total

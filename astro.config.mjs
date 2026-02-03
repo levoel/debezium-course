@@ -7,11 +7,16 @@ import tailwindcss from '@tailwindcss/vite';
 
 import mdx from '@astrojs/mdx';
 
+import pagefind from 'astro-pagefind';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://levoel.github.io',
   base: '/debezium-course',
-  integrations: [react(), mdx()],
+  integrations: [react(), mdx(), pagefind()],
+  build: {
+    format: 'directory',
+  },
 
   markdown: {
     shikiConfig: {

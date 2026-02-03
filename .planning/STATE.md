@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.6 Full-Text Search
+**Current focus:** Phase 41 - Index Generation (v1.6 Full-Text Search)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-02-03 — Milestone v1.6 started
+Phase: 41 of 45 (Index Generation)
+Plan: Not started (ready to plan)
+Status: Ready to plan
+Last activity: 2026-02-03 — v1.6 roadmap created with 5 phases (41-45)
 
 Progress: v1.0-v1.5 SHIPPED | v1.6 [░░░░░░░░░░] 0%
 
@@ -33,13 +33,19 @@ Progress: v1.0-v1.5 SHIPPED | v1.6 [░░░░░░░░░░] 0%
 | v1.3 UX Refresh | 22-25 | 13 | Archived (2026-02-02) |
 | v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
 | v1.5 Onboarding & Polish | 38-40 | 3 | Archived (2026-02-03) |
+| v1.6 Full-Text Search | 41-45 | 0 | In progress |
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
-v1.4 decisions archived to milestones/v1.4-ROADMAP.md.
+Recent decisions from PROJECT.md affecting v1.6 work:
+
+- v1.5: Module summary mini-lessons added with glass-card styling
+- v1.4: Mermaid removed in favor of interactive glass diagrams (2.6MB bundle reduction)
+- v1.3: Liquid glass design system established with CSS variables and gradient backgrounds
+
+Full decision log in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
@@ -47,7 +53,13 @@ None.
 
 ### Blockers/Concerns
 
-None.
+**Phase 41 validation points:**
+- Verify Pagefind indexes Radix tooltip content (diagram tooltips use React portals)
+- Measure index size (budget: <150KB gzipped)
+- Test Russian morphology ("коннектор" variants matching)
+
+**Phase 43 compatibility risk:**
+- kbar React 19 compatibility unconfirmed (fallback: Radix Dialog + custom keyboard handling)
 
 ### Quick Tasks Completed
 
@@ -64,9 +76,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.6 requirements definition
-Resume with: Continue requirements → roadmap flow
+Stopped at: v1.6 roadmap created with 5 phases (41-45), 100% requirement coverage validated
+Resume with: `/gsd:plan-phase 41` to start Index Generation phase
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.6 milestone started*
+*Last updated: 2026-02-03 — v1.6 roadmap created*

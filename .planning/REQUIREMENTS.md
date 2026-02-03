@@ -80,33 +80,33 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRCH-01 | — | Pending |
-| SRCH-02 | — | Pending |
-| SRCH-03 | — | Pending |
-| SRCH-04 | — | Pending |
-| SRCH-05 | — | Pending |
-| SRCH-06 | — | Pending |
-| SRCH-07 | — | Pending |
-| SRCH-08 | — | Pending |
-| SRCH-09 | — | Pending |
-| SRCH-10 | — | Pending |
-| SRCH-11 | — | Pending |
-| SRCH-12 | — | Pending |
-| SRCH-13 | — | Pending |
-| SRCH-14 | — | Pending |
-| SRCH-15 | — | Pending |
-| SRCH-16 | — | Pending |
-| SRCH-17 | — | Pending |
-| SRCH-18 | — | Pending |
-| SRCH-19 | — | Pending |
-| SRCH-20 | — | Pending |
-| SRCH-21 | — | Pending |
+| SRCH-01 | Phase 43 | Pending |
+| SRCH-02 | Phase 43 | Pending |
+| SRCH-03 | Phase 43 | Pending |
+| SRCH-04 | Phase 44 | Pending |
+| SRCH-05 | Phase 43 | Pending |
+| SRCH-06 | Phase 43 | Pending |
+| SRCH-07 | Phase 43 | Pending |
+| SRCH-08 | Phase 42 | Pending |
+| SRCH-09 | Phase 42 | Pending |
+| SRCH-10 | Phase 42 | Pending |
+| SRCH-11 | Phase 42 | Pending |
+| SRCH-12 | Phase 43 | Pending |
+| SRCH-13 | Phase 44 | Pending |
+| SRCH-14 | Phase 44 | Pending |
+| SRCH-15 | Phase 43 | Pending |
+| SRCH-16 | Phase 41 | Pending |
+| SRCH-17 | Phase 41 | Pending |
+| SRCH-18 | Phase 41 | Pending |
+| SRCH-19 | Phase 44 | Pending |
+| SRCH-20 | Phase 44 | Pending |
+| SRCH-21 | Phase 45 | Pending |
 
 **Coverage:**
 - v1.6 requirements: 21 total
-- Mapped to phases: 0
-- Unmapped: 21 ⚠️
+- Mapped to phases: 21
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-03*
-*Last updated: 2026-02-03 after research completion*
+*Last updated: 2026-02-03 — roadmap created, 100% coverage*

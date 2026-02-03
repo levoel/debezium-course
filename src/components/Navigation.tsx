@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { isSidebarOpen } from '../stores/navigation';
 import { $progress } from '../stores/progress';
 import { getModuleName, getModuleNumber } from '../utils/moduleNames';
+import { Icon } from './Icon';
 
 /**
  * Lesson item for navigation
@@ -200,7 +201,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                 `}
               >
                 <span className="flex items-center gap-2">
-                  <span>📚</span>
+                  <Icon name="books" size={16} />
                   <span>Глоссарий</span>
                 </span>
               </a>
@@ -219,7 +220,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                 `}
               >
                 <span className="flex items-center gap-2">
-                  <span>🔧</span>
+                  <Icon name="wrench" size={16} />
                   <span>Troubleshooting</span>
                 </span>
               </a>

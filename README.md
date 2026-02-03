@@ -2,7 +2,7 @@
 
 A comprehensive production-focused course on Change Data Capture with Debezium. Learn to design and implement production-ready CDC pipelines with deep understanding of critical integration nuances.
 
-**Live Course:** [Debezium CDC Course](https://debezium-course.vercel.app)
+**Live Course:** [Debezium CDC Course](https://levoel.github.io/debezium-course/)
 
 ## What You'll Learn
 

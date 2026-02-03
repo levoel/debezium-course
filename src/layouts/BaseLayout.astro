@@ -3,6 +3,7 @@ import { getNavigationTree } from '../utils/navigation';
 import { Navigation } from '../components/Navigation';
 import { MobileMenuToggle } from '../components/MobileMenuToggle';
 import SearchModal from '../components/SearchModal';
+import { SearchButton } from '../components/SearchButton';
 import '../styles/global.css';
 
 interface Props {
@@ -74,6 +75,7 @@ const modulesArray = Array.from(navigationTree.entries());
           <div class="px-4 md:px-8 lg:px-12 p-6 flex items-center gap-4">
             <MobileMenuToggle client:load />
             <h1 class="text-xl font-bold text-gray-100 truncate flex-1">{title}</h1>
+            <SearchButton client:load />
             <a
               href="https://github.com/levoel/debezium-course"
               target="_blank"

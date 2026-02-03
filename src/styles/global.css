@@ -305,3 +305,14 @@ body {
 .glass-button-red:hover {
   background: rgba(255, 100, 100, 0.18);
 }
+
+/* Search highlight - warning yellow glass style */
+mark,
+.search-highlight {
+  background: rgba(250, 200, 50, 0.25);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0.1em 0.2em;
+  margin: 0 -0.1em;
+  box-shadow: 0 0 8px rgba(250, 200, 50, 0.15);
+}

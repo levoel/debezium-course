@@ -10,7 +10,7 @@
 
 ## Current State
 
-**Version:** v1.5 (shipped 2026-02-03)
+**Version:** v1.6 (shipped 2026-02-03)
 **Live:** https://levoel.github.io/debezium-course/
 **Codebase:** 157 source files, 65,000+ LOC (TypeScript, MDX, Astro, React)
 **Content:** 9 modules (incl. Module 0), 65+ lessons, 400+ code examples, 170 interactive glass diagrams
@@ -18,6 +18,15 @@
 **Bundle:** 1.0MB JavaScript (72% reduction from 3.6MB after Mermaid removal)
 
 ## Completed Milestones
+
+### v1.6 Full-Text Search (shipped 2026-02-03)
+
+**Delivered:**
+- Pagefind search index (1.5MB) covering 65+ lessons with Russian morphology
+- SearchModal with Cmd+K/Ctrl+K keyboard shortcut and 200ms debounce
+- SearchButton for click access (Brave browser compatibility)
+- Glass design integration with yellow highlighting
+- Module 0 documentation updated with search instructions
 
 ### v1.5 Onboarding & Polish (shipped 2026-02-03)
 
@@ -70,15 +79,13 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.6 Full-Text Search
+## Next Milestone Goals
 
-**Goal:** Users can instantly find any content in the course through a Cmd+K search modal.
-
-**Target features:**
-- Full-text search across lessons, code blocks, and diagram tooltips
-- Cmd+K modal overlay (Spotlight-style)
-- Search results with title + snippet preview with context highlighting
-- Keyboard navigation through results
+**v1.7 candidates:**
+- Dark/light theme toggle
+- Search enhancements (scope filtering, recent searches)
+- Export/import progress
+- MongoDB change streams module
 
 ## Requirements
 
@@ -114,13 +121,19 @@
 - ✓ GitHub repository link in header — v1.5
 - ✓ Module summary mini-lessons (8 modules) — v1.5
 - ✓ Glass styling for module summaries — v1.5
+- ✓ Cmd+K / Ctrl+K search modal — v1.6
+- ✓ Pagefind search indexing with Russian morphology — v1.6
+- ✓ Keyboard navigation through search results — v1.6
+- ✓ Glass design integration for search — v1.6
+- ✓ Search usage documentation in Module 0 — v1.6
 
 ### Future
 
-**Candidates for v1.6+:**
-- PLAT-09: Search functionality across lessons
+**Candidates for v1.7+:**
 - PLAT-10: Dark/light theme toggle
 - PLAT-11: Export/import progress
+- SRCH-F01: Search scope filtering
+- SRCH-F02: Recent searches history
 - CONT-01: MongoDB change streams module
 
 ### Out of Scope
@@ -174,4 +187,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 — v1.6 milestone started*
+*Last updated: 2026-02-03 after v1.6 milestone*

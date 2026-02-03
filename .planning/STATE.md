@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Phase 41 - Index Generation (v1.6 Full-Text Search)
+**Current focus:** Planning next milestone (v1.7)
 
 ## Current Position
 
-Phase: 41 of 45 (Index Generation)
-Plan: Not started (ready to plan)
-Status: Ready to plan
-Last activity: 2026-02-03 — v1.6 roadmap created with 5 phases (41-45)
+Phase: N/A (between milestones)
+Plan: N/A
+Status: Ready for new milestone
+Last activity: 2026-02-03 — v1.6 Full-Text Search milestone complete
 
-Progress: v1.0-v1.5 SHIPPED | v1.6 [░░░░░░░░░░] 0%
+Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] not started
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 111 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 37 | v1.5: 3)
+- Total plans completed: 114+ (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 37 | v1.5: 3 | v1.6: 5+)
 - Average duration: ~6 min
-- Total execution time: ~9.8 hours
+- Total execution time: ~10+ hours
 
 **By Milestone:**
 
@@ -33,14 +33,17 @@ Progress: v1.0-v1.5 SHIPPED | v1.6 [░░░░░░░░░░] 0%
 | v1.3 UX Refresh | 22-25 | 13 | Archived (2026-02-02) |
 | v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
 | v1.5 Onboarding & Polish | 38-40 | 3 | Archived (2026-02-03) |
-| v1.6 Full-Text Search | 41-45 | 0 | In progress |
+| v1.6 Full-Text Search | 41-45 | 5+ | Archived (2026-02-03) |
 
 ## Accumulated Context
 
 ### Decisions
 
-Recent decisions from PROJECT.md affecting v1.6 work:
+Recent decisions from PROJECT.md affecting future work:
 
+- v1.6: Pagefind for static search (no SaaS dependency)
+- v1.6: Custom SearchModal over kbar (React 19 compatibility)
+- v1.6: SearchButton added for Brave browser compatibility
 - v1.5: Module summary mini-lessons added with glass-card styling
 - v1.4: Mermaid removed in favor of interactive glass diagrams (2.6MB bundle reduction)
 - v1.3: Liquid glass design system established with CSS variables and gradient backgrounds
@@ -53,13 +56,7 @@ None.
 
 ### Blockers/Concerns
 
-**Phase 41 validation points:**
-- Verify Pagefind indexes Radix tooltip content (diagram tooltips use React portals)
-- Measure index size (budget: <150KB gzipped)
-- Test Russian morphology ("коннектор" variants matching)
-
-**Phase 43 compatibility risk:**
-- kbar React 19 compatibility unconfirmed (fallback: Radix Dialog + custom keyboard handling)
+None for current milestone completion.
 
 ### Quick Tasks Completed
 
@@ -76,9 +73,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.6 roadmap created with 5 phases (41-45), 100% requirement coverage validated
-Resume with: `/gsd:plan-phase 41` to start Index Generation phase
+Stopped at: v1.6 Full-Text Search milestone complete
+Resume with: `/gsd:new-milestone` to start v1.7
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.6 roadmap created*
+*Last updated: 2026-02-03 — v1.6 milestone archived*

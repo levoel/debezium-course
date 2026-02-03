@@ -1,5 +1,31 @@
 # Project Milestones: Debezium Course
 
+## v1.6 Full-Text Search (Shipped: 2026-02-03)
+
+**Delivered:** Instant full-text search across all course content via Cmd+K modal with Pagefind indexing, Russian morphology support, and glass design integration.
+
+**Phases completed:** 41-45 (5 phases, search implemented in batched commits)
+
+**Key accomplishments:**
+
+- Built Pagefind search index (1.5MB) covering 65+ lessons with Russian stemming
+- Created SearchModal with Cmd+K/Ctrl+K keyboard shortcut and 200ms debounce
+- Added SearchButton for click access (Brave browser Cmd+K intercept workaround)
+- Integrated glass design (backdrop-blur, rgba borders, yellow highlighting)
+- Updated Module 0 with search usage documentation
+
+**Stats:**
+
+- 3 source files created (SearchModal.tsx, SearchButton.tsx, stores/search.ts)
+- 396 lines of TypeScript/React
+- 17/21 requirements complete (3 skipped as UX trade-offs, 1 partial)
+
+**Git range:** `feat(41-01)` → `feat(41-43)`
+
+**What's next:** v1.7 with theme toggle, search enhancements, or MongoDB module
+
+---
+
 ## v1.5 Onboarding & Polish (Shipped: 2026-02-03)
 
 **Delivered:** Module 0 platform guide, GitHub repository link, and 8 glass-styled module summary mini-lessons for improved onboarding.

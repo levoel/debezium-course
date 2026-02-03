@@ -70,13 +70,15 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: None (v1.5 complete)
+## Current Milestone: v1.6 Full-Text Search
 
-Ready to start v1.6. Potential features:
-- Search functionality across lessons (PLAT-09)
-- Dark/light theme toggle (PLAT-10)
-- MongoDB change streams module (CONT-01)
-- Export/import progress (PLAT-11)
+**Goal:** Users can instantly find any content in the course through a Cmd+K search modal.
+
+**Target features:**
+- Full-text search across lessons, code blocks, and diagram tooltips
+- Cmd+K modal overlay (Spotlight-style)
+- Search results with title + snippet preview with context highlighting
+- Keyboard navigation through results
 
 ## Requirements
 
@@ -172,4 +174,4 @@ Ready to start v1.6. Potential features:
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 — v1.5 milestone complete*
+*Last updated: 2026-02-03 — v1.6 milestone started*

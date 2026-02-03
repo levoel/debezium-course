@@ -1,5 +1,34 @@
 # Project Milestones: Debezium Course
 
+## v1.7 Glossary & Troubleshooting (Shipped: 2026-02-03)
+
+**Delivered:** Reference materials for practice — glossary of 27 CDC terms and troubleshooting database of 20 common errors with solutions.
+
+**Phases completed:** 46-50 (5 phases)
+
+**Key accomplishments:**
+
+- Created glossary page with 27 CDC terms across 5 categories (PostgreSQL, MySQL, Kafka, Debezium, General)
+- Each term includes definition, code example, and related lesson links
+- Built troubleshooting page with 20 common errors (PostgreSQL, MySQL, Common)
+- Implemented client-side filters by connector and category
+- Expandable error cards with symptoms, cause, step-by-step solution
+- Added sidebar navigation section "Справочные материалы"
+- Full Pagefind search integration for both pages
+
+**Stats:**
+
+- 5 phases, 5 plans
+- 15/15 requirements complete
+- 27 glossary terms, 20 troubleshooting errors
+- ~10 minutes execution time
+
+**Git range:** `feat(46-01)` → `feat(50-01)`
+
+**What's next:** v1.8 candidates: dark/light theme toggle, search enhancements, export/import progress
+
+---
+
 ## v1.6 Full-Text Search (Shipped: 2026-02-03)
 
 **Delivered:** Instant full-text search across all course content via Cmd+K modal with Pagefind indexing, Russian morphology support, and glass design integration.

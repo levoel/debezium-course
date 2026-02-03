@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.7 Glossary & Troubleshooting
+**Current focus:** Planning next milestone (v1.8+)
 
 ## Current Position
 
-Phase: 50 (Integration & Polish)
-Plan: 01 of 01 complete
-Status: v1.7 COMPLETE
-Last activity: 2026-02-03 — Completed Phase 50 (Integration & Polish)
+Phase: N/A (between milestones)
+Plan: N/A
+Status: v1.7 archived, ready for next milestone
+Last activity: 2026-02-03 — v1.7 milestone archived
 
-Progress: v1.0-v1.7 SHIPPED | v1.7 [██████████] 5/5 phases complete
+Progress: v1.0-v1.7 SHIPPED | v1.8 [░░░░░░░░░░] not started
 
 ## Performance Metrics
 
@@ -34,7 +34,7 @@ Progress: v1.0-v1.7 SHIPPED | v1.7 [██████████] 5/5 phases c
 | v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
 | v1.5 Onboarding & Polish | 38-40 | 3 | Archived (2026-02-03) |
 | v1.6 Full-Text Search | 41-45 | 5+ | Archived (2026-02-03) |
-| v1.7 Glossary & Troubleshooting | 46-50 | 5 | Complete (2026-02-03) |
+| v1.7 Glossary & Troubleshooting | 46-50 | 5 | Archived (2026-02-03) |
 
 ## Accumulated Context
 
@@ -77,9 +77,9 @@ None for current milestone completion.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.7 milestone complete (Glossary & Troubleshooting)
-Resume with: Ready for next milestone planning
+Stopped at: v1.7 milestone archived
+Resume with: `/gsd:new-milestone` to start v1.8
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.7 COMPLETE (Glossary & Troubleshooting)*
+*Last updated: 2026-02-03 — v1.7 archived*

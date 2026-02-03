@@ -222,12 +222,16 @@ ul.list-none,
 .glass-card ul {
   list-style: none !important;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 1rem;
 }
 
 .glass-card ul li {
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   padding: 0;
+}
+
+.glass-card ul li:last-child {
+  margin-bottom: 0;
 }
 
 .prose ol {

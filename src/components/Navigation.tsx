@@ -153,10 +153,10 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                         onClick={handleLinkClick}
                         aria-current={isCurrentPage ? 'page' : undefined}
                         className={`
-                          block px-4 py-2 ml-2 rounded-md text-sm transition-colors duration-150
+                          block px-4 py-2 ml-2 rounded-md text-sm transition-all duration-150
                           ${isCurrentPage
-                            ? 'bg-blue-600 text-white font-medium'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                            ? 'bg-blue-500/20 backdrop-blur-sm text-blue-100 font-medium border border-blue-400/30'
+                            : 'text-gray-300 hover:bg-white/5 hover:text-white'
                           }
                         `}
                       >
@@ -168,7 +168,7 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
                           )}
                           <span className="truncate">{lesson.title}</span>
                         </span>
-                        <span className={`text-xs mt-0.5 block ${isComplete ? 'ml-6' : ''} ${isCurrentPage ? 'text-white' : 'text-gray-400'}`}>
+                        <span className={`text-xs mt-0.5 block ${isComplete ? 'ml-6' : ''} ${isCurrentPage ? 'text-gray-300' : 'text-gray-400'}`}>
                           {lesson.estimatedTime} мин
                         </span>
                       </a>

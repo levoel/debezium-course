@@ -217,6 +217,19 @@ body {
   @apply list-disc list-inside mb-4 text-gray-300;
 }
 
+/* Reset list styles for component lists (not prose content) */
+ul.list-none,
+.glass-card ul {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+.glass-card ul li {
+  margin: 0;
+  padding: 0;
+}
+
 .prose ol {
   @apply list-decimal list-inside mb-4 text-gray-300;
 }

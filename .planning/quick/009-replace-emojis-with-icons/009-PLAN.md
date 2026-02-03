@@ -46,8 +46,27 @@ Create a reusable Icon component with inline SVGs (Heroicons-style) instead of g
 
 ## Files Modified
 
-- `src/components/Icon.tsx` (NEW)
+- `src/components/Icon.tsx` (NEW) - 20 icons total
 - `src/components/TroubleshootingEntry.tsx`
 - `src/components/TroubleshootingList.tsx`
 - `src/components/GlossaryTerm.tsx`
 - `src/components/Callout.tsx`
+- `src/components/Navigation.tsx` - sidebar reference materials
+- `src/pages/glossary.astro` - category navigation and section headers
+- `src/pages/troubleshooting.astro` - page header
+- `src/content/course/03-module-3/09-aurora-snapshot-modes.mdx` - table cells
+
+## Additional Icons Added
+
+| Icon Name | Replaces | Context |
+|-----------|----------|---------|
+| books | 📚 | Glossary nav link |
+| wrench | 🔧 | Troubleshooting nav link |
+| rocket | 🚀 | Kafka category, MDX recommendations |
+| refresh | 🔄 | Debezium category |
+
+## Notes
+
+- ✅/❌/⚠️ emojis in MDX comparison tables preserved (semantic indicators)
+- All decorative emojis replaced with inline SVGs
+- Icons use `currentColor` for theme-aware coloring

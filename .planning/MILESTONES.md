@@ -1,5 +1,30 @@
 # Project Milestones: Debezium Course
 
+## v1.5 Onboarding & Polish (Shipped: 2026-02-03)
+
+**Delivered:** Module 0 platform guide, GitHub repository link, and 8 glass-styled module summary mini-lessons for improved onboarding.
+
+**Phases completed:** 38-40 (3 plans total)
+
+**Key accomplishments:**
+
+- Created Module 0 "Как пользоваться" with 4 onboarding lessons (navigation, progress, lab, structure)
+- Added GitHub repository link to header with glass hover effect
+- Built 8 module summary mini-lessons with glass-card styling
+- Standardized "Что дальше?" sections linking modules together
+
+**Stats:**
+
+- 13 MDX files created
+- 3 phases, 3 plans
+- 7/7 requirements complete
+
+**Git range:** `feat(38-01)` → `feat(40-01)`
+
+**What's next:** v1.6 with search functionality, theme toggle, or MongoDB module
+
+---
+
 ## v1.4 Interactive Glass Diagrams (Shipped: 2026-02-03)
 
 **Delivered:** Replaced all 170 Mermaid diagrams with interactive React glass components featuring tooltips, keyboard accessibility, and 72% bundle size reduction.

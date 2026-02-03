@@ -5,33 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** v1.5 Onboarding & Polish
+**Current focus:** Ready for v1.6
 
 ## Current Position
 
-Phase: All phases complete
+Phase: —
 Plan: —
-Status: v1.5 milestone complete, ready for audit
-Last activity: 2026-02-03 — All 3 phases executed
+Status: v1.5 SHIPPED, ready for new milestone
+Last activity: 2026-02-03 — v1.5 milestone archived
 
-Progress: v1.0-v1.4 SHIPPED | v1.5 [##########] 3/3 phases
-
-## v1.5 Milestone Overview
-
-| Phase | Name | Requirements | Status |
-|-------|------|--------------|--------|
-| 38 | Module 0 - Platform Guide | ONB-01, ONB-02, ONB-03, ONB-04 | Complete |
-| 39 | GitHub Repository Link | ONB-05 | Complete |
-| 40 | Module Summaries Extraction | STRUCT-01, STYLE-01 | Complete |
-
-**Requirements:** 7 total | 7 complete | 0 pending
+Progress: v1.0-v1.5 SHIPPED | v1.6 not started
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 108 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 37)
+- Total plans completed: 111 (v1.0: 32 | v1.1: 19 | v1.2: 4 | v1.3: 13 | v1.4: 37 | v1.5: 3)
 - Average duration: ~6 min
-- Total execution time: ~9.5 hours
+- Total execution time: ~9.8 hours
 
 **By Milestone:**
 
@@ -42,7 +32,7 @@ Progress: v1.0-v1.4 SHIPPED | v1.5 [##########] 3/3 phases
 | v1.2 Reorganization | 19-21 | 4 | Archived (2026-02-01) |
 | v1.3 UX Refresh | 22-25 | 13 | Archived (2026-02-02) |
 | v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
-| v1.5 Onboarding & Polish | 38-40 | 3 | Complete |
+| v1.5 Onboarding & Polish | 38-40 | 3 | Archived (2026-02-03) |
 
 ## Accumulated Context
 
@@ -74,9 +64,9 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.5 milestone complete
-Resume with: `/gsd:audit-milestone` or `/gsd:complete-milestone`
+Stopped at: v1.5 archived
+Resume with: `/gsd:new-milestone` to start v1.6
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.5 milestone complete*
+*Last updated: 2026-02-03 — v1.5 milestone archived*

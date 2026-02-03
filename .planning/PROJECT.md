@@ -10,14 +10,22 @@
 
 ## Current State
 
-**Version:** v1.4 (shipped 2026-02-03)
+**Version:** v1.5 (shipped 2026-02-03)
 **Live:** https://levoel.github.io/debezium-course/
-**Codebase:** 144 source files, 60,000+ LOC (TypeScript, MDX, Astro, React)
-**Content:** 8 modules, 57+ lessons, 400+ code examples, 170 interactive glass diagrams
+**Codebase:** 157 source files, 65,000+ LOC (TypeScript, MDX, Astro, React)
+**Content:** 9 modules (incl. Module 0), 65+ lessons, 400+ code examples, 170 interactive glass diagrams
 **Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 **Bundle:** 1.0MB JavaScript (72% reduction from 3.6MB after Mermaid removal)
 
 ## Completed Milestones
+
+### v1.5 Onboarding & Polish (shipped 2026-02-03)
+
+**Delivered:**
+- Module 0 "Как пользоваться" with 4 onboarding lessons (navigation, progress, lab, structure)
+- GitHub repository link in header with glass hover effect
+- 8 module summary mini-lessons with glass-card styling
+- Standardized "Что дальше?" sections linking modules together
 
 ### v1.4 Interactive Glass Diagrams (shipped 2026-02-03)
 
@@ -62,14 +70,13 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.5 Onboarding & Polish
+## Current Milestone: None (v1.5 complete)
 
-**Goal:** Улучшить onboarding для новых пользователей и повысить визуальное качество контента.
-
-**Target features:**
-- Module 0: Как пользоваться платформой (навигация, прогресс, lab intro, структура курса)
-- Ссылка на GitHub репозиторий в header/footer
-- Glass-стилизация "Ключевые выводы" во всех уроках
+Ready to start v1.6. Potential features:
+- Search functionality across lessons (PLAT-09)
+- Dark/light theme toggle (PLAT-10)
+- MongoDB change streams module (CONT-01)
+- Export/import progress (PLAT-11)
 
 ## Requirements
 
@@ -101,19 +108,18 @@
 - ✓ 2.6MB bundle reduction (Mermaid removed) — v1.4
 - ✓ Keyboard accessibility (Tab, Enter/Space, Escape) — v1.4
 - ✓ Mobile responsiveness verified (390x844) — v1.4
+- ✓ Module 0 platform guide (4 onboarding lessons) — v1.5
+- ✓ GitHub repository link in header — v1.5
+- ✓ Module summary mini-lessons (8 modules) — v1.5
+- ✓ Glass styling for module summaries — v1.5
 
-### Active
+### Future
 
-**v1.5 Onboarding & Polish:**
-- [ ] ONB-01: Module 0 — Как пользоваться платформой
-- [ ] ONB-02: Ссылка на GitHub репозиторий
-- [ ] STYLE-01: Glass-стилизация "Ключевые выводы"
-
-**Deferred to v1.6+:**
-- [ ] PLAT-09: Search functionality across lessons
-- [ ] PLAT-10: Dark/light theme toggle
-- [ ] PLAT-11: Export/import progress
-- [ ] CONT-01: MongoDB change streams module
+**Candidates for v1.6+:**
+- PLAT-09: Search functionality across lessons
+- PLAT-10: Dark/light theme toggle
+- PLAT-11: Export/import progress
+- CONT-01: MongoDB change streams module
 
 ### Out of Scope
 
@@ -166,4 +172,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 after v1.5 milestone started*
+*Last updated: 2026-02-03 — v1.5 milestone complete*

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Icon, type IconName } from './Icon';
 
 interface RelatedLesson {
   title: string;
@@ -23,12 +24,12 @@ const connectorLabels = {
   common: { label: 'Общее', color: 'gray' },
 };
 
-const categoryLabels = {
-  connection: { label: 'Подключение', icon: '🔌' },
-  snapshot: { label: 'Snapshot', icon: '📸' },
-  streaming: { label: 'Streaming', icon: '🌊' },
-  configuration: { label: 'Конфигурация', icon: '⚙️' },
-  performance: { label: 'Производительность', icon: '⚡' },
+const categoryLabels: Record<string, { label: string; icon: IconName }> = {
+  connection: { label: 'Подключение', icon: 'plug' },
+  snapshot: { label: 'Snapshot', icon: 'camera' },
+  streaming: { label: 'Streaming', icon: 'wave' },
+  configuration: { label: 'Конфигурация', icon: 'gear' },
+  performance: { label: 'Производительность', icon: 'lightning' },
 };
 
 export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
@@ -68,8 +69,8 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
             `}>
               {connectorInfo.label}
             </span>
-            <span className="px-2 py-0.5 text-xs rounded bg-white/10 text-gray-300 border border-white/10">
-              {categoryInfo.icon} {categoryInfo.label}
+            <span className="px-2 py-0.5 text-xs rounded bg-white/10 text-gray-300 border border-white/10 inline-flex items-center gap-1">
+              <Icon name={categoryInfo.icon} size={14} /> {categoryInfo.label}
             </span>
           </div>
           <div className="font-mono text-sm text-rose-300 break-all pr-4">
@@ -77,7 +78,7 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
           </div>
         </div>
         <span className={`text-gray-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
-          ▼
+          <Icon name="chevronDown" size={16} />
         </span>
       </button>
 
@@ -87,7 +88,7 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
           {/* Symptoms */}
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-amber-300 mb-2 flex items-center gap-2">
-              <span>🔍</span> Симптомы
+              <Icon name="search" size={16} /> Симптомы
             </h4>
             <ul className="text-sm text-gray-300 space-y-1 ml-6">
               {symptoms.map((symptom, index) => (
@@ -99,7 +100,7 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
           {/* Cause */}
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
-              <span>🎯</span> Причина
+              <Icon name="target" size={16} /> Причина
             </h4>
             <p className="text-sm text-gray-300 ml-6">
               {cause}
@@ -109,7 +110,7 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
           {/* Solution */}
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-emerald-300 mb-2 flex items-center gap-2">
-              <span>✅</span> Решение
+              <Icon name="check" size={16} /> Решение
             </h4>
             <ol className="text-sm text-gray-300 space-y-2 ml-6">
               {solution.map((step, index) => (
@@ -134,7 +135,7 @@ export const TroubleshootingEntry: React.FC<TroubleshootingEntryProps> = ({
                              border border-white/10 hover:border-white/20
                              transition-all duration-200"
                   >
-                    <span className="mr-1.5">📖</span>
+                    <Icon name="book" size={14} className="mr-1.5" />
                     {lesson.title}
                   </a>
                 ))}

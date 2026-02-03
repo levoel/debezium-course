@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { TroubleshootingEntry } from './TroubleshootingEntry';
+import { Icon } from './Icon';
 
 interface RelatedLesson {
   title: string;
@@ -66,7 +67,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-blue-500/10 text-blue-300 border-blue-500/20 hover:bg-blue-500/20 hover:border-blue-400/40'
                 }`}
             >
-              <span className="text-base">🐘</span>
+              <Icon name="postgresql" size={18} />
               PostgreSQL
             </button>
             <button
@@ -78,7 +79,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-orange-500/10 text-orange-300 border-orange-500/20 hover:bg-orange-500/20 hover:border-orange-400/40'
                 }`}
             >
-              <span className="text-base">🐬</span>
+              <Icon name="mysql" size={18} />
               MySQL
             </button>
             <button
@@ -90,7 +91,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-gray-500/10 text-gray-300 border-gray-500/20 hover:bg-gray-500/20 hover:border-gray-400/40'
                 }`}
             >
-              <span className="text-base">⚙️</span>
+              <Icon name="gear" size={18} />
               Общие
             </button>
           </div>
@@ -120,7 +121,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-purple-500/10 text-purple-300 border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-400/40'
                 }`}
             >
-              <span>🔌</span>
+              <Icon name="plug" size={16} />
               Подключение
             </button>
             <button
@@ -132,7 +133,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20 hover:bg-cyan-500/20 hover:border-cyan-400/40'
                 }`}
             >
-              <span>📸</span>
+              <Icon name="camera" size={16} />
               Snapshot
             </button>
             <button
@@ -144,7 +145,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-teal-500/10 text-teal-300 border-teal-500/20 hover:bg-teal-500/20 hover:border-teal-400/40'
                 }`}
             >
-              <span>🌊</span>
+              <Icon name="wave" size={16} />
               Streaming
             </button>
             <button
@@ -156,7 +157,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-amber-500/10 text-amber-300 border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-400/40'
                 }`}
             >
-              <span>⚙️</span>
+              <Icon name="gear" size={16} />
               Конфигурация
             </button>
             <button
@@ -168,7 +169,7 @@ export const TroubleshootingList: React.FC<TroubleshootingListProps> = ({ entrie
                   : 'bg-rose-500/10 text-rose-300 border-rose-500/20 hover:bg-rose-500/20 hover:border-rose-400/40'
                 }`}
             >
-              <span>⚡</span>
+              <Icon name="lightning" size={16} />
               Производительность
             </button>
           </div>

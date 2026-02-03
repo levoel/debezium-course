@@ -61,7 +61,9 @@ export function usePagefindSearch(
     const loadPagefind = async () => {
       try {
         // Dynamic import of Pagefind from the build output
-        const basePath = import.meta.env.BASE_URL || '/';
+        // Ensure basePath has trailing slash
+        const rawBasePath = import.meta.env.BASE_URL || '/';
+        const basePath = rawBasePath.endsWith('/') ? rawBasePath : `${rawBasePath}/`;
         const pagefind = await import(
           /* @vite-ignore */ `${basePath}pagefind/pagefind.js`
         ) as PagefindAPI;

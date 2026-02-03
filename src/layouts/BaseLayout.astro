@@ -2,6 +2,7 @@
 import { getNavigationTree } from '../utils/navigation';
 import { Navigation } from '../components/Navigation';
 import { MobileMenuToggle } from '../components/MobileMenuToggle';
+import SearchModal from '../components/SearchModal';
 import '../styles/global.css';
 
 interface Props {
@@ -38,6 +39,9 @@ const modulesArray = Array.from(navigationTree.entries());
     </style>
   </head>
   <body class="text-gray-100 gradient-background">
+    <!-- Search Modal (Cmd+K) -->
+    <SearchModal client:load />
+
     <!-- Mobile overlay -->
     <div
       id="sidebar-overlay"

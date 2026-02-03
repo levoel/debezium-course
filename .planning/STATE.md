@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 Phase: N/A (between milestones)
 Plan: N/A
 Status: Ready for new milestone
-Last activity: 2026-02-03 — v1.6 Full-Text Search milestone complete
+Last activity: 2026-02-03 — Quick task 008: Module 0 intro & About page
 
 Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] not started
 
@@ -69,6 +69,7 @@ None for current milestone completion.
 | 005 | Fix lesson navigation buttons | 2026-02-02 | 2cf3270 | [005-fix-lesson-navigation-buttons](./quick/005-fix-lesson-navigation-buttons/) |
 | 006 | Fix 13 visual diagram issues | 2026-02-02 | 3ad0c40 | [006-fix-visual-diagram-issues](./quick/006-fix-visual-diagram-issues/) |
 | 007 | Add noncommercial license attribution | 2026-02-02 | 444f1e0 | [007-add-noncommercial-license-attribution](./quick/007-add-noncommercial-license-attribution/) |
+| 008 | Module 0 intro & About page with contacts/donations | 2026-02-03 | d397feb | [008-module-0-intro-about-page](./quick/008-module-0-intro-about-page/) |
 
 ## Session Continuity
 

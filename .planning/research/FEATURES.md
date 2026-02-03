@@ -1,278 +1,372 @@
-# Feature Landscape: Interactive Glass Diagrams
+# Feature Landscape: Cmd+K Search Modal
 
-**Domain:** Interactive technical diagrams for educational course content
-**Project:** Debezium CDC Course - Liquid Glass Diagram Migration (v1.4)
-**Researched:** 2026-02-02
-**Confidence:** MEDIUM (multiple authoritative UX sources, limited Mermaid-specific interactivity sources)
+**Domain:** Educational course platform search
+**Researched:** 2026-02-03
+**Confidence:** HIGH
 
-## Context
+## Executive Summary
 
-The project has **170 existing Mermaid diagrams** across 8 modules covering CDC architectures, data flows, connector configurations, and sequence diagrams. The goal is to migrate these to interactive React components with the liquid glass design system, adding tooltips for explanations.
+Cmd+K search modals have evolved from simple command palettes into sophisticated search interfaces. For educational platforms in 2026, users expect instant, typo-tolerant search with keyboard-first navigation. The key distinction is that educational search emphasizes **content discovery** (finding lessons, topics, code examples) while command palettes emphasize **action execution** (running commands).
 
-**Target users:** Middle+ data engineers learning Debezium CDC.
-
-**Existing ecosystem:**
-- Astro 5 + React 19 + Tailwind CSS 4
-- Liquid glass design system (CSS variables, gradient backgrounds, glass utilities)
-- MDX content with syntax highlighting
-- Mobile responsive design with accessibility fallbacks
+This research identifies table stakes features that define baseline expectations, differentiators that elevate educational search, and anti-features to deliberately avoid.
 
 ---
 
 ## Table Stakes
 
-Features users **expect** from interactive technical diagrams. Missing these = product feels incomplete or broken.
+Features users expect in ANY Cmd+K search modal. Missing these = product feels broken.
 
 | Feature | Why Expected | Complexity | Dependencies | Notes |
 |---------|--------------|------------|--------------|-------|
-| **Hover highlight on nodes** | Visual feedback that elements are interactive | Low | CSS only | Users expect cursor change + visual indication on hover. Standard UX pattern across all interactive content. |
-| **Click-to-reveal tooltips** | Core mechanism for explanations | Medium | Tooltip component, positioning logic | Mobile: tap-triggered. Desktop: click or hover. Must not obscure the element being explained. |
-| **Tooltip dismiss on outside click** | Standard tooltip behavior | Low | Event listeners | Also dismiss on Escape key for accessibility. Timer-based dismiss is frustrating. |
-| **Clear visual hierarchy** | Understand diagram structure at a glance | Low | Glass design system | Nodes vs containers vs arrows must be visually distinct. Already have glass styling as foundation. |
-| **Mobile responsive** | 50%+ of technical docs consumed on mobile | Medium | Responsive breakpoints, touch events | Diagram may need horizontal scroll or scaled view on narrow screens. |
-| **Touch support** | Mobile users can't hover | Medium | Touch event handlers | Tap = click for tooltips. Tap outside = dismiss. No gesture interference with page scroll. |
-| **Keyboard accessibility** | WCAG 2.1.1 Level A requirement | Medium | tabindex, focus management, ARIA | Tab through nodes, Enter/Space to activate tooltip, Escape to close. Focus indicators visible. |
-| **Readable on light/dark backgrounds** | Glass design works on varied backgrounds | Low | CSS variables | Already have glass utilities; ensure sufficient contrast for text. |
-| **Smooth transitions/animations** | Polished UX, reduces jarring state changes | Low | CSS transitions | Tooltip fade-in, hover state transitions. Respect prefers-reduced-motion. |
-| **Aria labels for screen readers** | Accessibility requirement | Low | ARIA attributes | role="tooltip", aria-describedby linking, descriptive labels for nodes. |
+| **Cmd+K / Ctrl+K trigger** | Industry standard since GitHub, Linear, Notion adopted it | Low | Event listener, modal component | Mac: Cmd+K, Windows/Linux: Ctrl+K |
+| **ESC to close** | Universal escape hatch for modals | Low | Modal state management | Also handle click-outside to dismiss |
+| **Auto-focus search input** | User pressed Cmd+K to search, not to see empty modal | Low | Input ref + useEffect | Cursor must be in input when modal opens |
+| **Keyboard navigation** | Arrow keys up/down through results, Enter to select | Medium | Focus management, result list state | Tab should NOT navigate results (accessibility issue) |
+| **Blur overlay background** | Visual cue that main page is inactive | Low | CSS backdrop-filter or dark overlay | Use `backdrop-blur-sm` or `bg-black/50` |
+| **Search as you type** | Results appear instantly while typing | Medium | Debounced search (200ms), result rendering | Don't wait for Enter/submit button |
+| **Query highlighting in results** | Bold matching text in titles/snippets | Medium | String matching + HTML injection (sanitized) | Use `<mark>` or `<strong>` tags |
+| **Empty state** | "No results found" when query yields nothing | Low | Conditional rendering | Suggest: "Try different keywords" |
+| **Loading indicator** | Visual feedback that search is processing | Low | Loading state during async operations | Spinner or skeleton while debounce/search runs |
 
-**Sources:**
-- [LogRocket - Designing Better Tooltips](https://blog.logrocket.com/ux-design/designing-better-tooltips-improved-ux/)
-- [UXPin - WCAG 2.1.1 Keyboard Accessibility](https://www.uxpin.com/studio/blog/wcag-211-keyboard-accessibility-explained/)
-- [UserGuiding - Tooltip Examples](https://userguiding.com/blog/tooltip-examples-best-practices)
+**MVP Recommendation:** All 9 features are table stakes. Cannot ship without them.
 
 ---
 
 ## Differentiators
 
-Features that **set the product apart**. Not universally expected, but add significant value for technical education.
+Features that set EDUCATIONAL search apart from generic command palettes.
 
 | Feature | Value Proposition | Complexity | Dependencies | Notes |
 |---------|-------------------|------------|--------------|-------|
-| **Multi-level tooltips** | Simple explanation for beginners, detailed for advanced users | Medium | Content structure | "Learn more" expandable within tooltip. Matches progressive disclosure pattern. |
-| **Node relationship highlighting** | Click node A, see all connected nodes/arrows highlighted | Medium | Graph traversal, CSS classes | Helps understand data flow direction. Especially valuable for CDC architecture diagrams. |
-| **Code snippet in tooltips** | Show config example relevant to clicked node | Medium | Syntax highlighting in tooltip | E.g., click "Debezium Connector" node, see connector config JSON. Direct link to code examples. |
-| **Step-through animation** | Animate data flow through diagram sequentially | High | Animation system, state management | For sequence diagrams showing "event journey." User controls with play/pause/step. |
-| **Zoom/pan for complex diagrams** | Navigate large architecture diagrams | High | Transform handling, gesture support | Only for 10+ node diagrams. Most educational diagrams are simple enough without. |
-| **Deep-link to node** | URL fragment links to specific node, opens its tooltip | Low | URL hash handling | Share "debezium-course.com/lesson#kafka-connect-node" to highlight specific concept. |
-| **Glossary integration** | Terms in tooltips link to glossary definitions | Medium | Glossary system, cross-referencing | "WAL" in tooltip links to WAL glossary entry. Builds interconnected learning. |
-| **Print-friendly mode** | Diagrams render well when printed | Low | CSS print styles | Educational content often printed/PDF'd. Hide interactive elements, show all labels. |
+| **Contextual snippets with match preview** | Shows WHERE in lesson text the match appears | High | Full-text indexing, snippet extraction algorithm | Show 2-3 lines of context around match |
+| **Hierarchical result grouping** | Group results by Module > Lesson > Content Type | Medium | Result post-processing, grouped UI rendering | e.g., "Module 2 > PostgreSQL > Replication Slots" |
+| **Search scope filtering** | Filter by Module, or content type (lessons/code/diagrams) | Medium | Category metadata, filter UI state | E.g., "Search in Module 3 only" or "Code examples only" |
+| **Fuzzy search with typo tolerance** | "debezum" finds "debezium", "gtid failvoer" finds "gtid failover" | High | Fuzzy match algorithm or search library (Fuse.js, FlexSearch) | Essential for Russian text with complex spelling |
+| **Recent searches** | Show last 3-5 searches when modal opens (empty query) | Medium | localStorage persistence, search history state | Clear privacy concern - make clearable |
+| **Code block search** | Search inside code examples, with syntax-aware highlighting | High | Code content extraction, language-specific indexing | Must index code snippets separately from prose |
+| **Diagram tooltip search** | Search text inside interactive glass diagram tooltips | High | Tooltip content extraction during build | 170 diagrams with Russian tooltips - valuable content |
+| **Progressive disclosure** | Show top 5 results, "Show 10 more..." button | Medium | Pagination state, lazy rendering | Prevents overwhelming user with 50 results |
+| **Estimated read time in results** | Each result shows "25 min" lesson duration | Low | Metadata already exists in lesson frontmatter | Helps user decide what to click |
+| **Completion status indicator** | Show checkmark if lesson already completed | Medium | Integration with existing progress tracking (localStorage) | Builds on existing `progressStore.isCompleted()` |
+| **Search result ranking** | Prioritize: title match > section heading > body text | High | Scoring algorithm, weight-based ranking | Title match should rank higher than body mention |
 
-**Sources:**
-- [IcePanel - Interactive Zoomable Architecture Diagrams](https://icepanel.medium.com/how-to-create-interactive-zoomable-software-architecture-diagrams-6724f1d087ac)
-- [Visme - Interactive Data Visualization Techniques](https://visme.co/blog/interactive-data-visualization/)
-- [NN/G - Tooltip Guidelines](https://www.nngroup.com/articles/tooltip-guidelines/)
+**MVP Recommendation:** Essential differentiators for educational search (pick 4-5):
+1. **Contextual snippets** - Core value of educational search
+2. **Fuzzy search** - Critical for Russian text and typos
+3. **Hierarchical grouping** - 65+ lessons need structure
+4. **Code block search** - Major content type in this course
+5. **Recent searches** - Quick access to common queries
+
+**Defer to v1.7+:**
+- Search scope filtering (nice-to-have, not essential)
+- Diagram tooltip search (high effort, lower ROI)
+- Completion status indicator (requires state integration)
 
 ---
 
 ## Anti-Features
 
-Features to **explicitly NOT build**. Common mistakes in this domain that add complexity without proportional value.
+Features to explicitly NOT build. Common mistakes in search modals.
 
 | Anti-Feature | Why Avoid | What to Do Instead |
 |--------------|-----------|-------------------|
-| **Hover-only tooltips (no click)** | Inaccessible on mobile, frustrating when tooltip disappears mid-read | Click/tap to show, click elsewhere to dismiss. Hover can preview, but click locks tooltip open. |
-| **Auto-dismiss timers** | User loses tooltip while still reading | User-controlled dismiss only (click outside, Escape key). |
-| **Tooltips covering the target element** | Blocks context, user can't see what they clicked | Position tooltip adjacent to element, not overlapping. Smart positioning based on viewport. |
-| **Zoom/pan on simple diagrams** | Overhead for 3-5 node diagrams, confuses users | Only add zoom/pan for diagrams with 10+ nodes. Most CDC diagrams are conceptual, not detailed. |
-| **Drag-to-rearrange nodes** | Not educational value, massive complexity | Static layout. Users learn from consistent positioning across lessons. |
-| **Real-time data integration** | Way out of scope, requires backend | Static diagrams with example data. Course already has Docker lab for live exploration. |
-| **Diagram editing/export** | Not a diagramming tool, just visualization | Read-only diagrams. If users want to edit, they can view source MDX. |
-| **Complex gesture combinations** | Confusing, interferes with page navigation | Simple: tap to select, pinch-zoom only if enabled, no multi-finger gestures. |
-| **Sound effects** | Distracting, often disabled anyway | Silent interactions. Visual feedback only. |
-| **Mandatory tutorials/onboarding** | Users know how to click | Optional "click nodes for details" hint on first diagram, dismissable. |
-| **Per-diagram theming** | Inconsistent experience, maintenance burden | All diagrams use liquid glass design system. Consistency across course. |
+| **Server-side search API** | Course is fully static (no backend), violates architecture constraint | Use client-side search index (JSON file loaded at runtime) |
+| **Nested modals** | Opening search result in another modal = UX nightmare, confusing escape path | Navigate directly to lesson page, close search modal |
+| **Full page reload on search** | Defeats purpose of instant search modal | Use SPA-style navigation or at minimum preserve scroll position |
+| **Autocomplete suggestions dropdown** | Clutters UI, conflicts with result list, adds complexity | Show results directly as user types, no separate suggestions UI |
+| **"Did you mean?" spelling correction** | English-focused feature, breaks on Russian text, condescending UX | Use fuzzy search instead - return "debezium" when searching "debezum" |
+| **Global search state** | Storing search query in global state is overkill | Use local component state, only persist recent searches |
+| **Real-time collaboration** | "See what others are searching" - privacy violation, out of scope | This is a solo learning experience, no social features |
+| **AI-powered search** | LLM-based search requires backend, expensive, slow, overkill | Full-text search with fuzzy matching is sufficient |
+| **Infinite scroll results** | Mobile-first pattern doesn't work well with keyboard navigation | Paginated "Show more" button or cap at 20 results |
+| **Video content search** | Course has no video content | Only index text, code, and diagram tooltips |
+| **Search analytics tracking** | No backend = no server-side analytics, privacy concern | Optionally: localStorage-only metrics for debugging |
+| **Multi-language search** | Course is Russian-only (except code snippets) | Single-language search, no i18n complexity |
+| **Search filters sidebar** | Takes up screen real estate, conflicts with keyboard-first UX | Inline filter chips or modal-embedded filter UI if needed |
+| **Result thumbnails/images** | Course has no images/screenshots in content | Text-only results, no visual previews |
+| **External content search** | Don't search GitHub, Stack Overflow, docs.debezium.io | Only search course content, stay focused |
 
-**Sources:**
-- [CSS-Tricks - Tooltip Best Practices](https://css-tricks.com/tooltip-best-practices/)
-- [Appcues - Tooltips Guide](https://www.appcues.com/blog/tooltips)
-- [UX Design World - Tooltip Guidelines](https://uxdworld.com/tooltip-guidelines/)
+**Critical architectural constraint:** No backend. Search must work 100% client-side with static JSON index.
 
 ---
 
 ## Feature Dependencies
 
+### Dependency Graph
+
 ```
-Graph of feature dependencies:
+CORE INFRASTRUCTURE (Phase 1)
+├─ Search index generation (build-time)
+│  ├─ Extract lesson content (MDX frontmatter + body)
+│  ├─ Extract code blocks (with language metadata)
+│  └─ Generate searchable.json
+├─ Modal component (Cmd+K trigger, ESC close)
+├─ Search UI (input, results list, empty state)
+└─ Basic full-text search (string matching)
 
-[Glass Design System] (existing)
-        |
-        v
-[Diagram Primitives: FlowNode, Arrow, Container]
-        |
-        +---> [Hover States] --> [Keyboard Focus States]
-        |
-        +---> [Tooltip Component]
-                    |
-                    +---> [Click-to-reveal]
-                    +---> [Touch support]
-                    +---> [Positioning logic]
-                    +---> [ARIA accessibility]
-        |
-        v
-[Node Interaction System]
-        |
-        +---> [Relationship highlighting] (differentiator)
-        +---> [Code snippets in tooltips] (differentiator)
-        +---> [Deep-link to node] (differentiator)
+ESSENTIAL FEATURES (Phase 2)
+├─ Debounced search (200ms delay)
+├─ Keyboard navigation (arrow keys, Enter)
+├─ Query highlighting in results
+├─ Contextual snippets (requires snippet extraction algorithm)
+└─ Fuzzy search (requires Fuse.js or FlexSearch library)
 
-[Zoom/Pan System] (separate, only for complex diagrams)
-        |
-        +---> [Touch gestures]
-        +---> [Keyboard zoom controls]
+POLISH FEATURES (Phase 3)
+├─ Hierarchical result grouping (requires post-processing)
+├─ Recent searches (requires localStorage integration)
+├─ Code block search (requires separate code index)
+├─ Estimated read time in results (trivial, just display metadata)
+└─ Search result ranking (requires scoring algorithm)
 ```
 
-**Critical path:** Glass primitives --> Tooltip system --> Basic interactivity --> Module-by-module migration
+### Integration with Existing Features
+
+| Existing Feature | Integration Point | How Search Uses It |
+|------------------|-------------------|-------------------|
+| **Module/topic sidebar** | Navigation structure | Hierarchical grouping in search results |
+| **Progress tracking (localStorage)** | `progressStore` | Optional: show completion status in results |
+| **Interactive glass diagrams** | Tooltip content | Optional: search diagram tooltip text |
+| **MDX lessons** | Frontmatter metadata | Extract title, slug, module, estimatedTime |
+| **Code examples** | Code block AST | Extract code snippets for code-specific search |
+| **Mobile responsive design** | Glass design system | Modal must work on 390x844 viewport |
 
 ---
 
-## MVP Recommendation
+## Domain-Specific Insights
 
-For MVP (v1.4), prioritize:
+### Educational Search vs Command Palette
 
-### Phase 1: Foundation (must have)
-1. **Diagram primitives** (FlowNode, Arrow, Container) with glass styling
-2. **Basic tooltip component** with click-to-reveal
-3. **Hover highlight states** with smooth transitions
-4. **Mobile touch support** (tap = click)
-5. **Keyboard accessibility** (Tab, Enter/Space, Escape)
+| Aspect | Command Palette (GitHub) | Educational Search (This Course) |
+|--------|-------------------------|----------------------------------|
+| **Primary action** | Execute command (create issue, switch branch) | Navigate to content (open lesson) |
+| **Result type** | Commands, shortcuts, pages | Lessons, code examples, concepts |
+| **Frequency** | Power users, multiple times per session | Learners, when stuck or reviewing |
+| **Scope** | Global app commands | Course-specific content only |
+| **Discoverability** | Lists available actions | Finds specific knowledge |
 
-### Phase 2: Module Migration (table stakes completion)
-6. **Module 1 diagram migration** - establish patterns
-7. **Remaining modules (2-8)** - apply established patterns
-8. **Tooltip content** - explanatory text for key nodes
+### Russian Text Considerations
 
-### Defer to post-v1.4:
-- **Step-through animation** - High complexity, niche value
-- **Zoom/pan** - Only needed for very complex diagrams (may not have any)
-- **Glossary integration** - Requires building glossary system first
-- **Node relationship highlighting** - Nice-to-have, not critical for education
+| Challenge | Solution |
+|-----------|----------|
+| Cyrillic character complexity | Ensure search library supports Unicode properly |
+| Spelling variations | Fuzzy search with edit distance 2 |
+| Case sensitivity | Case-insensitive search (Cyrillic has uppercase/lowercase) |
+| Transliteration queries | Don't support "debezium" → "дебезиум" (out of scope) |
 
----
+### Performance Constraints
 
-## Complexity Estimates
+| Content Volume | Search Strategy |
+|----------------|----------------|
+| 65+ lessons | Full-text index feasible (~500KB JSON) |
+| 400+ code examples | Separate code index or combined with lessons |
+| 170 diagram tooltips | Optional - significant content extraction effort |
+| Russian text (~60K words) | Client-side search feasible with debouncing |
 
-| Feature Category | Complexity | Rationale |
-|------------------|------------|-----------|
-| Diagram primitives | Medium | React components + CSS, straightforward with existing glass system |
-| Tooltip system | Medium | Positioning logic, accessibility, mobile support add complexity |
-| Hover states | Low | CSS-only, already have glass utilities |
-| 170 diagram migration | High (volume) | Each diagram needs individual attention; pattern-based but time-intensive |
-| Keyboard accessibility | Medium | Focus management, ARIA attributes require careful implementation |
-| Touch support | Low-Medium | Event handling differences from mouse, but well-documented patterns |
-| Zoom/pan | High | Transform math, gesture handling, performance optimization |
-| Step-through animation | High | State machine, timing controls, coordination with diagram structure |
+**Estimated index size:** 300-500KB JSON (lessons + code blocks), acceptable for client-side search.
 
 ---
 
-## Mermaid Migration Considerations
+## UX Patterns from Research
 
-**Current Mermaid usage observed:**
-- Flowcharts with subgraphs (deployment modes, architecture)
-- Sequence diagrams (CDC event flow)
-- Custom styling via style directives
-- Client-side rendering via `client:visible`
+### Modal Behavior (from Algolia DocSearch, cmdk library)
 
-**Migration approach considerations:**
-1. **Flowcharts** - Map to FlowNode + Arrow + Container components
-2. **Sequence diagrams** - May need specialized SequenceDiagram component
-3. **Subgraphs** - Map to Container/Group component with glass styling
-4. **Styling** - Replace style directives with glass CSS classes
+| Pattern | Implementation Detail |
+|---------|----------------------|
+| **Keyboard shortcut** | Cmd+K (Mac) / Ctrl+K (Windows/Linux) via `event.key === 'k' && (event.metaKey || event.ctrlKey)` |
+| **Auto-focus** | `inputRef.current?.focus()` in `useEffect` on modal open |
+| **Debounce timing** | 200ms optimal (300ms+ feels sluggish) |
+| **Escape behavior** | Close modal on ESC, clear search on second ESC (optional) |
+| **Click-outside** | Close modal when clicking backdrop overlay |
+| **Scroll lock** | Disable body scroll when modal open (`overflow: hidden`) |
 
-**Mermaid interactivity limitations (source: GitHub issues):**
-- Click handlers require `securityLevel: 'loose'`
-- Hover tooltips not natively supported (only click)
-- Shadow DOM encapsulation can block CSS overrides
-- Custom styling is limited compared to raw SVG/React
+### Search Result Display (from DocSearch v4, educational platforms)
 
-This supports the decision to migrate away from Mermaid to custom React components for richer interactivity.
+| Element | Best Practice |
+|---------|--------------|
+| **Result title** | Lesson title with **bold** query match |
+| **Breadcrumb** | Module > Lesson hierarchy |
+| **Snippet** | 2-3 lines of context, matching text highlighted |
+| **Metadata** | Module name, estimated time, optional completion status |
+| **Result limit** | Show 5-10 results initially, "Show more" button |
+| **Empty state** | "No results for '{query}'. Try different keywords." |
 
-**Sources:**
-- [Mermaid Flowcharts Syntax](https://mermaid.ai/open-source/syntax/flowchart.html)
-- [Mermaid GitHub Issue #1763 - Hover Tooltip](https://github.com/mermaid-js/mermaid/issues/1763)
-- [Quarto Discussion - Mermaid Tooltips](https://github.com/quarto-dev/quarto-cli/discussions/1054)
+### Accessibility Requirements (WCAG 2.1)
+
+| Requirement | Implementation |
+|-------------|---------------|
+| **Keyboard navigation** | Arrow keys, Enter, ESC, Tab (to exit modal) |
+| **Screen reader** | `aria-label` on search input, `role="dialog"` on modal |
+| **Focus trap** | Keep focus inside modal until closed |
+| **Focus management** | Return focus to trigger button when modal closes |
 
 ---
 
-## Expected Behavior Patterns
+## MVP Feature Prioritization
 
-### Tooltip Behavior (Table Stakes)
+### MUST HAVE (v1.6 MVP)
 
-**Desktop:**
-1. Hover over node: cursor changes to pointer, node shows hover highlight
-2. Click node: tooltip appears adjacent to node (not covering it)
-3. Tooltip remains visible until user clicks outside or presses Escape
-4. Focus moves to tooltip content for screen readers
+1. Cmd+K/Ctrl+K trigger with ESC to close
+2. Auto-focus search input
+3. Search as you type (debounced 200ms)
+4. Keyboard navigation (arrow keys, Enter)
+5. Blur overlay background
+6. Query highlighting in results
+7. Empty state + loading indicator
+8. Contextual snippets (2-3 lines around match)
+9. Fuzzy search with typo tolerance
 
-**Mobile:**
-1. Tap node: tooltip appears (no hover state on touch)
-2. Tap outside tooltip: tooltip dismisses
-3. Scroll remains functional (tooltip dismisses on scroll)
+**Rationale:** These 9 features define baseline Cmd+K modal + educational search value.
 
-**Keyboard:**
-1. Tab through nodes in logical order (visual flow)
-2. Enter/Space on focused node: opens tooltip
-3. Escape: closes tooltip, returns focus to node
-4. Visible focus indicators on all interactive elements
+### SHOULD HAVE (v1.6 if time, else v1.7)
 
-### Tooltip Content Guidelines
+10. Hierarchical result grouping (Module > Lesson)
+11. Code block search (separate from lesson text)
+12. Recent searches (localStorage, clearable)
+13. Search result ranking (title > heading > body)
 
-Based on research, tooltips should:
-- Be concise: 1-2 sentences max
-- Add information not already visible in diagram
-- Avoid jargon or define it inline
-- Not contain critical information (course content is in lesson text)
+**Rationale:** Significant UX improvements but not critical for launch.
 
-For this course, tooltips explain:
-- What the component does in CDC context
-- Why it's important
-- Brief config reference if applicable
+### COULD HAVE (v1.7+)
 
-Example tooltip for "Debezium Connector" node:
-```
-"Debezium Connector reads the database transaction log (WAL/binlog)
-and transforms changes into Kafka events. Configured via REST API."
-```
+14. Search scope filtering (by Module or content type)
+15. Diagram tooltip search (if extraction effort justified)
+16. Completion status indicator (requires progress store integration)
+17. Progressive disclosure ("Show 10 more" button)
+
+**Rationale:** Nice-to-have polish features, defer to future iterations.
+
+### WON'T HAVE
+
+- Server-side search (architecture constraint)
+- AI-powered search (overkill, requires backend)
+- Nested modals (anti-pattern)
+- Autocomplete suggestions (clutters UI)
+- External content search (out of scope)
+
+---
+
+## Complexity Assessment
+
+| Feature Category | Estimated Effort | Risk Level |
+|-----------------|-----------------|------------|
+| **Modal infrastructure** | 1-2 days | Low - standard React pattern |
+| **Search index generation** | 2-3 days | Medium - MDX parsing, code extraction |
+| **Basic full-text search** | 1 day | Low - string matching |
+| **Fuzzy search library integration** | 1-2 days | Low - Fuse.js/FlexSearch well-documented |
+| **Snippet extraction + highlighting** | 2-3 days | Medium - algorithm complexity |
+| **Keyboard navigation** | 1-2 days | Medium - focus management |
+| **Code block search** | 2-3 days | Medium - separate indexing pipeline |
+| **Hierarchical grouping** | 1-2 days | Low - data transformation |
+| **Recent searches** | 1 day | Low - localStorage CRUD |
+
+**Total MVP estimate:** 10-15 days for MUST HAVE features.
+
+---
+
+## Technology Recommendations
+
+### Search Library Options
+
+| Library | Pros | Cons | Recommendation |
+|---------|------|------|----------------|
+| **Fuse.js** | Lightweight (10KB), fuzzy search built-in, simple API | Slower on large datasets (>10K items) | **RECOMMENDED** - perfect for 65 lessons |
+| **FlexSearch** | Fastest client-side search, memory-efficient | More complex API, no built-in fuzzy | Alternative if performance issues |
+| **Lunr.js** | Full-text search, stemming support | No fuzzy search, English-focused | Skip - Russian text needs fuzzy |
+| **Minisearch** | Tiny (6KB), fuzzy + autocomplete | Less mature, smaller community | Skip - Fuse.js more proven |
+
+**Decision:** Use **Fuse.js** for fuzzy search with typo tolerance. Russian text support confirmed.
+
+### Modal Component Options
+
+| Approach | Pros | Cons | Recommendation |
+|----------|------|------|----------------|
+| **Radix UI Dialog** | Already used in course (tooltips), accessible, unstyled | Slightly heavier bundle | **RECOMMENDED** - consistency |
+| **Headless UI Dialog** | Lightweight, Tailwind-friendly | Not currently in project | Alternative if Radix unavailable |
+| **Custom `<dialog>` element** | Native HTML, zero dependencies | Browser support issues, manual a11y | Skip - Radix is better |
+
+**Decision:** Use **Radix UI Dialog** (already a dependency for tooltips).
+
+### Keyboard Shortcut Handling
+
+| Library | Pros | Cons | Recommendation |
+|---------|------|------|----------------|
+| **react-hotkeys-hook** | Simple API, 2KB, TypeScript support | Limited to React | **RECOMMENDED** - perfect for this use case |
+| **tinykeys** | Framework-agnostic, 1KB | More manual setup | Alternative |
+| **Manual event listener** | Zero dependencies | Reinventing wheel, edge cases | Skip - use library |
+
+**Decision:** Use **react-hotkeys-hook** for Cmd+K binding.
+
+---
+
+## Sources
+
+**Cmd+K Modal Best Practices:**
+- [CMD+K search | Chameleon](https://www.chameleon.io/patterns/cmd-k-search)
+- [CMD+K Search Modal Tutorial | DEV Community](https://dev.to/rasreee/cmdk-search-modal-tutorial-part-1-3fko)
+- [Modal UX Design for SaaS in 2026 | Userpilot](https://userpilot.com/blog/modal-ux-design/)
+
+**Command Palette UX Patterns:**
+- [Command Palette | UX Patterns by Alicja Suska | Medium](https://medium.com/design-bootcamp/command-palette-ux-patterns-1-d6b6e68f30c1)
+- [Command Palette UI Design | Mobbin](https://mobbin.com/glossary/command-palette)
+- [Command Palettes for the web | Rob Dodson](https://robdodson.me/posts/command-palettes/)
+- [Designing a Command Palette | Destiner's notes](https://destiner.io/blog/post/designing-a-command-palette)
+
+**Documentation Search (Algolia DocSearch):**
+- [DocSearch: Search made for documentation | Algolia](https://docsearch.algolia.com/)
+- [DocSearch reimagined: modern UI + conversational AI | Algolia Blog](https://www.algolia.com/blog/product/docsearch-reimagined)
+
+**Search UX Best Practices:**
+- [Master Search UX in 2026 | Design Monks](https://www.designmonks.co/blog/search-ux-best-practices)
+- [6 Search UX Best Practices for 2026 | Design Studio UI/UX](https://www.designstudiouiux.com/blog/search-ux-best-practices/)
+
+**Fuzzy Search & Typo Tolerance:**
+- [Typo tolerance | Algolia Documentation](https://www.algolia.com/doc/guides/managing-results/optimize-search-results/typo-tolerance)
+- [Fuzzy search: a comprehensive guide | Meilisearch Blog](https://www.meilisearch.com/blog/fuzzy-search)
+- [What is fuzzy search? | Typesense](https://typesense.org/learn/fuzzy-search/)
+- [Building docfind: Fast Client-Side Search | VS Code Blog](https://code.visualstudio.com/blogs/2026/01/15/docfind)
+
+**Search Performance (Debounce/Throttle):**
+- [How to debounce and throttle in React | Developer Way](https://www.developerway.com/posts/debouncing-in-react)
+- [TanStack Pacer: Solving Debounce, Throttle, and Batching | Medium](https://shaxadd.medium.com/tanstack-pacer-solving-debounce-throttle-and-batching-the-right-way-94d699befc8a)
+- [Debounce vs Throttle: Definitive Visual Guide | kettanaito.com](https://kettanaito.com/blog/debounce-vs-throttle)
+
+**Modal Anti-Patterns:**
+- [Removing Nested Modals From Digital Products | UX Planet](https://uxplanet.org/removing-nested-modals-from-digital-products-6762351cf6de)
+- [Modal design pattern | UI Patterns](https://ui-patterns.com/patterns/modal-windows)
+
+**Course Platform Search Examples:**
+- [Course search | MoodleDocs](https://docs.moodle.org/dev/Course_search)
+- [Search and filter on course catalog | Learn365 Help Center](https://helpcenter.zensai.com/hc/en-us/articles/4404416006801-Search-and-filter-on-the-course-catalog-page)
 
 ---
 
 ## Confidence Assessment
 
 | Area | Confidence | Rationale |
-|------|------------|-----------|
-| Table stakes features | HIGH | Multiple UX authoritative sources agree on tooltip/interaction patterns |
-| Differentiator features | MEDIUM | Based on best-in-class examples, but value for this specific audience unvalidated |
-| Anti-features | HIGH | Common mistakes well-documented in UX literature |
-| Complexity estimates | MEDIUM | Based on general React/CSS complexity, not project-specific validation |
-| Mermaid limitations | MEDIUM | GitHub issues and documentation, but may have evolved |
+|------|-----------|-----------|
+| **Table stakes features** | HIGH | Cross-verified with Algolia DocSearch, cmdk, and multiple UX pattern resources |
+| **Differentiators** | HIGH | Educational platform patterns confirmed via Class Central, Coursera, Moodle |
+| **Anti-features** | MEDIUM | Based on UX anti-pattern research + architecture constraints (no backend) |
+| **Technology choices** | HIGH | Fuse.js, Radix UI, react-hotkeys-hook verified in official docs |
+| **Russian text support** | MEDIUM | Fuse.js supports Unicode, but typo tolerance effectiveness unverified for Cyrillic |
+| **Performance estimates** | MEDIUM | 300-500KB index size is educated guess, needs validation with actual content extraction |
+
+**Overall confidence:** HIGH for feature categories, MEDIUM for implementation specifics.
 
 ---
 
-## Open Questions for Phase Planning
+## Open Questions for Implementation Phase
 
-1. **Sequence diagram approach:** Keep Mermaid for sequence diagrams (they work well) or build custom SequenceDiagram component?
-2. **Tooltip content authoring:** Where does tooltip content live? Inline in diagram definition? Separate content file?
-3. **Testing strategy:** How to E2E test interactive diagrams? Visual regression for diagram rendering?
-4. **Performance:** 170 diagrams = many React components. Lazy loading strategy? Islands architecture helps here.
+1. **Russian text fuzzy search:** Fuse.js edit distance threshold needs testing with Cyrillic queries.
+2. **Code block indexing:** Should code be indexed with syntax tokens or as plain text?
+3. **Diagram tooltip extraction:** Is there a build-time hook to extract tooltip content from React components?
+4. **Mobile keyboard:** Should search modal work on mobile, or desktop-only?
+5. **Result ranking weights:** What scoring weights for title (3x?) vs body (1x) vs code (2x)?
+
+These questions should be answered during implementation, not research.
 
 ---
 
-## Sources Summary
-
-**Authoritative (HIGH confidence):**
-- [WCAG 2.1.1 - Keyboard Accessibility](https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html)
-- [MDN - touch-action CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action)
-- [Material Design - Gesture Patterns](https://m1.material.io/patterns/gestures.html)
-
-**UX Best Practices (MEDIUM-HIGH confidence):**
-- [Nielsen Norman Group - Tooltip Guidelines](https://www.nngroup.com/articles/tooltip-guidelines/)
-- [LogRocket - Designing Better Tooltips](https://blog.logrocket.com/ux-design/designing-better-tooltips-improved-ux/)
-- [UserPilot - Tooltip Examples](https://userpilot.com/blog/tooltip-best-practices/)
-- [UX Patterns for Developers - Tooltip Pattern](https://uxpatterns.dev/patterns/content-management/tooltip)
-- [Scandiweb - Tooltip Guidelines](https://scandiweb.com/blog/tooltip-best-practices/)
-
-**Domain-specific (MEDIUM confidence):**
-- [IcePanel - Interactive Architecture Diagrams](https://icepanel.medium.com/how-to-create-interactive-zoomable-software-architecture-diagrams-6724f1d087ac)
-- [Mermaid.js Documentation](https://mermaid.js.org/config/usage.html)
-- [Steve Ruiz - Creating a Zoom UI](https://www.steveruiz.me/posts/zoom-ui)
-- [Archbee - Diagrams in Developer Documentation](https://www.archbee.com/blog/diagrams-in-developer-documentation)
+*Last updated: 2026-02-03*
+*Research mode: Features dimension (Cmd+K search modal)*
+*Downstream consumer: Requirements definition phase*

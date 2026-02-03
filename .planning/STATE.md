@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Инженер после прохождения курса может самостоятельно проектировать и реализовывать production-ready CDC-пайплайны на Debezium с пониманием всех критических нюансов интеграций
-**Current focus:** Planning next milestone (v1.7)
+**Current focus:** v1.7 Glossary & Troubleshooting
 
 ## Current Position
 
-Phase: N/A (between milestones)
-Plan: N/A
-Status: Ready for new milestone
-Last activity: 2026-02-03 — Quick task 008: Module 0 intro & About page
+Phase: Defining requirements
+Plan: —
+Status: Milestone initialized, creating roadmap
+Last activity: 2026-02-03 — v1.7 milestone started
 
-Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] not started
+Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] defining requirements
 
 ## Performance Metrics
 
@@ -74,9 +74,9 @@ None for current milestone completion.
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: v1.6 Full-Text Search milestone complete
-Resume with: `/gsd:new-milestone` to start v1.7
+Stopped at: v1.7 milestone initialized
+Resume with: `/gsd:plan-phase 46` to start execution
 
 ---
 *State initialized: 2026-01-31*
-*Last updated: 2026-02-03 — v1.6 milestone archived*
+*Last updated: 2026-02-03 — v1.7 milestone started*

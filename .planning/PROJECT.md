@@ -79,9 +79,21 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Next Milestone Goals
+## Current Milestone: v1.7 Glossary & Troubleshooting
 
-**v1.7 candidates:**
+**Goal:** Справочные материалы для практики — глоссарий терминов CDC и база типичных ошибок с решениями.
+
+**Target features:**
+- Глоссарий: 20-30 ключевых терминов CDC (WAL, LSN, GTID, slot, binlog...)
+- Каждый термин: определение + пример + ссылки на уроки
+- Troubleshooting: 15-20 типовых ошибок (PostgreSQL, MySQL)
+- Формат: Ошибка → Симптомы → Причина → Решение → Связанные уроки
+- Категории по коннекторам и типам проблем
+- Glass-дизайн, интеграция с поиском Cmd+K
+
+## Future Milestone Goals
+
+**v1.8+ candidates:**
 - Dark/light theme toggle
 - Search enhancements (scope filtering, recent searches)
 - Export/import progress
@@ -127,9 +139,21 @@
 - ✓ Glass design integration for search — v1.6
 - ✓ Search usage documentation in Module 0 — v1.6
 
+### Active (v1.7)
+
+- [ ] GLOS-01: Glossary page with 20-30 CDC terms
+- [ ] GLOS-02: Term entries with definition, example, lesson links
+- [ ] GLOS-03: Alphabetical index or category navigation
+- [ ] GLOS-04: Pagefind indexing for glossary terms
+- [ ] TRBL-01: Troubleshooting page with 15-20 errors
+- [ ] TRBL-02: Error entries with symptoms, cause, solution
+- [ ] TRBL-03: Category filters (connector, error type)
+- [ ] TRBL-04: Related lessons links for each error
+- [ ] TRBL-05: Pagefind indexing for error messages
+
 ### Future
 
-**Candidates for v1.7+:**
+**Candidates for v1.8+:**
 - PLAT-10: Dark/light theme toggle
 - PLAT-11: Export/import progress
 - SRCH-F01: Search scope filtering
@@ -187,4 +211,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 after v1.6 milestone*
+*Last updated: 2026-02-03 after v1.7 milestone start*

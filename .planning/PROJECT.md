@@ -10,14 +10,25 @@
 
 ## Current State
 
-**Version:** v1.6 (shipped 2026-02-03)
+**Version:** v1.7 (shipped 2026-02-03)
 **Live:** https://levoel.github.io/debezium-course/
-**Codebase:** 157 source files, 65,000+ LOC (TypeScript, MDX, Astro, React)
-**Content:** 9 modules (incl. Module 0), 65+ lessons, 400+ code examples, 170 interactive glass diagrams
+**Codebase:** 160+ source files, 67,000+ LOC (TypeScript, MDX, Astro, React)
+**Content:** 9 modules, 65+ lessons, 27 glossary terms, 20 troubleshooting entries, 170 diagrams
 **Lab:** Docker Compose with PostgreSQL, MySQL, Kafka KRaft, Debezium 2.5.x, Prometheus/Grafana
 **Bundle:** 1.0MB JavaScript (72% reduction from 3.6MB after Mermaid removal)
 
 ## Completed Milestones
+
+### v1.7 Glossary & Troubleshooting (shipped 2026-02-03)
+
+**Delivered:**
+- Glossary page with 27 CDC terms across 5 categories (PostgreSQL, MySQL, Kafka, Debezium, General)
+- Each term: definition + code example + related lesson links
+- Troubleshooting page with 20 common errors
+- Filters by connector (PostgreSQL/MySQL) and category (connection/snapshot/streaming/configuration)
+- Expandable error cards with symptoms, cause, solution
+- Sidebar navigation to both pages
+- Full Pagefind search integration
 
 ### v1.6 Full-Text Search (shipped 2026-02-03)
 
@@ -79,19 +90,7 @@
 - Interactive roadmap and progress tracking
 - Docker Compose lab environment (ARM64)
 
-## Current Milestone: v1.7 Glossary & Troubleshooting
-
-**Goal:** Справочные материалы для практики — глоссарий терминов CDC и база типичных ошибок с решениями.
-
-**Target features:**
-- Глоссарий: 20-30 ключевых терминов CDC (WAL, LSN, GTID, slot, binlog...)
-- Каждый термин: определение + пример + ссылки на уроки
-- Troubleshooting: 15-20 типовых ошибок (PostgreSQL, MySQL)
-- Формат: Ошибка → Симптомы → Причина → Решение → Связанные уроки
-- Категории по коннекторам и типам проблем
-- Glass-дизайн, интеграция с поиском Cmd+K
-
-## Future Milestone Goals
+## Next Milestone Goals
 
 **v1.8+ candidates:**
 - Dark/light theme toggle
@@ -138,18 +137,16 @@
 - ✓ Keyboard navigation through search results — v1.6
 - ✓ Glass design integration for search — v1.6
 - ✓ Search usage documentation in Module 0 — v1.6
-
-### Active (v1.7)
-
-- [ ] GLOS-01: Glossary page with 20-30 CDC terms
-- [ ] GLOS-02: Term entries with definition, example, lesson links
-- [ ] GLOS-03: Alphabetical index or category navigation
-- [ ] GLOS-04: Pagefind indexing for glossary terms
-- [ ] TRBL-01: Troubleshooting page with 15-20 errors
-- [ ] TRBL-02: Error entries with symptoms, cause, solution
-- [ ] TRBL-03: Category filters (connector, error type)
-- [ ] TRBL-04: Related lessons links for each error
-- [ ] TRBL-05: Pagefind indexing for error messages
+- ✓ Glossary page with 27 CDC terms — v1.7
+- ✓ Term entries with definition, example, lesson links — v1.7
+- ✓ Category-based navigation (5 categories) — v1.7
+- ✓ Pagefind indexing for glossary terms — v1.7
+- ✓ Troubleshooting page with 20 errors — v1.7
+- ✓ Error entries with symptoms, cause, solution — v1.7
+- ✓ Category filters (connector, error type) — v1.7
+- ✓ Related lessons links for each error — v1.7
+- ✓ Pagefind indexing for error messages — v1.7
+- ✓ Sidebar navigation to glossary and troubleshooting — v1.7
 
 ### Future
 
@@ -211,4 +208,4 @@
 | withastro/action@v5 | Official Astro action for GitHub Pages | ✓ Good |
 
 ---
-*Last updated: 2026-02-03 after v1.7 milestone start*
+*Last updated: 2026-02-03 after v1.7 milestone shipped*

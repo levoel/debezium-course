@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 ## Current Position
 
-Phase: Defining requirements
-Plan: —
-Status: Milestone initialized, creating roadmap
-Last activity: 2026-02-03 — v1.7 milestone started
+Phase: 46 (Glossary Infrastructure)
+Plan: Not started
+Status: Ready to plan phase 46
+Last activity: 2026-02-03 — v1.7 roadmap created
 
-Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] defining requirements
+Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] 0/5 phases
 
 ## Performance Metrics
 
@@ -34,6 +34,7 @@ Progress: v1.0-v1.6 SHIPPED | v1.7 [░░░░░░░░░░] defining req
 | v1.4 Glass Diagrams | 26-37 | 37 | Archived (2026-02-03) |
 | v1.5 Onboarding & Polish | 38-40 | 3 | Archived (2026-02-03) |
 | v1.6 Full-Text Search | 41-45 | 5+ | Archived (2026-02-03) |
+| v1.7 Glossary & Troubleshooting | 46-50 | — | In Progress |
 
 ## Accumulated Context
 

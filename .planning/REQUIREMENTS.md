@@ -25,9 +25,9 @@
 
 ### Integration (Интеграция)
 
-- [ ] **INTG-01**: Навигация к глоссарию и troubleshooting из sidebar
-- [ ] **INTG-02**: Glass-дизайн консистентный с остальным курсом
-- [ ] **INTG-03**: Mobile-responsive (390x844 viewport)
+- [x] **INTG-01**: Навигация к глоссарию и troubleshooting из sidebar
+- [x] **INTG-02**: Glass-дизайн консистентный с остальным курсом
+- [x] **INTG-03**: Mobile-responsive (390x844 viewport)
 
 ## Out of Scope
 
@@ -54,9 +54,9 @@
 | TRBL-05 | Phase 48 | Pending |
 | TRBL-06 | Phase 48 | Pending |
 | TRBL-07 | Phase 48 | Pending |
-| INTG-01 | Phase 50 | Pending |
-| INTG-02 | Phase 46 | Pending |
-| INTG-03 | Phase 50 | Pending |
+| INTG-01 | Phase 50 | Complete |
+| INTG-02 | Phase 46 | Complete |
+| INTG-03 | Phase 50 | Complete |
 
 **Coverage:**
 - v1.7 requirements: 15 total

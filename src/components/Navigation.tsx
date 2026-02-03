@@ -179,6 +179,53 @@ export function Navigation({ modules, currentPath, basePath = '' }: NavigationPr
             </li>
           );
         })}
+
+        {/* Reference Materials Section */}
+        <li className="pt-4 mt-4 border-t border-white/10">
+          <div className="px-4 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+            Справочные материалы
+          </div>
+          <ul className="space-y-1 mt-1">
+            <li>
+              <a
+                href={`${basePath}/glossary`}
+                onClick={handleLinkClick}
+                aria-current={currentPath.includes('/glossary') ? 'page' : undefined}
+                className={`
+                  block px-4 py-2 ml-2 rounded-md text-sm transition-all duration-150
+                  ${currentPath.includes('/glossary')
+                    ? 'bg-blue-500/20 backdrop-blur-sm text-blue-100 font-medium border border-blue-400/30'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                  }
+                `}
+              >
+                <span className="flex items-center gap-2">
+                  <span>📚</span>
+                  <span>Глоссарий</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={`${basePath}/troubleshooting`}
+                onClick={handleLinkClick}
+                aria-current={currentPath.includes('/troubleshooting') ? 'page' : undefined}
+                className={`
+                  block px-4 py-2 ml-2 rounded-md text-sm transition-all duration-150
+                  ${currentPath.includes('/troubleshooting')
+                    ? 'bg-blue-500/20 backdrop-blur-sm text-blue-100 font-medium border border-blue-400/30'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                  }
+                `}
+              >
+                <span className="flex items-center gap-2">
+                  <span>🔧</span>
+                  <span>Troubleshooting</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
   );
